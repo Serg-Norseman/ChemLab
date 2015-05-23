@@ -10,3 +10,7 @@ the electron clouds of atoms and tree view of radioactive decay of nuclides;
 - Master of reactions with factors balancer and stoichiometric solver;
 - Primitive molecules viewer;
 - Master of experiments (unfinished);
+
+The project was shelved until this year. In 2015 was converted from Delphi to Java and modernized. 
+
+Interface language - Russian.
