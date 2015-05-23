@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<values>
+  <value ID="vid_Length" Sign="L" Name="Длина" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Mass" Sign="M" Name="Масса" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Time" Sign="T" Name="Время" UnitID="0" Value="0">
+  </value>
+  <value ID="vid4" Sign="I" Name="Сила электрического тока" UnitID="0" Value="0">
+  </value>
+  <value ID="vid5" Sign="J" Name="Сила света" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_SubstanceQuantity" Sign="N" Name="Количество вещества" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_FlatAngle" Sign="?" Name="Плоский угол" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_SolidAngle" Sign="?" Name="Телесный угол" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Area" Sign="?" Name="Площадь" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Volume" Sign="?" Name="Объем, вместимость" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Velocity" Sign="?" Name="Скорость" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Speedup" Sign="?" Name="Ускорение" UnitID="0" Value="0">
+  </value>
+  <value ID="vid13" Sign="?" Name="Частота периодического процесса" UnitID="0" Value="0">
+  </value>
+  <value ID="vid14" Sign="?" Name="Термодинамическая температура Кельвина" UnitID="0" Value="0">
+  </value>
+  <value ID="vid15" Sign="?" Name="Угловая скорость" UnitID="0" Value="0">
+  </value>
+  <value ID="vid16" Sign="?" Name="Угловое ускорение" UnitID="0" Value="0">
+  </value>
+  <value ID="vid17" Sign="?" Name="Волновое число" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Density" Sign="?" Name="Плотность" UnitID="0" Value="0">
+  </value>
+  <value ID="vid19" Sign="?" Name="Удельный объем" UnitID="0" Value="0">
+  </value>
+  <value ID="vid20" Sign="?" Name="Момент инерции (динамический)" UnitID="0" Value="0">
+  </value>
+  <value ID="vid21" Sign="?" Name="Количество движения (импульс)" UnitID="0" Value="0">
+  </value>
+  <value ID="vid22" Sign="?" Name="Момент количества движения (момент импульса)" UnitID="0" Value="0">
+  </value>
+  <value ID="vid23" Sign="?" Name="Сила, вес" UnitID="0" Value="0">
+  </value>
+  <value ID="vid24" Sign="?" Name="Количество теплоты, термодинамический потенциал" UnitID="0" Value="0">
+  </value>
+  <value ID="vid25" Sign="?" Name="Удельный вес" UnitID="0" Value="0">
+  </value>
+  <value ID="vid26" Sign="?" Name="Момент силы, момент пары сил" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Pressure" Sign="?" Name="Давление" UnitID="0" Value="0">
+  </value>
+  <value ID="vid28" Sign="?" Name="Поверхностное натяжение" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Energy" Sign="?" Name="Работа, энергия" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Power" Sign="?" Name="Мощность" UnitID="0" Value="0">
+  </value>
+  <value ID="vid31" Sign="?" Name="Динамическая вязкость" UnitID="0" Value="0">
+  </value>
+  <value ID="vid32" Sign="?" Name="Кинематическая вязкость" UnitID="0" Value="0">
+  </value>
+  <value ID="vid33" Sign="?" Name="Массовый расход" UnitID="0" Value="0">
+  </value>
+  <value ID="vid34" Sign="?" Name="Теплоемкость" UnitID="0" Value="0">
+  </value>
+  <value ID="vid_Entropy" Sign="?" Name="Энтропия" UnitID="0" Value="0">
+  </value>
+  <value ID="vid36" Sign="?" Name="Удельная теплоемкость" UnitID="0" Value="0">
+  </value>
+  <value ID="vid37" Sign="?" Name="Тепловой поток" UnitID="0" Value="0">
+  </value>
+  <value ID="vid38" Sign="?" Name="Коэффициент теплообмена" UnitID="0" Value="0">
+  </value>
+  <value ID="vid39" Sign="?" Name="Температурный градиент" UnitID="0" Value="0">
+  </value>
+  <value ID="vid40" Sign="?" Name="Теплопроводность" UnitID="0" Value="0">
+  </value>
+</values>

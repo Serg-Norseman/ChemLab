@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<devices>
+  <device ID="0" Name="Стакан (100 мл)" Substances_Container="True" Devices_Container="False" RealVolume="100" RealMass="50" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Стакан (250 мл)" Substances_Container="True" Devices_Container="False" RealVolume="250" RealMass="75" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Стакан (600 мл)" Substances_Container="True" Devices_Container="False" RealVolume="600" RealMass="85" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Коническая колба (100 мл)" Substances_Container="True" Devices_Container="False" RealVolume="100" RealMass="50" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Коническая колба (250 мл)" Substances_Container="True" Devices_Container="False" RealVolume="250" RealMass="75" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Круглодонная колба (100 мл)" Substances_Container="True" Devices_Container="False" RealVolume="100" RealMass="50" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Пробирка (50 мл)" Substances_Container="True" Devices_Container="False" RealVolume="50" RealMass="20" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Горелка Бунзена" Substances_Container="False" Devices_Container="False" RealVolume="0" RealMass="0" Frames="5" Cling="[dcAbove]" />
+  <device ID="0" Name="Бюретка (10 мл)" Substances_Container="True" Devices_Container="False" RealVolume="10" RealMass="20" Frames="1" Cling="[]" />
+  <device ID="0" Name="Бюретка (50 мл)" Substances_Container="True" Devices_Container="False" RealVolume="50" RealMass="50" Frames="1" Cling="[]" />
+  <device ID="0" Name="Электронные весы (250 г)" Substances_Container="False" Devices_Container="True" RealVolume="250" RealMass="0" Frames="1" Cling="[dcAbove]" />
+  <device ID="0" Name="Градуированный цилиндр (10 мл)" Substances_Container="True" Devices_Container="False" RealVolume="10" RealMass="20" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Градуированный цилиндр (100 мл)" Substances_Container="True" Devices_Container="False" RealVolume="100" RealMass="50" Frames="1" Cling="[dcBelow]" />
+  <device ID="0" Name="Нагреватель" Substances_Container="False" Devices_Container="False" RealVolume="0" RealMass="0" Frames="1" Cling="[dcAbove]" />
+</devices>
