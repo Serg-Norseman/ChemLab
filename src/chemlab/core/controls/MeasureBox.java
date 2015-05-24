@@ -1,5 +1,6 @@
-package chemlab.core.measure;
+package chemlab.core.controls;
 
+import chemlab.core.chemical.ChemUnits;
 import chemlab.forms.ComboItem;
 import java.awt.AWTEvent;
 import java.awt.Dimension;

@@ -18,7 +18,6 @@
 package chemlab.core.chemical;
 
 import bslib.common.Logger;
-import chemlab.core.measure.ChemUnits;
 import java.util.ArrayList;
 import java.util.List;
 import javax.measure.Measure;

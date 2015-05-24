@@ -1,7 +1,7 @@
 package chemlab.sandbox;
 
-import chemlab.core.measure.ChemUnits;
-import chemlab.core.measure.MeasureBox;
+import chemlab.core.chemical.ChemUnits;
+import chemlab.core.controls.MeasureBox;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -18,11 +18,11 @@
 package chemlab.forms;
 
 import bslib.common.FramesHelper;
+import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.InputParams;
 import chemlab.core.chemical.StoichiometricSolver;
 import chemlab.core.chemical.Substance;
-import chemlab.core.measure.ChemUnits;
-import chemlab.core.measure.MeasureBox;
+import chemlab.core.controls.MeasureBox;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;

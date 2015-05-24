@@ -27,6 +27,14 @@
             <file>file:/E:/TMP/ChemLab/src/chemlab/core/chemical/ChemFuncs.java</file>
             <file>file:/E:/TMP/ChemLab/src/chemlab/core/chemical/StoichiometricSolver.java</file>
         </group>
-        <group/>
+        <group>
+            <file>file:/D:/WORKS/ChemLab/src/chemlab/core/controls/MeasureBox.java</file>
+            <file>file:/D:/WORKS/ChemLab/src/chemlab/sandbox/Converter.java</file>
+            <file>file:/D:/WORKS/ChemLab/src/chemlab/forms/CLSubstanceInput.java</file>
+            <file>file:/D:/WORKS/ChemLab/src/chemlab/core/chemical/ChemFuncs.java</file>
+            <file>file:/D:/WORKS/ChemLab/src/chemlab/core/chemical/ChemUnits.java</file>
+            <file>file:/D:/WORKS/ChemLab/src/chemlab/forms/CLChemCalc.java</file>
+            <file>file:/D:/WORKS/ChemLab/src/chemlab/core/chemical/StoichiometricSolver.java</file>
+        </group>
     </open-files>
 </project-private>

@@ -17,7 +17,6 @@
  */
 package chemlab.core.chemical;
 
-import chemlab.core.measure.ChemUnits;
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Pressure;
