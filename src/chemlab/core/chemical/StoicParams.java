@@ -32,7 +32,7 @@ import javax.measure.unit.Unit;
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public class InputParams
+public class StoicParams
 {
     public enum InputMode
     {
@@ -46,12 +46,12 @@ public class InputParams
 
     public enum ParamType
     {
-        Input, Output
+        None, Input, Output
     }
     
+    public ParamType Type;
     public InputMode Mode;
     public Unit<?> ResultUnit;
-    public ParamType Type;
     
     public Measure<Double, Mass> Mass;
     public Measure<Double, Volume> Volume;
@@ -67,9 +67,10 @@ public class InputParams
     public double Moles;
     public Measure<Double, ?> Result;
     
-    public InputParams()
+    public StoicParams()
     {
-        this.Mode = null;
+        this.Type = ParamType.None;
+        this.Mode = InputMode.imSolid_M;
     }
     
     @Override

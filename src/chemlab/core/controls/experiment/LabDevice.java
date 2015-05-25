@@ -9,6 +9,7 @@ import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.Substance;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -34,11 +35,19 @@ public class LabDevice extends BaseObject
     private int fAbstVolume;
     private int fFillVolume;
     private int fLiquidLevel;
+    private Color fLiquidColor;
+    private DevBottom fBottom;
 
     private int fHeight;
     private int fLeft;
     private int fWidth;
     private int fTop;
+    
+    private int TickScale = 5;
+    private int Ticks;
+    
+    private final ArrayList<IDeviceProcess> fProcesses;
+    private boolean fBoiling;
 
     public final int getLeft()
     {
@@ -76,6 +85,8 @@ public class LabDevice extends BaseObject
         this.fSubstances = new ArrayList<>();
         this.fReactionMaster = new ReactionSolver();
 
+        this.fProcesses = new ArrayList<>();
+        
         this.fActive = false;
         this.fFrameIndex = 0;
         this.setLeft(x);
@@ -150,7 +161,7 @@ public class LabDevice extends BaseObject
     
     public final boolean isContainer()
     {
-        return this.fRecord.Substances_Container;
+        return (this.FID.Type == DeviceType.Container);
     }
 
     public final boolean isActivable()
@@ -173,13 +184,21 @@ public class LabDevice extends BaseObject
     public final void tickTime()
     {
         if (this.fActive) {
-            if (this.FID == DeviceId.dev_Bunsen_Burner) {
-                if (this.fFrameIndex < 4) {
-                    this.fFrameIndex++;
-                } else {
-                    this.fFrameIndex = 1;
+            Ticks++;
+            if (Ticks == TickScale) {
+                if (this.FID == DeviceId.dev_Bunsen_Burner) {
+                    if (this.fFrameIndex < 4) {
+                        this.fFrameIndex++;
+                    } else {
+                        this.fFrameIndex = 1;
+                    }
                 }
+                Ticks = 0;
             }
+        }
+        
+        for (IDeviceProcess process : this.fProcesses) {
+            process.doStep();
         }
     }
 
@@ -242,7 +261,7 @@ public class LabDevice extends BaseObject
     private int getAbstractVolume()
     {
         int result = 0;
-        if (this.fRecord.Substances_Container) {
+        if (this.isContainer()) {
             int check = AuxUtils.BGRToRGB(16777215).getRGB();
 
             for (int y = this.fHeight - 1; y >= 0; y--) {
@@ -311,6 +330,8 @@ public class LabDevice extends BaseObject
 
             this.fFillVolume = (int) (this.fFillVolume + ((long) Math.round(subVol)));
         }
+        
+        this.fLiquidColor = liqColor;
 
         short realVolume = this.getRealVolume();
         int comVolume = (int) (Math.round((this.fAbstVolume * ((double) this.fFillVolume / realVolume))));
@@ -323,6 +344,11 @@ public class LabDevice extends BaseObject
 
         int currV = 0;
         this.fLiquidLevel = -1;
+        
+        DevBottom db = new DevBottom();
+        db.X1 = -1;
+        db.X2 = -1;
+        db.Y = -1;
 
         int check = AuxUtils.BGRToRGB(16777215).getRGB();
         for (int y = this.fHeight - 1; y >= 0; y--) {
@@ -330,9 +356,16 @@ public class LabDevice extends BaseObject
             for (int x = 0; x < this.fWidth; x++) {
                 if (this.fInternalImage.getRGB(x, y) == check) {
                     d++;
+
+                    if (db.Y == -1) {
+                        if (db.X1 == -1) db.X1 = x;
+                        db.X2 = x;
+                    }
                 }
             }
 
+            if (db.Y == -1 && d > 0) db.Y = y;
+            
             if (d != 0) {
                 float r = d / 2.0f;
                 currV = (int) (currV + (Math.round((Math.PI * (r * r)))));
@@ -347,15 +380,24 @@ public class LabDevice extends BaseObject
             }
         }
 
+        this.fBottom = db;
+        
         this.fContentsImage = Bitmap.makeTransparent(this.fContentsImage, Color.BLACK);
 
         this.fExpMaster.repaint();
     }
 
-    public final void paint(Graphics deskCanvas)
+    public final void paint(Graphics2D deskCanvas)
     {
-        if (this.fRecord.Substances_Container && this.getSubstancesMass() > 0.0f) {
+        //Bitmap intImage = new Bitmap(this.fWidth, this.fHeight);
+        //Graphics intCanvas = intImage.getGraphics();
+
+        if (this.isContainer() && this.getSubstancesMass() > 0.0f) {
             deskCanvas.drawImage(this.fContentsImage, this.getLeft(), this.getTop(), null);
+        }
+
+        for (IDeviceProcess process : this.fProcesses) {
+            process.draw(deskCanvas);
         }
 
         deskCanvas.drawImage(this.fDevImages[this.fFrameIndex], this.getLeft(), this.getTop(), null);
@@ -365,6 +407,21 @@ public class LabDevice extends BaseObject
         }
     }
 
+    public final int getLiquidLevel()
+    {
+        return this.fLiquidLevel;
+    }
+
+    public final Color getLiquidColor()
+    {
+        return this.fLiquidColor;
+    }
+    
+    public final DevBottom getDevBottom()
+    {
+        return this.fBottom;
+    }
+    
     public final Substance addSubstance()
     {
         Substance result = new Substance();
@@ -402,5 +459,27 @@ public class LabDevice extends BaseObject
 
     public final void write(OutputStream stream)
     {
+    }
+    
+    public final boolean getBoiling()
+    {
+        return this.fBoiling;
+    }
+    
+    public final void setBoiling(boolean value)
+    {
+        this.fBoiling = value;
+        if (value) {
+            IDeviceProcess process = new DeviceBoiling();
+            process.init(this);
+            this.fProcesses.add(process);
+        } else {
+            for (IDeviceProcess process : this.fProcesses) {
+                if (process instanceof DeviceBoiling) {
+                    this.fProcesses.remove(process);
+                    break;
+                }
+            }
+        }
     }
 }

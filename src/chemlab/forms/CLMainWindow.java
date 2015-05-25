@@ -61,6 +61,7 @@ public final class CLMainWindow extends JFrame implements ActionListener
     private JMenuItem miMoleculeMaster;
     private JMenuItem miUnitMaster;
     private JMenuItem miExperimentMaster;
+    private JMenuItem miCalcMaster;
     private JMenu miHelp;
     private JMenuItem miContents;
     private JMenuItem miAbout;
@@ -90,6 +91,7 @@ public final class CLMainWindow extends JFrame implements ActionListener
         this.miMoleculeMaster = new JMenuItem();
         this.miUnitMaster = new JMenuItem();
         this.miExperimentMaster = new JMenuItem();
+        this.miCalcMaster = new JMenuItem();
         this.miHelp = new JMenu();
         this.miContents = new JMenuItem();
         this.miAbout = new JMenuItem();
@@ -149,9 +151,9 @@ public final class CLMainWindow extends JFrame implements ActionListener
         this.miService.setText("Сервис");
         this.miService.setFont(this.getFont());
 
-        this.miUnitMaster.setText("Мастер единиц измерения");
+        this.miUnitMaster.setText("Конвертер единиц измерения");
         this.miUnitMaster.addActionListener(this);
-        this.miUnitMaster.setActionCommand("cmd_UnitsMaster");
+        this.miUnitMaster.setActionCommand("cmd_UnitsConverter");
         this.miUnitMaster.setFont(this.getFont());
         this.miUnitMaster.setIcon(ImageHelper.loadIcon("ui/measure.gif"));
 
@@ -178,6 +180,11 @@ public final class CLMainWindow extends JFrame implements ActionListener
         this.miExperimentMaster.setActionCommand("cmd_ExperimentMaster");
         this.miExperimentMaster.setFont(this.getFont());
         this.miExperimentMaster.setIcon(ImageHelper.loadIcon("ui/experiment.gif"));
+
+        this.miCalcMaster.setText("Расчеты");
+        this.miCalcMaster.addActionListener(this);
+        this.miCalcMaster.setActionCommand("cmd_CalcMaster");
+        this.miCalcMaster.setFont(this.getFont());
 
         this.miHelp.setText("Справка");
         this.miHelp.setFont(this.getFont());
@@ -212,8 +219,8 @@ public final class CLMainWindow extends JFrame implements ActionListener
         this.miService.add(this.miReactionMaster);
         this.miService.add(this.miMoleculeMaster);
         this.miService.add(this.miExperimentMaster);
-        //this.miService.addSeparator();
-        //this.miService.add(this.miExit);
+        this.miService.addSeparator();
+        this.miService.add(this.miCalcMaster);
 
         this.miHelp.add(this.miContents);
         this.miHelp.add(this.miAbout);
@@ -261,8 +268,8 @@ public final class CLMainWindow extends JFrame implements ActionListener
                 fmBV.setVisible(true);
                 break;
             
-            case "cmd_UnitsMaster":
-                JFrame fmMU = new CLUnitMaster();
+            case "cmd_UnitsConverter":
+                JFrame fmMU = new CLUnitsConverter();
                 fmMU.setLocationRelativeTo(this);
                 fmMU.setVisible(true);
                 break;
@@ -291,6 +298,12 @@ public final class CLMainWindow extends JFrame implements ActionListener
                 fmME.setLocationRelativeTo(this);
                 //dlg.MdiParent = this;
                 fmME.setVisible(true);
+                break;
+                
+            case "cmd_CalcMaster":
+                JDialog fmCalc = new CLChemCalc(this);
+                fmCalc.setLocationRelativeTo(this);
+                fmCalc.setVisible(true);
                 break;
         }
     }

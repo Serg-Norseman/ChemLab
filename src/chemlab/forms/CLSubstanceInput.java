@@ -19,7 +19,7 @@ package chemlab.forms;
 
 import bslib.common.FramesHelper;
 import chemlab.core.chemical.ChemUnits;
-import chemlab.core.chemical.InputParams;
+import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
 import chemlab.core.chemical.Substance;
 import chemlab.core.controls.MeasureBox;
@@ -59,7 +59,7 @@ import javax.swing.JTextField;
 public class CLSubstanceInput extends JDialog
 {
     private final Substance fSubstance;
-    private InputParams fParams;
+    private StoicParams fParams;
     private final boolean fIsInputSubst;
 
     private final JPanel panHeader;
@@ -92,20 +92,13 @@ public class CLSubstanceInput extends JDialog
     private final MeasureBox txtGasDensity;
     private final JCheckBox chkSTP;
         
-    public CLSubstanceInput(Frame owner, Substance substance, boolean start)
+    public CLSubstanceInput(Frame owner, Substance substance)
     {
         super(owner, true);
 
         this.fSubstance = substance;
-        this.fIsInputSubst = start;
-        
-        this.fParams = (InputParams) substance.ExtData;
-        if (this.fParams == null) {
-            this.fParams = new InputParams();
-            substance.ExtData = this.fParams;
-        }
-
-        this.fParams.Type = (start) ? InputParams.ParamType.Input : InputParams.ParamType.Output;
+        this.fParams = substance.getStoicParams();
+        this.fIsInputSubst = (this.fParams.Type == StoicParams.ParamType.Input);
         
         this.setLayout(new BorderLayout());
 
@@ -122,10 +115,7 @@ public class CLSubstanceInput extends JDialog
             {
                 char z = ke.getKeyChar();
                 boolean burn = !Character.isDigit(z) && !(z == 8)
-                        && !(z == 46) && !(z < 32) && !(z == 127);//burn if its not a diget and its not a backspace
-                /*if (ke.getComponent().getName().contains(".") && z == 46) {
-                    burn = true;
-                }*/
+                        && !(z == 46) && !(z < 32) && !(z == 127);
                 if (burn) {
                     ke.consume();
                 }
@@ -133,31 +123,22 @@ public class CLSubstanceInput extends JDialog
         };
 
         panHeader = new JPanel();
-        panHeader.setLayout(new GridLayout(1, 4, 5, 5));
+        panHeader.setLayout(new GridLayout(2, 2, 5, 5));
         panHeader.setBorder(BorderFactory.createEtchedBorder());
-        panHeader.setLocation(10, 40);
-        panHeader.setPreferredSize(new Dimension(200, 30));
         this.add(panHeader, BorderLayout.NORTH);
         
         JLabel lblPhase = new JLabel();
-        lblPhase.setText("Фаза");
-        lblPhase.setLocation(10, 10);
-        lblPhase.setSize(100, 25);
+        lblPhase.setText("Состояние");
         panHeader.add(lblPhase);
         
         cmbPhase = new JComboBox();
-        cmbPhase.addItem("gas");
-        cmbPhase.addItem("liquid");
         cmbPhase.addItem("solid");
-        cmbPhase.setSelectedItem(null);
-        cmbPhase.setLocation(120, 10);
-        cmbPhase.setSize(100, 25);
+        cmbPhase.addItem("liquid");
+        cmbPhase.addItem("gas");
         panHeader.add(cmbPhase);
         
         JLabel lblUnits = new JLabel();
-        lblUnits.setText("Ед. изм.");
-        lblUnits.setLocation(10, 35);
-        lblUnits.setSize(100, 25);
+        lblUnits.setText("Ед. изм. результата");
         panHeader.add(lblUnits);
         
         cmbUnits = new JComboBox();
@@ -168,8 +149,6 @@ public class CLSubstanceInput extends JDialog
             }
         }        
         cmbUnits.setSelectedItem(null);
-        cmbUnits.setLocation(120, 35);
-        cmbUnits.setSize(100, 25);
         panHeader.add(cmbUnits);
 
         CardLayout cardLayout = new CardLayout();
@@ -386,7 +365,7 @@ public class CLSubstanceInput extends JDialog
 
         btnDone.addActionListener((ActionEvent e) -> {
             try {
-                InputParams.InputMode mode = this.fParams.Mode;
+                StoicParams.InputMode mode = this.fParams.Mode;
                 
                 switch (mode) {
                     case imSolid_M: // only in
@@ -437,6 +416,42 @@ public class CLSubstanceInput extends JDialog
                 JOptionPane.showMessageDialog(null, "Необходимо правильно заполнить поля");
             }
         });
+        
+        this.setParams();
+    }
+    
+    private void setParams()
+    {
+        cmbPhase.setSelectedIndex(this.fSubstance.State.getValue());
+        
+        for (int i = 0; i < cmbUnits.getItemCount(); i++) {
+            Object item = cmbUnits.getItemAt(i);
+            Unit<?> unit = (item == null) ? null : (Unit<?>) ((ComboItem) item).Data;
+            if (this.fParams.ResultUnit == unit) {
+                cmbUnits.setSelectedIndex(i);
+                break;
+            }
+        }
+        
+        switch (this.fParams.Mode) {
+            case imSolid_M:
+                break;
+            
+            case imSolid_V_D:
+                break;
+            
+            case imLiquid_M:
+                break;
+            
+            case imLiquid_MP_D:
+                break;
+            
+            case imGas_In:
+                break;
+
+            case imGas_Out:
+                break;
+        }
     }
     
     private void updateControls()
@@ -456,7 +471,7 @@ public class CLSubstanceInput extends JDialog
                         txtVolume.setEnabled(!isSel);
                         txtDensity.setEnabled(!isSel);
                         
-                        this.fParams.Mode = InputParams.InputMode.imSolid_M;
+                        this.fParams.Mode = StoicParams.InputMode.imSolid_M;
                     });
 
                     rbSolidByVD.addActionListener((ActionEvent ae) -> {
@@ -465,7 +480,7 @@ public class CLSubstanceInput extends JDialog
                         txtVolume.setEnabled(isSel);
                         txtDensity.setEnabled(isSel);
                         
-                        this.fParams.Mode = InputParams.InputMode.imSolid_V_D;
+                        this.fParams.Mode = StoicParams.InputMode.imSolid_V_D;
                     });
                     break;
 
@@ -482,7 +497,7 @@ public class CLSubstanceInput extends JDialog
                         txtMP.setEnabled(!isSel);
                         txtLiqDensity.setEnabled(!isSel);
                         
-                        this.fParams.Mode = InputParams.InputMode.imLiquid_M;
+                        this.fParams.Mode = StoicParams.InputMode.imLiquid_M;
                     });
 
                     rbLiquidByMP.addActionListener((ActionEvent ae) -> {
@@ -491,7 +506,7 @@ public class CLSubstanceInput extends JDialog
                         txtMP.setEnabled(isSel);
                         txtLiqDensity.setEnabled(isSel);
                         
-                        this.fParams.Mode = InputParams.InputMode.imLiquid_MP_D;
+                        this.fParams.Mode = StoicParams.InputMode.imLiquid_MP_D;
                     });
                     break;
 
@@ -511,7 +526,7 @@ public class CLSubstanceInput extends JDialog
                         txtGasTemperature.setEnabled(!isSel);
                     });
                     
-                    this.fParams.Mode = InputParams.InputMode.imGas_In;
+                    this.fParams.Mode = StoicParams.InputMode.imGas_In;
                     break;
             }
         } else {
@@ -523,7 +538,7 @@ public class CLSubstanceInput extends JDialog
                     txtVolume.setEnabled(false);
                     txtDensity.setEnabled(true); // input
                     
-                    this.fParams.Mode = InputParams.InputMode.imSolid_V_D;
+                    this.fParams.Mode = StoicParams.InputMode.imSolid_V_D;
                     break;
 
                 case Liquid:
@@ -533,7 +548,7 @@ public class CLSubstanceInput extends JDialog
                     txtMP.setEnabled(false);
                     txtLiqDensity.setEnabled(false);
                     
-                    this.fParams.Mode = InputParams.InputMode.imLiquid_M;
+                    this.fParams.Mode = StoicParams.InputMode.imLiquid_M;
                     break;
 
                 case Gas:
@@ -544,7 +559,7 @@ public class CLSubstanceInput extends JDialog
                     
                     chkSTP.setEnabled(false);
                     
-                    this.fParams.Mode = InputParams.InputMode.imGas_Out;                    
+                    this.fParams.Mode = StoicParams.InputMode.imGas_Out;                    
                     break;
             }
         }

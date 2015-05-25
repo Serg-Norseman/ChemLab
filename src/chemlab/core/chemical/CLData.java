@@ -180,8 +180,6 @@ public class CLData
                 DeviceRecord decRec = new DeviceRecord();
 
                 decRec.Name = el.getAttribute("Name");
-                decRec.Substances_Container = Boolean.parseBoolean(el.getAttribute("Substances_Container"));
-                decRec.Devices_Container = Boolean.parseBoolean(el.getAttribute("Devices_Container"));
                 decRec.RealVolume = (short) AuxUtils.ParseInt(el.getAttribute("RealVolume"), 0);
                 decRec.RealMass = (short) AuxUtils.ParseInt(el.getAttribute("RealMass"), 0);
                 decRec.Frames = (int) AuxUtils.ParseInt(el.getAttribute("Frames"), 1);

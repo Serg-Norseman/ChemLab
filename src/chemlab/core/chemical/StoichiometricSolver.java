@@ -50,8 +50,7 @@ public class StoichiometricSolver
             double minMoles = Double.MAX_VALUE;
             for (int i = 0; i < fReaction.getSubstanceCount(); i++) {
                 Substance substance = fReaction.getSubstance(i);
-                InputParams params = (InputParams) substance.ExtData;
-                if (params == null) continue;
+                StoicParams params = substance.getStoicParams();
                 
                 switch (params.Type) {
                     case Input:
@@ -89,13 +88,13 @@ public class StoichiometricSolver
     private double calculateSource(Substance sourceSubst)
     {
         double moles = 0;
-        InputParams sourceParams = (InputParams) sourceSubst.ExtData;
+        StoicParams sourceParams = sourceSubst.getStoicParams();
 
         SubstanceState state = sourceSubst.State;
         switch (state) {
             case Solid: {
                 Measure<Double, Mass> mass;
-                if (sourceParams.Mode == InputParams.InputMode.imSolid_M) {
+                if (sourceParams.Mode == StoicParams.InputMode.imSolid_M) {
                     mass = sourceParams.Mass;
                 } else {
                     mass = ChemFuncs.volumeToMass(sourceParams.Volume, sourceParams.Density);
@@ -106,7 +105,7 @@ public class StoichiometricSolver
 
             case Liquid: {
                 double molarity;
-                if (sourceParams.Mode == InputParams.InputMode.imLiquid_M) {
+                if (sourceParams.Mode == StoicParams.InputMode.imLiquid_M) {
                     molarity = sourceParams.ConcM;
                 } else {
                     molarity = StoichiometricSolver.percentToConcentration(sourceParams.MassPercent, sourceParams.Density.getValue(), sourceSubst);
@@ -135,7 +134,7 @@ public class StoichiometricSolver
         int result = -1;
 
         try {
-            InputParams targetParams = (InputParams) targetSubst.ExtData;
+            StoicParams targetParams = targetSubst.getStoicParams();
 
             Unit<?> tgtUnit = targetParams.ResultUnit;
             boolean resVolume = tgtUnit.isCompatible(ChemUnits.LITER);
@@ -173,11 +172,11 @@ public class StoichiometricSolver
         return result;
     }
 
-    public static double massToMoles(Measure<Double, Mass> mass, Substance subst)
+    public static double massToMoles(Measure<Double, Mass> mMass, Substance subst)
     {
-        double mas = (mass == null) ? 0 : ChemUnits.convert(mass, ChemUnits.GRAM).getValue();
+        double mass = (mMass == null) ? 0 : ChemUnits.convert(mMass, ChemUnits.GRAM).getValue();
         double molarMass = subst.getMolecularMass(true);
-        return (mas / molarMass);
+        return (mass / molarMass);
     }
 
     public static Measure<Double, Mass> molesToMass(double moles, Substance subst)

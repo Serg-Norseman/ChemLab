@@ -119,6 +119,18 @@ public class MeasureBox extends JPanel implements ActionListener, PropertyChange
         this.fUnitChooser.setEnabled(b);
     }
     
+    public final void setBaseUnit(Unit<?> baseUnit)
+    {
+        fUnitChooser.removeAllItems();
+        List<Unit<?>> units = ChemUnits.getInstance().getUnits();
+        for (Unit<?> un : units) {
+            if (un.isCompatible(baseUnit)) {
+                fUnitChooser.addItem(new ComboItem(un.toString(), un));
+            }
+        }
+        fUnitChooser.setSelectedIndex(0);
+    }
+    
     // Don't allow this panel to get taller than its preferred size.
     // BoxLayout pays attention to maximum size, though most layout
     // managers don't.
@@ -143,22 +155,33 @@ public class MeasureBox extends JPanel implements ActionListener, PropertyChange
     public final Unit<?> getSelectedUnit()
     {
         ComboItem item = (ComboItem) fUnitChooser.getSelectedItem();
-        Unit<?> unit = (Unit<?>) item.Data;
-        return unit;
+        if (item != null) {
+            Unit<?> unit = (Unit<?>) item.Data;
+            return unit;
+        } else {
+            return null;
+        }
     }
 
     public final Measure<Double, ?> getMeasure()
     {
-        double value = this.getValue();
         Unit<?> unit = this.getSelectedUnit();
-        Measure<Double, ?> result = Measure.valueOf(value, unit);
+        if (unit == null) {
+            return null;
+        }
 
+        double value = this.getValue();
+        Measure<Double, ?> result = Measure.valueOf(value, unit);
         return result;
     }
 
     public final Measure<Double, ?> getRequiredMeasure(Unit<?> targetUnit)
     {
         Measure<Double, ?> measure = this.getMeasure();
+        if (measure == null) {
+            return null;
+        }
+
         Measure<Double, ?> result = ChemUnits.convert(measure, targetUnit);
         return result;
     }

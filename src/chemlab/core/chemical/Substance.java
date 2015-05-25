@@ -38,7 +38,7 @@ public class Substance extends CompoundSolver
     private double FSMHC_C;
     private double FSMHC_B;
 
-    public Object ExtData;
+    private StoicParams fStoicParams;
 
     public double Mass; // used in LabDevice
 
@@ -59,6 +59,14 @@ public class Substance extends CompoundSolver
         this.Type = SubstanceType.Reagent;
     }
 
+    public final StoicParams getStoicParams()
+    {
+        if (fStoicParams == null) {
+            this.fStoicParams = new StoicParams();
+        }
+        return this.fStoicParams;
+    }
+    
     public final double getMolecularMass(boolean withFactor)
     {
         double molMass = super.getMolecularMass();

@@ -21,11 +21,10 @@ import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
 import bslib.common.StringHelper;
 import chemlab.core.chemical.ChemUtils;
-import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.ReactionSolver;
+import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
 import chemlab.core.chemical.Substance;
-import chemlab.core.chemical.InputParams;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -108,7 +107,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
         Label1.setText("Уравнение реакции");
         Label1.setLocation(8, 8);
-        Label1.setSize(115, 15);
+        Label1.setSize(150, 15);
 
         // K2O + HNO3 = KNO3 + H2O
         // NH4I + H2SO4 + KMnO4 = I2 + MnSO4 + H2O + (NH4)2SO4 + K2SO4
@@ -344,7 +343,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
                 String comp = "[" + AuxUtils.FloatToStr(substance.Factor) + "] " + substance.Formula;
                 String state = substance.State.toString();
-                InputParams params = (InputParams) substance.ExtData;
+                StoicParams params = substance.getStoicParams();
                 String strParams = (params == null) ? "" : params.toString();
                 String typ = (params == null) ? "" : params.Type.toString();
                 String result = (params == null) ? "" : ((params.Result == null) ? "" : params.Result.toString());
@@ -386,13 +385,13 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         String target = null;
         for (int i = 0; i < this.fReactionMaster.getSubstanceCount(); i++) {
             Substance substance = this.fReactionMaster.getSubstance(i);
-            InputParams params = (InputParams) substance.ExtData;
+            StoicParams params = substance.getStoicParams();
             
             if (params != null) {
-                if (params.Type == InputParams.ParamType.Input) {
+                if (params.Type == StoicParams.ParamType.Input) {
                     source = substance.Formula;
                 }
-                if (params.Type == InputParams.ParamType.Output) {
+                if (params.Type == StoicParams.ParamType.Output) {
                     target = substance.Formula;
                 }
             }
@@ -438,8 +437,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             case "SET_INPUT": {
                 int row = this.tblStoichiometry.getSelectedRow();
                 Substance substance = this.fReactionMaster.getSubstance(row);
+                substance.getStoicParams().Type = StoicParams.ParamType.Input;
 
-                CLSubstanceInput input = new CLSubstanceInput(this, substance, true);
+                CLSubstanceInput input = new CLSubstanceInput(this, substance);
                 input.setVisible(true);
 
                 this.updateStoic();
@@ -449,8 +449,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             case "SET_OUTPUT": {
                 int row = this.tblStoichiometry.getSelectedRow();
                 Substance substance = this.fReactionMaster.getSubstance(row);
+                substance.getStoicParams().Type = StoicParams.ParamType.Output;
 
-                CLSubstanceInput input = new CLSubstanceInput(this, substance, false);
+                CLSubstanceInput input = new CLSubstanceInput(this, substance);
                 input.setVisible(true);
 
                 this.updateStoic();

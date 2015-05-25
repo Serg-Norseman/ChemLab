@@ -8,6 +8,8 @@ import chemlab.core.chemical.SubstanceState;
 import chemlab.core.controls.EditorControl;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -56,7 +58,7 @@ public class ExperimentMaster extends EditorControl implements ActionListener
         this.fDevices = new ArrayList<>();
         this.setDoubleBuffered(true);
 
-        this.fTimer = new Timer(250, new ActionListener()
+        this.fTimer = new Timer(50, new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -257,11 +259,11 @@ public class ExperimentMaster extends EditorControl implements ActionListener
 
         try {
             this.fBuffer = new Bitmap(this.getWidth(), this.getHeight());
-            Graphics canv = this.fBuffer.getGraphics();
+            Graphics2D canv = (Graphics2D) this.fBuffer.getGraphics();
 
-            //Graphics2D gr = (Graphics2D) canv;
-            //RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            //gr.setRenderingHints(rh);
+            RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            canv.setRenderingHints(rh);
             
             canv.setColor(Color.white);
             canv.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -409,6 +411,8 @@ public class ExperimentMaster extends EditorControl implements ActionListener
             compound.State = SubstanceState.Liquid;
 
             result.changeContents();
+            
+            result.setBoiling(true);
         }
 
         this.repaint();

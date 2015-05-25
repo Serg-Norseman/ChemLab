@@ -64,6 +64,7 @@ public final class ChemFuncs
     {
         double vol = (volume == null) ? 0 : ChemUnits.convert(volume, ChemUnits.LITER).getValue();
         double den = (density == null) ? 0 : ChemUnits.convert(density, ChemUnits.G_LITER).getValue();
+
         double result = volumeToMass(vol, den);
         
         return Measure.valueOf(result, ChemUnits.GRAM);

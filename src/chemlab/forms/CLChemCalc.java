@@ -19,8 +19,7 @@ package chemlab.forms;
 
 import bslib.common.FramesHelper;
 import chemlab.core.chemical.ChemUnits;
-import chemlab.core.chemical.InputParams;
-import chemlab.core.chemical.StoichiometricSolver;
+import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.Substance;
 import chemlab.core.controls.MeasureBox;
 import java.awt.BorderLayout;
@@ -63,9 +62,9 @@ public class CLChemCalc extends JDialog
         Pressure, Volume, Temperature, Density
     }
     
-    private final Substance fSubstance;
-    private InputParams fParams;
-    private final boolean fIsInputSubst;
+    private Substance fSubstance;
+    private StoicParams fParams;
+    private boolean fIsInputSubst;
     private GasOutputCalc GasOutput;
 
     private final JPanel panHeader;
@@ -103,20 +102,15 @@ public class CLChemCalc extends JDialog
     private final JRadioButton rbSelTemp;
     private final JRadioButton rbSelDensity;
     
-    public CLChemCalc(Frame owner, Substance substance, boolean start)
+    public CLChemCalc(Frame owner)
     {
         super(owner, true);
 
-        this.fSubstance = substance;
-        this.fIsInputSubst = start;
+        //this.fSubstance = substance;
+        //this.fIsInputSubst = start;
         
-        this.fParams = (InputParams) substance.ExtData;
-        if (this.fParams == null) {
-            this.fParams = new InputParams();
-            substance.ExtData = this.fParams;
-        }
-
-        this.fParams.Type = (start) ? InputParams.ParamType.Input : InputParams.ParamType.Output;
+        //this.fParams = substance.getStoicParams();
+        //this.fParams.Type = (start) ? StoicParams.ParamType.Input : StoicParams.ParamType.Output;
         
         this.setLayout(new BorderLayout());
 
@@ -399,7 +393,7 @@ public class CLChemCalc extends JDialog
         this.add(panFooter, BorderLayout.SOUTH);
 
         JButton btnDone = new JButton();
-        btnDone.setText("Принять");
+        btnDone.setText("Расчет");
         btnDone.setPreferredSize(new Dimension(100, 30));
         panFooter.add(btnDone);
 
@@ -414,12 +408,12 @@ public class CLChemCalc extends JDialog
         ///
         
         cmbPhase.addActionListener((ActionEvent e) -> {
-            this.fSubstance.State = StoichiometricSolver.getState((String) cmbPhase.getSelectedItem());
+            //this.fSubstance.State = StoichiometricSolver.getState((String) cmbPhase.getSelectedItem());
 
             cardLayout.show(panMain, (String) cmbPhase.getSelectedItem());
             updateControls();
             
-            switch (this.fSubstance.State) {
+            /*switch (this.fSubstance.State) {
                 case Solid:
                     //units.setEnabled(true);
                     break;
@@ -431,14 +425,14 @@ public class CLChemCalc extends JDialog
                 case Gas:
                     //units.setEnabled(false);
                     break;
-            }
+            }*/
         });
 
         btnDone.addActionListener((ActionEvent e) -> {
             double result;
 
             try {
-                InputParams.InputMode mode = this.fParams.Mode;
+                StoicParams.InputMode mode = this.fParams.Mode;
                 
                 switch (mode) {
                     case imSolid_M: // only in
@@ -447,10 +441,10 @@ public class CLChemCalc extends JDialog
                     
                     case imSolid_V_D:
                         this.fParams.Density = (Measure<Double, VolumetricDensity>) txtDensity.getMeasure();
-                        if (this.fIsInputSubst) {
+                        /*if (this.fIsInputSubst) {
                             this.fParams.Volume = (Measure<Double, Volume>) txtVolume.getMeasure();
                         } else {
-                        }
+                        }*/
                         break;
 
                     case imLiquid_M: // in/out
@@ -526,7 +520,7 @@ public class CLChemCalc extends JDialog
                         txtVolume.setEnabled(!isSel);
                         txtDensity.setEnabled(!isSel);
                         
-                        this.fParams.Mode = InputParams.InputMode.imSolid_M;
+                        this.fParams.Mode = StoicParams.InputMode.imSolid_M;
                     });
 
                     rbSolidByVD.addActionListener((ActionEvent ae) -> {
@@ -535,7 +529,7 @@ public class CLChemCalc extends JDialog
                         txtVolume.setEnabled(isSel);
                         txtDensity.setEnabled(isSel);
                         
-                        this.fParams.Mode = InputParams.InputMode.imSolid_V_D;
+                        this.fParams.Mode = StoicParams.InputMode.imSolid_V_D;
                     });
                     break;
 
@@ -552,7 +546,7 @@ public class CLChemCalc extends JDialog
                         txtMP.setEnabled(!isSel);
                         txtLiqDensity.setEnabled(!isSel);
                         
-                        this.fParams.Mode = InputParams.InputMode.imLiquid_M;
+                        this.fParams.Mode = StoicParams.InputMode.imLiquid_M;
                     });
 
                     rbLiquidByMP.addActionListener((ActionEvent ae) -> {
@@ -561,7 +555,7 @@ public class CLChemCalc extends JDialog
                         txtMP.setEnabled(isSel);
                         txtLiqDensity.setEnabled(isSel);
                         
-                        this.fParams.Mode = InputParams.InputMode.imLiquid_MP_D;
+                        this.fParams.Mode = StoicParams.InputMode.imLiquid_MP_D;
                     });
                     break;
 
@@ -586,7 +580,7 @@ public class CLChemCalc extends JDialog
                         txtGasTemperature.setEnabled(!isSel);
                     });
                     
-                    this.fParams.Mode = InputParams.InputMode.imGas_In;
+                    this.fParams.Mode = StoicParams.InputMode.imGas_In;
                     break;
             }
         } else {
@@ -598,7 +592,7 @@ public class CLChemCalc extends JDialog
                     txtVolume.setEnabled(false);
                     txtDensity.setEnabled(true); // input
                     
-                    this.fParams.Mode = InputParams.InputMode.imSolid_V_D;
+                    this.fParams.Mode = StoicParams.InputMode.imSolid_V_D;
                     break;
 
                 case Liquid:
@@ -608,7 +602,7 @@ public class CLChemCalc extends JDialog
                     txtMP.setEnabled(false);
                     txtLiqDensity.setEnabled(false);
                     
-                    this.fParams.Mode = InputParams.InputMode.imLiquid_M;
+                    this.fParams.Mode = StoicParams.InputMode.imLiquid_M;
                     break;
 
                 case Gas:
@@ -621,7 +615,7 @@ public class CLChemCalc extends JDialog
                     rbSelTemp.setEnabled(true);
                     rbSelDensity.setEnabled(true);
                     
-                    this.fParams.Mode = InputParams.InputMode.imGas_Out;
+                    this.fParams.Mode = StoicParams.InputMode.imGas_Out;
                     
                     rbSelPressure.addActionListener((ActionEvent ae) -> {
                         if (rbSelPressure.isSelected()) {
