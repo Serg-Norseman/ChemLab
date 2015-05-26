@@ -18,6 +18,8 @@
 package chemlab.core.controls.experiment;
 
 import bslib.common.AuxUtils;
+import bslib.common.Point;
+import java.util.ArrayList;
 
 /**
  *
@@ -26,36 +28,41 @@ import bslib.common.AuxUtils;
  */
 public class ClingHelper
 {
-    private static boolean isClingCompatibility(LabDevice dev1, LabDevice dev2)
+    private static final int CLING_OFFSET = 10;
+    
+    private enum SimpleCling { Above, Below, Left, Right };
+    
+    private static boolean isClingCompatibility(LabDevice dev1, LabDevice dev2, SimpleCling cling)
     {
-        DeviceType type1 = dev1.getID().Type;
-        DeviceClingSet clings1 = dev1.getID().Cling;
-        DeviceType type2 = dev2.getID().Type;
-        DeviceClingSet clings2 = dev2.getID().Cling;
+        DeviceClingSet testClings = new DeviceClingSet();
         
-        switch (type1) {
+        switch (dev1.getID().Type) {
             case Container:
+                if (cling == SimpleCling.Above) testClings.include(DeviceCling.ContainerAbove);
+                if (cling == SimpleCling.Below) testClings.include(DeviceCling.ContainerBelow);
+                if (cling == SimpleCling.Left) testClings.include(DeviceCling.ContainerLeft);
+                if (cling == SimpleCling.Right) testClings.include(DeviceCling.ContainerRight);
                 break;
             
             case Heater:
+                if (cling == SimpleCling.Below) testClings.include(DeviceCling.HeaterBelow);
                 break;
             
             case Meter:
+                if (cling == SimpleCling.Below) testClings.include(DeviceCling.MeterBelow);
                 break;
 
             case Connector:
                 break;
         }
         
-        return false;
+        return (testClings.hasIntersect(dev2.getID().Cling));
     }
     
-    private static final int CLING_OFFSET = 10;
-    
-    public enum SimpleCling { Above, Below, Left, Right };
-    
-    public static SimpleCling isNear(LabDevice dev1, int nX, int nY, LabDevice dev2)
+    private static SimpleCling isNear(LabDevice dev1, int nX, int nY, LabDevice dev2)
     {
+        SimpleCling result = null;
+        
         int d1right = nX + dev1.getWidth() - 1;
         int d1bottom = nY + dev1.getHeight() - 1;
         int cX = (nX + d1right) / 2;
@@ -63,25 +70,78 @@ public class ClingHelper
         
         int offset = Math.abs(d1bottom - dev2.getTop());
         if (offset < CLING_OFFSET && AuxUtils.isValueBetween(cX, dev2.getLeft(), dev2.getRight(), true)) {
-            return SimpleCling.Above;
+            result = SimpleCling.Above;
         }
         
         offset = Math.abs(nY - dev2.getBottom());
         if (offset < CLING_OFFSET && AuxUtils.isValueBetween(cX, dev2.getLeft(), dev2.getRight(), true)) {
-            return SimpleCling.Below;
+            result = SimpleCling.Below;
         }
         
         offset = Math.abs(d1right - dev2.getLeft());
         if (offset < CLING_OFFSET && AuxUtils.isValueBetween(cY, dev2.getTop(), dev2.getBottom(), true)) {
-            return SimpleCling.Left;
+            result = SimpleCling.Left;
         }
         
         offset = Math.abs(nX - dev2.getRight());
         if (offset < CLING_OFFSET && AuxUtils.isValueBetween(cY, dev2.getTop(), dev2.getBottom(), true)) {
-            return SimpleCling.Right;
+            result = SimpleCling.Right;
+        }
+        
+        if (!isClingCompatibility(dev1, dev2, result)) {
+            return null;
+        }
+        
+        return result;
+    }
+
+    public static Point canCling(LabDevice dev, int nX, int nY, LabDevice dev2)
+    {
+        DeviceClingSet itClings = dev.getID().Cling;
+        if (itClings.isEmpty()) {
+            return null;
+        }
+        
+        SimpleCling sc = isNear(dev, nX, nY, dev2);
+        if (sc != null) {
+            int dw = (dev.getWidth() - dev2.getWidth()) / 2;
+            int dh = (dev.getHeight() - dev2.getHeight()) / 2;
+
+            switch (sc) {
+                case Above:
+                    return new Point(dev2.getLeft() - dw, dev2.getTop() - dev.getHeight());
+
+                case Below:
+                    return new Point(dev2.getLeft() - dw, dev2.getBottom() + 1);
+
+                case Left:
+                    return new Point(dev2.getLeft() - dev.getWidth(), dev2.getTop() - dh);
+
+                case Right:
+                    return new Point(dev2.getRight() + 1, dev2.getTop() - dh);
+            }
         }
         
         return null;
     }
-    
+
+    public static Point canCling(ArrayList<LabDevice> devices, LabDevice dev, int nX, int nY)
+    {
+        DeviceClingSet itClings = dev.getID().Cling;
+        if (itClings.isEmpty()) {
+            return null;
+        }
+        
+        for (LabDevice device : devices) {
+            if (!device.equals(dev)) {
+                Point res = canCling(dev, nX, nY, device);
+                
+                if (res != null) {
+                    return res;
+                }
+            }
+        }
+        
+        return null;
+    }    
 }

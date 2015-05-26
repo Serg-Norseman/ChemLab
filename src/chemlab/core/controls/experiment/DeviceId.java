@@ -24,19 +24,19 @@ package chemlab.core.controls.experiment;
  */
 public enum DeviceId
 {
-    dev_Beaker_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow)),
-    dev_Beaker_250(DeviceType.Container, 250, 75, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow)),
-    dev_Beaker_600(DeviceType.Container, 600, 85, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow)),
-    dev_Conical_Flask_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow)),
-    dev_Conical_Flask_250(DeviceType.Container, 250, 75, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow)),
-    dev_Roundbottom_Flask_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow)),
-    dev_TestTube_50(DeviceType.Container, 50, 20, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow)),
+    dev_Beaker_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow, DeviceCling.ContainerAbove)),
+    dev_Beaker_250(DeviceType.Container, 250, 75, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow, DeviceCling.ContainerAbove)),
+    dev_Beaker_600(DeviceType.Container, 600, 85, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow, DeviceCling.ContainerAbove)),
+    dev_Conical_Flask_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow, DeviceCling.ContainerAbove)),
+    dev_Conical_Flask_250(DeviceType.Container, 250, 75, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow, DeviceCling.ContainerAbove)),
+    dev_Roundbottom_Flask_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow, DeviceCling.ContainerAbove)),
+    dev_TestTube_50(DeviceType.Container, 50, 20, 1, new DeviceClingSet(DeviceCling.HeaterBelow, DeviceCling.MeterBelow, DeviceCling.ContainerAbove)),
     dev_Bunsen_Burner(DeviceType.Heater, 0, 0, 5, new DeviceClingSet(DeviceCling.ContainerAbove)),
-    dev_Buret_10(DeviceType.Container, 10, 20, 1, new DeviceClingSet(DeviceCling.ContainerBelow)),
-    dev_Buret_50(DeviceType.Container, 50, 50, 1, new DeviceClingSet(DeviceCling.ContainerBelow)),
+    dev_Buret_10(DeviceType.Container, 10, 20, 1, new DeviceClingSet(DeviceCling.ContainerBelow, DeviceCling.ContainerAbove)),
+    dev_Buret_50(DeviceType.Container, 50, 50, 1, new DeviceClingSet(DeviceCling.ContainerBelow, DeviceCling.ContainerAbove)),
     dev_Electronic_Balance_250(DeviceType.Meter, 250, 0, 1, new DeviceClingSet(DeviceCling.ContainerAbove)),
-    dev_Graduated_Cylinder_10(DeviceType.Container, 10, 20, 1, new DeviceClingSet()),
-    dev_Graduated_Cylinder_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet()),
+    dev_Graduated_Cylinder_10(DeviceType.Container, 10, 20, 1, new DeviceClingSet(DeviceCling.ContainerAbove)),
+    dev_Graduated_Cylinder_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet(DeviceCling.ContainerAbove)),
     dev_Heater(DeviceType.Heater, 0, 0, 1, new DeviceClingSet(DeviceCling.ContainerAbove));
 
     public final DeviceType Type;

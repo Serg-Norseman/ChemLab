@@ -21,7 +21,6 @@ import bslib.common.AuxUtils;
 import bslib.common.BaseObject;
 import bslib.common.Bitmap;
 import bslib.common.ImageHelper;
-import bslib.common.Rect;
 import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.Substance;
@@ -73,6 +72,8 @@ public class LabDevice extends BaseObject
     
     private final ArrayList<IDeviceEffect> fEffects;
     private boolean fBoiling;
+    
+    private final ArrayList<Connection> fConnections;
 
     public final int getLeft()
     {
@@ -114,10 +115,10 @@ public class LabDevice extends BaseObject
         return this.fLeft + this.fWidth - 1;
     }
 
-    public final Rect getRect()
+    /*public final Rect getRect()
     {
         return new Rect(fLeft, fTop, this.fLeft + this.fWidth - 1, this.fTop + this.fHeight - 1);
-    }
+    }*/
     
     public LabDevice(ExperimentMaster owner, int x, int y, DeviceId deviceId)
     {
@@ -125,6 +126,7 @@ public class LabDevice extends BaseObject
         this.fSubstances = new ArrayList<>();
         this.fReactionMaster = new ReactionSolver();
 
+        this.fConnections = new ArrayList<>();
         this.fEffects = new ArrayList<>();
         
         this.fActive = false;
@@ -254,11 +256,29 @@ public class LabDevice extends BaseObject
 
     public final float getTemperature()
     {
+        if (this.FID.Type == DeviceType.Heater && this.fActive) {
+            if (this.FID == DeviceId.dev_Bunsen_Burner) {
+                // Methane, t=2043 °С
+                return 2043.0f;
+            } else if (this.FID == DeviceId.dev_Heater) {
+                // controllable temperature
+            }
+        }
+        
         return 0f;
     }
 
     public final void setTemperature(float value)
     {
+    }
+
+    /**
+     * Returns the temperature that this might add/substract from the chemical
+     * inside it (for Condensers).
+     */
+    public float getTemperatureDifference()
+    {
+        return 0.0f;
     }
 
     public final float getPressure()

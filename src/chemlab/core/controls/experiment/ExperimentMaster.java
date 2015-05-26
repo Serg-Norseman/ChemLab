@@ -49,6 +49,8 @@ import javax.swing.Timer;
  */
 public class ExperimentMaster extends EditorControl implements ActionListener
 {
+    private static final boolean DEBUG = true;
+    
     private LabDevice fCurrentDev;
     private LabDevice fMenuDev;
     
@@ -61,6 +63,7 @@ public class ExperimentMaster extends EditorControl implements ActionListener
     private Date fBegTime = new Date(0);
     private Date fCurTime = new Date(0);
     private Date fEndTime = new Date(0);
+    private String fDebugInfo;
 
     private final Timer fTimer;
     private final JPopupMenu fDeviceMenu;
@@ -297,6 +300,10 @@ public class ExperimentMaster extends EditorControl implements ActionListener
             }
 
             g.drawImage(this.fBuffer, 0, 0, null);
+            
+            if (DEBUG) {
+                g.drawString(this.fDebugInfo, 10, 10);
+            }
         } catch (Exception ex) {
             Logger.write("ExperimentMaster.OnPaint(): " + ex.getMessage());
         }
@@ -328,8 +335,10 @@ public class ExperimentMaster extends EditorControl implements ActionListener
     {
         this.fCurrentDev = this.getDeviceByCoord(e.getX(), e.getY());
         if (this.fCurrentDev != null && e.getButton() == MouseEvent.BUTTON1) {
-            this.FX = e.getX();
-            this.FY = e.getY();
+            // don't change this two lines
+            this.FX = e.getX() - this.fCurrentDev.getLeft();
+            this.FY = e.getY() - this.fCurrentDev.getTop();
+
             this.invalidate();
         }
     }
@@ -360,55 +369,18 @@ public class ExperimentMaster extends EditorControl implements ActionListener
             this.fCurrentDev = null;
         }
     }
-
-    private Point canCling(LabDevice dev, int nX, int nY)
-    {
-        DeviceClingSet itClings = dev.getID().Cling;
-        if (itClings.isEmpty()) {
-            return null;
-        }
-        
-        for (LabDevice device : this.fDevices) {
-            if (!device.equals(dev)) {
-                ClingHelper.SimpleCling sc = ClingHelper.isNear(dev, nX, nY, device);
-                
-                if (sc != null) {
-                    int dw = (dev.getWidth() - device.getWidth()) / 2;
-                    int dh = (dev.getHeight() - device.getHeight()) / 2;
-                    
-                    switch (sc) {
-                        case Above:
-                            return new Point(device.getLeft() - dw, device.getTop() - dev.getHeight());
-
-                        case Below:
-                            return new Point(device.getLeft() - dw, device.getBottom() + 1);
-
-                        case Left:
-                            return new Point(device.getLeft() - dev.getWidth(), device.getTop() - dh);
-                            
-                        case Right:
-                            return new Point(device.getRight() + 1, device.getTop() - dh);
-                    }
-                }
-            }
-        }
-        
-        return null;
-    }
     
     protected void onMouseDrag(MouseEvent e)
     {
         //if (e.getButton() == MouseEvent.BUTTON1) {
             if (this.fCurrentDev != null) {
                 if (this.FX != -1 || this.FY != -1) {
-                    int dx = (e.getX() - this.FX);
-                    int dy = (e.getY() - this.FY);
-                    
-                    int nX = this.fCurrentDev.getLeft() + dx;
-                    int nY = this.fCurrentDev.getTop() + dy;
+                    // don't change this two lines
+                    int nX = (e.getX() - this.FX);
+                    int nY = (e.getY() - this.FY);
                     
                     if (this.canBeDrag(this.fCurrentDev, nX, nY)) {
-                        Point refPoint = canCling(this.fCurrentDev, nX, nY);
+                        Point refPoint = ClingHelper.canCling(this.fDevices, this.fCurrentDev, nX, nY);
                         if (refPoint != null) {
                             nX = refPoint.X;
                             nY = refPoint.Y;
@@ -416,12 +388,13 @@ public class ExperimentMaster extends EditorControl implements ActionListener
 
                         this.fCurrentDev.setLeft(nX);
                         this.fCurrentDev.setTop(nY);
+
                         this.repaint();
                     }
                 }
                 
-                this.FX = e.getX();
-                this.FY = e.getY();
+                //this.FX = e.getX();
+                //this.FY = e.getY();
             }
         //}
     }

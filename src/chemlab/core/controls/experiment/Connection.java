@@ -22,11 +22,14 @@ package chemlab.core.controls.experiment;
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public enum DeviceType
+public final class Connection
 {
-    Container,
-    Heater,
-    Meter,
-    Connector,
-    Condenser
+    public final DeviceCling Cling;
+    public final LabDevice Target;
+    
+    public Connection(DeviceCling cling, LabDevice target)
+    {
+        this.Cling = cling;
+        this.Target = target;
+    }
 }
