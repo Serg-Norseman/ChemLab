@@ -1,12 +1,32 @@
+/*
+ *  "ChemLab", Desktop helper application for chemists.
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package chemlab.core.controls.experiment;
 
 import bslib.common.AuxUtils;
 import bslib.common.BaseObject;
 import bslib.common.Bitmap;
 import bslib.common.ImageHelper;
+import bslib.common.Rect;
 import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.Substance;
+import chemlab.core.controls.experiment.effects.BoilingEffect;
+import chemlab.core.controls.experiment.effects.IDeviceEffect;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,6 +34,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Serg V. Zhdanovskih
+ * @since 0.5.0
+ */
 public class LabDevice extends BaseObject
 {
     private final ExperimentMaster fExpMaster;
@@ -46,7 +71,7 @@ public class LabDevice extends BaseObject
     private int TickScale = 5;
     private int Ticks;
     
-    private final ArrayList<IDeviceProcess> fProcesses;
+    private final ArrayList<IDeviceEffect> fEffects;
     private boolean fBoiling;
 
     public final int getLeft()
@@ -79,13 +104,28 @@ public class LabDevice extends BaseObject
         return this.fWidth;
     }
 
+    public final int getBottom()
+    {
+        return this.fTop + this.fHeight - 1;
+    }
+
+    public final int getRight()
+    {
+        return this.fLeft + this.fWidth - 1;
+    }
+
+    public final Rect getRect()
+    {
+        return new Rect(fLeft, fTop, this.fLeft + this.fWidth - 1, this.fTop + this.fHeight - 1);
+    }
+    
     public LabDevice(ExperimentMaster owner, int x, int y, DeviceId deviceId)
     {
         this.fExpMaster = owner;
         this.fSubstances = new ArrayList<>();
         this.fReactionMaster = new ReactionSolver();
 
-        this.fProcesses = new ArrayList<>();
+        this.fEffects = new ArrayList<>();
         
         this.fActive = false;
         this.fFrameIndex = 0;
@@ -125,7 +165,7 @@ public class LabDevice extends BaseObject
         this.FID = value;
         this.fRecord = CLData.Devices.get(this.FID.getValue());
         this.fActive = false;
-        this.fFrames = this.fRecord.Frames;
+        this.fFrames = this.FID.Frames;
 
         String dev = this.FID.toString().toUpperCase();
         String Int = "INT_" + dev.substring(0, 0) + dev.substring(0 + 4);
@@ -197,8 +237,8 @@ public class LabDevice extends BaseObject
             }
         }
         
-        for (IDeviceProcess process : this.fProcesses) {
-            process.doStep();
+        for (IDeviceEffect effect : this.fEffects) {
+            effect.doStep();
         }
     }
 
@@ -209,7 +249,7 @@ public class LabDevice extends BaseObject
 
     public final short getRealVolume()
     {
-        return this.fRecord.RealVolume;
+        return this.FID.RealVolume;
     }
 
     public final float getTemperature()
@@ -389,17 +429,21 @@ public class LabDevice extends BaseObject
 
     public final void paint(Graphics2D deskCanvas)
     {
-        //Bitmap intImage = new Bitmap(this.fWidth, this.fHeight);
-        //Graphics intCanvas = intImage.getGraphics();
+        Bitmap intImage = new Bitmap(this.fWidth, this.fHeight);
+        Graphics2D intCanvas = (Graphics2D) intImage.getGraphics();
 
         if (this.isContainer() && this.getSubstancesMass() > 0.0f) {
-            deskCanvas.drawImage(this.fContentsImage, this.getLeft(), this.getTop(), null);
+            //deskCanvas.drawImage(this.fContentsImage, this.getLeft(), this.getTop(), null);
+            intCanvas.drawImage(this.fContentsImage, 0, 0, null);
         }
 
-        for (IDeviceProcess process : this.fProcesses) {
-            process.draw(deskCanvas);
+        intCanvas.setXORMode(Color.black);
+        for (IDeviceEffect effect : this.fEffects) {
+            effect.draw(intCanvas);
         }
+        intCanvas.setPaintMode();
 
+        deskCanvas.drawImage(intImage, this.getLeft(), this.getTop(), null);
         deskCanvas.drawImage(this.fDevImages[this.fFrameIndex], this.getLeft(), this.getTop(), null);
 
         if (this.fFocused) {
@@ -468,18 +512,30 @@ public class LabDevice extends BaseObject
     
     public final void setBoiling(boolean value)
     {
+        if (this.fBoiling == value) {
+            return;
+        }
+
         this.fBoiling = value;
+
         if (value) {
-            IDeviceProcess process = new DeviceBoiling();
-            process.init(this);
-            this.fProcesses.add(process);
+            IDeviceEffect effect = new BoilingEffect();
+            effect.init(this);
+            this.fEffects.add(effect);
         } else {
-            for (IDeviceProcess process : this.fProcesses) {
-                if (process instanceof DeviceBoiling) {
-                    this.fProcesses.remove(process);
+            for (IDeviceEffect effect : this.fEffects) {
+                if (effect instanceof BoilingEffect) {
+                    this.fEffects.remove(effect);
                     break;
                 }
             }
         }
+    }
+    
+    public final boolean canCling(LabDevice target)
+    {
+        boolean result = false;
+        
+        return result;
     }
 }

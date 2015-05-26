@@ -9,6 +9,10 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.2.0
+ */
 public final class CLElementViewer extends JFrame
 {
     private VirtualTable lvElement;

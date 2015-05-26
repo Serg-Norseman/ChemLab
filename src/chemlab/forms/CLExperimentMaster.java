@@ -24,6 +24,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.5.0
+ */
 public final class CLExperimentMaster extends JFrame implements ActionListener
 {
     private JMenuBar MainMenu;

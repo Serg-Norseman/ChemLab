@@ -1,6 +1,6 @@
 /*
  *  "ChemLab", Desktop helper application for chemists.
- *  Copyright (C) 1996-2001 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.controls.experiment;
+package chemlab.core.controls.experiment.effects;
 
+import chemlab.core.controls.experiment.LabDevice;
 import java.awt.Graphics2D;
 
 /**
@@ -24,7 +25,7 @@ import java.awt.Graphics2D;
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public interface IDeviceProcess
+public interface IDeviceEffect
 {
     void doStep();
     void draw(Graphics2D g);

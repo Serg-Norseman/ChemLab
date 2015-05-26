@@ -1,5 +1,9 @@
 package chemlab.forms;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.6.0
+ */
 public class ComboItem
 {
     public String Caption;

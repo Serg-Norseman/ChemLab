@@ -16,6 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.1.0
+ */
 public final class CLCompoundMaster extends JFrame implements ActionListener
 {
     private JLabel Label1;

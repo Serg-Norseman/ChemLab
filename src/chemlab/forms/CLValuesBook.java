@@ -18,6 +18,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.5.0
+ */
 public final class CLValuesBook extends JFrame implements ActionListener
 {
     private JSplitPane splitPane;

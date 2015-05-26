@@ -7,6 +7,10 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.2.0
+ */
 public final class CLDecayViewer extends JFrame
 {
     private final DecayViewer fDecayViewer;

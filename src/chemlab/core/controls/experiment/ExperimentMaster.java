@@ -1,7 +1,25 @@
+/*
+ *  "ChemLab", Desktop helper application for chemists.
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package chemlab.core.controls.experiment;
 
 import bslib.common.Bitmap;
 import bslib.common.Logger;
+import bslib.common.Point;
 import bslib.common.StringHelper;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
@@ -24,6 +42,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
+/**
+ *
+ * @author Serg V. Zhdanovskih
+ * @since 0.5.0
+ */
 public class ExperimentMaster extends EditorControl implements ActionListener
 {
     private LabDevice fCurrentDev;
@@ -315,8 +338,8 @@ public class ExperimentMaster extends EditorControl implements ActionListener
     {
         if (this.fCurrentDev != null) {
             if (e.getButton() == MouseEvent.BUTTON1) {
-                this.FX = 0;
-                this.FY = 0;
+                this.FX = -1;
+                this.FY = -1;
             } else if (e.getButton() == MouseEvent.BUTTON3) {
                 this.fMenuDev = this.fCurrentDev;
 
@@ -338,19 +361,67 @@ public class ExperimentMaster extends EditorControl implements ActionListener
         }
     }
 
+    private Point canCling(LabDevice dev, int nX, int nY)
+    {
+        DeviceClingSet itClings = dev.getID().Cling;
+        if (itClings.isEmpty()) {
+            return null;
+        }
+        
+        for (LabDevice device : this.fDevices) {
+            if (!device.equals(dev)) {
+                ClingHelper.SimpleCling sc = ClingHelper.isNear(dev, nX, nY, device);
+                
+                if (sc != null) {
+                    int dw = (dev.getWidth() - device.getWidth()) / 2;
+                    int dh = (dev.getHeight() - device.getHeight()) / 2;
+                    
+                    switch (sc) {
+                        case Above:
+                            return new Point(device.getLeft() - dw, device.getTop() - dev.getHeight());
+
+                        case Below:
+                            return new Point(device.getLeft() - dw, device.getBottom() + 1);
+
+                        case Left:
+                            return new Point(device.getLeft() - dev.getWidth(), device.getTop() - dh);
+                            
+                        case Right:
+                            return new Point(device.getRight() + 1, device.getTop() - dh);
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+    
     protected void onMouseDrag(MouseEvent e)
     {
         //if (e.getButton() == MouseEvent.BUTTON1) {
             if (this.fCurrentDev != null) {
-                if (this.FX != 0 || this.FY != 0) {
-                    if (this.canBeDrag(this.fCurrentDev, this.fCurrentDev.getLeft() + (e.getX() - this.FX), this.fCurrentDev.getTop() + (e.getY() - this.FY))) {
-                        this.fCurrentDev.setLeft(this.fCurrentDev.getLeft() + (e.getX() - this.FX));
-                        this.fCurrentDev.setTop(this.fCurrentDev.getTop() + (e.getY() - this.FY));
-                        this.FX = e.getX();
-                        this.FY = e.getY();
+                if (this.FX != -1 || this.FY != -1) {
+                    int dx = (e.getX() - this.FX);
+                    int dy = (e.getY() - this.FY);
+                    
+                    int nX = this.fCurrentDev.getLeft() + dx;
+                    int nY = this.fCurrentDev.getTop() + dy;
+                    
+                    if (this.canBeDrag(this.fCurrentDev, nX, nY)) {
+                        Point refPoint = canCling(this.fCurrentDev, nX, nY);
+                        if (refPoint != null) {
+                            nX = refPoint.X;
+                            nY = refPoint.Y;
+                        }
+
+                        this.fCurrentDev.setLeft(nX);
+                        this.fCurrentDev.setTop(nY);
                         this.repaint();
                     }
                 }
+                
+                this.FX = e.getX();
+                this.FY = e.getY();
             }
         //}
     }

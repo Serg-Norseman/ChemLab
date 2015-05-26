@@ -180,10 +180,6 @@ public class CLData
                 DeviceRecord decRec = new DeviceRecord();
 
                 decRec.Name = el.getAttribute("Name");
-                decRec.RealVolume = (short) AuxUtils.ParseInt(el.getAttribute("RealVolume"), 0);
-                decRec.RealMass = (short) AuxUtils.ParseInt(el.getAttribute("RealMass"), 0);
-                decRec.Frames = (int) AuxUtils.ParseInt(el.getAttribute("Frames"), 1);
-                decRec.Cling.parse(el.getAttribute("Cling"), true);
 
                 Devices.add(decRec);
 

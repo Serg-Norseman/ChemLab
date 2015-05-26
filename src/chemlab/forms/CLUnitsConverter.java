@@ -16,6 +16,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.5.0
+ */
 public class CLUnitsConverter extends JFrame implements ActionListener
 {
     MeasureBox srcPanel, targetPanel;

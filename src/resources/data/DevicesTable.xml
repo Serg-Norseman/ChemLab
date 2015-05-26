@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <devices>
-  <device ID="0" Name="Стакан (100 мл)" RealVolume="100" RealMass="50" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Стакан (250 мл)" RealVolume="250" RealMass="75" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Стакан (600 мл)" RealVolume="600" RealMass="85" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Коническая колба (100 мл)" RealVolume="100" RealMass="50" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Коническая колба (250 мл)" RealVolume="250" RealMass="75" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Круглодонная колба (100 мл)" RealVolume="100" RealMass="50" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Пробирка (50 мл)" RealVolume="50" RealMass="20" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Горелка Бунзена" RealVolume="0" RealMass="0" Frames="5" Cling="[dcAbove]" />
-  <device ID="0" Name="Бюретка (10 мл)" RealVolume="10" RealMass="20" Frames="1" Cling="[]" />
-  <device ID="0" Name="Бюретка (50 мл)" RealVolume="50" RealMass="50" Frames="1" Cling="[]" />
-  <device ID="0" Name="Электронные весы (250 г)" RealVolume="250" RealMass="0" Frames="1" Cling="[dcAbove]" />
-  <device ID="0" Name="Градуированный цилиндр (10 мл)" RealVolume="10" RealMass="20" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Градуированный цилиндр (100 мл)" RealVolume="100" RealMass="50" Frames="1" Cling="[dcBelow]" />
-  <device ID="0" Name="Нагреватель" RealVolume="0" RealMass="0" Frames="1" Cling="[dcAbove]" />
+  <device ID="0" Name="Стакан (100 мл)" />
+  <device ID="0" Name="Стакан (250 мл)" />
+  <device ID="0" Name="Стакан (600 мл)" />
+  <device ID="0" Name="Коническая колба (100 мл)" />
+  <device ID="0" Name="Коническая колба (250 мл)" />
+  <device ID="0" Name="Круглодонная колба (100 мл)" />
+  <device ID="0" Name="Пробирка (50 мл)" />
+  <device ID="0" Name="Горелка Бунзена" />
+  <device ID="0" Name="Бюретка (10 мл)" />
+  <device ID="0" Name="Бюретка (50 мл)" />
+  <device ID="0" Name="Электронные весы (250 г)" />
+  <device ID="0" Name="Градуированный цилиндр (10 мл)" />
+  <device ID="0" Name="Градуированный цилиндр (100 мл)" />
+  <device ID="0" Name="Нагреватель" />
 </devices>

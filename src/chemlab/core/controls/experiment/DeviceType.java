@@ -1,6 +1,6 @@
 /*
  *  "ChemLab", Desktop helper application for chemists.
- *  Copyright (C) 1996-2001 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,5 +26,6 @@ public enum DeviceType
 {
     Container,
     Heater,
-    Meter
+    Meter,
+    Connector
 }

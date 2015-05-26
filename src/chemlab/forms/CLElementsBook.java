@@ -40,6 +40,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.1.0
+ */
 public final class CLElementsBook extends JFrame implements ActionListener
 {
     private JTabbedPane PageControl;

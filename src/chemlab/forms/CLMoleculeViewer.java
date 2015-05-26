@@ -21,6 +21,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
+/**
+ * @author Serg V. Zhdanovskih
+ * @since 0.4.0
+ */
 public final class CLMoleculeViewer extends JFrame implements ActionListener
 {
     private JMenuBar MainMenu;
