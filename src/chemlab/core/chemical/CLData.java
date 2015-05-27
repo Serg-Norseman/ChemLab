@@ -193,5 +193,6 @@ public class CLData
     private static void importExternalData()
     {
         // to future
+        // CompoundRecord compRec = CLData.CompoundsBook.checkCompound(formula);
     }
 }
