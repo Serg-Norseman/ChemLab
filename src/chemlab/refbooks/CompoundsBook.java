@@ -48,6 +48,7 @@ import org.w3c.dom.NodeList;
 public final class CompoundsBook extends RefBook
 {
     private static final String FILENAME = "/compounds.xml";
+    private static final String BACKNAME = "/compounds.bak";
     
     private final ArrayList<CompoundRecord> fList;
     private final HashMap<String, CompoundRecord> fMap;
@@ -131,9 +132,34 @@ public final class CompoundsBook extends RefBook
         element.setAttributeNode(formulaAttr);
     }
 
+    private static void backupFile(String oldName, String newName)
+    {
+        File oldFile = new File(oldName);
+        if (!oldFile.exists()) {
+            return;
+        }
+        
+        File newFile = new File(newName);
+        if (newFile.exists()) {
+            newFile.delete();
+        }
+
+        boolean success = oldFile.renameTo(newFile);
+        if (!success) {
+            // File was not successfully renamed
+        }
+    }
+    
     public void saveXML()
     {
         try {
+            String fileName = AuxUtils.getAppPath() + FILENAME;
+            String backupName = AuxUtils.getAppPath() + BACKNAME;
+            
+            // backup old file
+            backupFile(fileName, backupName);
+            
+            // saving
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -172,7 +198,7 @@ public final class CompoundsBook extends RefBook
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(AuxUtils.getAppPath() + FILENAME));
+            StreamResult result = new StreamResult(new File(fileName));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);

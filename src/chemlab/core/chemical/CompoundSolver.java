@@ -142,6 +142,11 @@ public class CompoundSolver extends BaseObject
         return this.fElements.size();
     }
 
+    public final boolean isElement()
+    {
+        return (this.fElements.size() == 1);
+    }
+
     private void analyseFormula(String formula, double index)
     {
         if (StringHelper.isNullOrEmpty(formula)) {

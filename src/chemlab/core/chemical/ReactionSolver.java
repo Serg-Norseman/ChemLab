@@ -5,6 +5,7 @@ import bslib.common.RefObject;
 import bslib.common.StringHelper;
 import bslib.math.DoubleHelper;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -168,7 +169,7 @@ public class ReactionSolver extends BaseObject
         this.clearSubstances();
 
         String equation = this.fEquation + "+"; // + final separator
-        SubstanceType rid = SubstanceType.Reagent;
+        SubstanceType rid = SubstanceType.Reactant;
         String cmp = "";
 
         int i = 0;
@@ -210,7 +211,7 @@ public class ReactionSolver extends BaseObject
             double substMass = subst.Factor * subst.getMolecularMass();
             
             switch (subst.Type) {
-                case Reagent:
+                case Reactant:
                     this.fSourceMass = (this.fSourceMass + substMass);
                     break;
                 case Product:
@@ -328,7 +329,7 @@ public class ReactionSolver extends BaseObject
                 Substance subst = this.getSubstance(i);
 
                 switch (subst.Type) {
-                    case Reagent:
+                    case Reactant:
                         this.fSM_Entropy = (this.fSM_Entropy - subst.Factor * subst.getSM_Entropy());
                         this.fSM_Enthalpy = (this.fSM_Enthalpy - subst.Factor * subst.getSMF_Enthalpy());
                         this.fdN = (this.fdN - subst.Factor);
@@ -356,5 +357,53 @@ public class ReactionSolver extends BaseObject
         } catch (Exception ex) {
 
         }
+    }
+
+    public final List<Substance> getReactants()
+    {
+        List<Substance> result = new ArrayList<>();
+        for (Substance subst : this.fSubstances) {
+            if (subst.Type == SubstanceType.Reactant) {
+                result.add(subst);
+            }
+        }
+        return result;
+    }
+
+    public final List<Substance> getProducts()
+    {
+        List<Substance> result = new ArrayList<>();
+        for (Substance subst : this.fSubstances) {
+            if (subst.Type == SubstanceType.Product) {
+                result.add(subst);
+            }
+        }
+        return result;
+    }
+
+    public final ReactionType getReactionType()
+    {
+        List<Substance> reactants = this.getReactants();
+
+        if (reactants.size() == 2) {
+            if (reactants.get(0).isElement() && reactants.get(1).isElement()) {
+                // 2 elements
+                return ReactionType.Synthesis;
+            } else if (reactants.get(0).isElement() && !reactants.get(1).isElement()
+                    || !reactants.get(0).isElement() && reactants.get(1).isElement()) {
+                // element + compound
+                return ReactionType.SingleReplacement;
+            } else if (!reactants.get(0).isElement() && !reactants.get(1).isElement()) {
+                // 2 compounds
+                return ReactionType.DoubleReplacement;
+            }
+        } else if (reactants.size() == 1) {
+            if (!reactants.get(0).isElement()) // 1 compound
+            {
+                return ReactionType.Decomposition;
+            }
+        }
+
+        return ReactionType.Unknown;
     }
 }

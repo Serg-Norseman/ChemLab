@@ -28,7 +28,7 @@ public class Substance extends CompoundSolver
 {
     public SubstanceRedoxType RedoxType = SubstanceRedoxType.Oxidant;
     public SubstanceState State = SubstanceState.Solid;
-    public SubstanceType Type = SubstanceType.Reagent;
+    public SubstanceType Type = SubstanceType.Reactant;
 
     private double FSM_Entropy;
     private double FSM_HeatCapacity;
@@ -56,7 +56,7 @@ public class Substance extends CompoundSolver
 
         this.RedoxType = SubstanceRedoxType.Oxidant;
         this.State = SubstanceState.Solid;
-        this.Type = SubstanceType.Reagent;
+        this.Type = SubstanceType.Reactant;
     }
 
     public final StoicParams getStoicParams()

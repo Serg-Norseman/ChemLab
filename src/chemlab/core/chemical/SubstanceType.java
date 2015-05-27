@@ -2,7 +2,7 @@ package chemlab.core.chemical;
 
 public enum SubstanceType
 {
-    Reagent,
+    Reactant,
     Product;
 
     public int getValue()

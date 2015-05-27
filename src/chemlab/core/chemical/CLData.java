@@ -116,6 +116,8 @@ public class CLData
         
         CompoundsBook = new CompoundsBook();
         CompoundsBook.loadXML();
+        
+        importExternalData();
     }
 
     public static void loadXML_Values(String fileName)
@@ -186,5 +188,10 @@ public class CLData
                 return 0;
             }
         });
+    }
+    
+    private static void importExternalData()
+    {
+        // to future
     }
 }

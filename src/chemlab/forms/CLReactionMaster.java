@@ -273,7 +273,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
                 String substType = "";
                 switch (substance.Type) {
-                    case Reagent:
+                    case Reactant:
                         substType = ChemUtils.rs_SubstReagent;
                         break;
                     case Product:
@@ -306,6 +306,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             this.tblCompounds.packColumns(10);
 
             this.tblProperties.clear();
+            this.addProperty("Тип реакции", this.fReactionMaster.getReactionType().name(), "");
             this.addProperty(ChemUtils.rs_ReagentsMass, CommonUtils.formatFloat(this.fReactionMaster.getSourceMass(), 5), "");
             this.addProperty(ChemUtils.rs_ProductsMass, CommonUtils.formatFloat(this.fReactionMaster.getProductMass(), 5), "");
             this.addProperty("dH° (298 K)", CommonUtils.formatFloat(this.fReactionMaster.getSM_Enthalpy(), 3), "кДж");
@@ -333,7 +334,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
                 String substType = "";
                 switch (substance.Type) {
-                    case Reagent:
+                    case Reactant:
                         substType = ChemUtils.rs_SubstReagent;
                         break;
                     case Product:
