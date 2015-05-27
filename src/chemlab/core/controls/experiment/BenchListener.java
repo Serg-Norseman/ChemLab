@@ -17,23 +17,12 @@
  */
 package chemlab.core.controls.experiment;
 
-import bslib.common.EnumSet;
-
 /**
  *
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public class DeviceClingSet extends EnumSet<DeviceCling>
+public interface BenchListener
 {
-    public DeviceClingSet(DeviceCling... args)
-    {
-        super(args);
-    }
-
-    @Override
-    protected void initTypeHandler()
-    {
-        this.fEnumTypeHandler = new EnumTypeHandler(DeviceCling.class);
-    }
+    public void deviceProperties(LabDevice device);
 }

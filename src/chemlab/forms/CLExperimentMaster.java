@@ -4,10 +4,11 @@ import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
 import bslib.common.StringHelper;
 import chemlab.core.chemical.CompoundSolver;
-import chemlab.core.controls.experiment.DevicesList;
-import chemlab.core.controls.experiment.ExperimentMaster;
+import chemlab.core.controls.experiment.BenchListener;
+import chemlab.core.controls.experiment.ExperimentBench;
 import chemlab.core.controls.experiment.LabDevice;
-import chemlab.core.controls.experiment.PanelDropTarget;
+import chemlab.core.controls.experiment.misc.BenchDropTarget;
+import chemlab.core.controls.experiment.misc.DevicesList;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -28,7 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Serg V. Zhdanovskih
  * @since 0.5.0
  */
-public final class CLExperimentMaster extends JFrame implements ActionListener
+public final class CLExperimentMaster extends JFrame implements ActionListener, BenchListener
 {
     private JMenuBar MainMenu;
     private JMenu miFile;
@@ -54,11 +55,11 @@ public final class CLExperimentMaster extends JFrame implements ActionListener
     private JFileChooser SaveDialog;
     private DevicesList ListDevices;
     private JSplitPane Splitter1;
-    private PanelDropTarget fPanelDropTarget;
+    private BenchDropTarget fPanelDropTarget;
 
     private String fFileName;
     private final CompoundSolver fCompoundMaster;
-    private ExperimentMaster fExperimentMaster;
+    private ExperimentBench fBench;
 
     public CLExperimentMaster()
     {
@@ -76,86 +77,6 @@ public final class CLExperimentMaster extends JFrame implements ActionListener
         this.SaveDialog.setCurrentDirectory(new File(AuxUtils.getAppPath()));
 
         this.fFileName = CommonUtils.UNTITLED_FILE;
-    }
-
-    /*private void onFormClosing(Object sender, CancelEventArgs e)
-     {
-     if (this.fExperimentMaster.Modified) {
-     int res = JOptionPane.showConfirmDialog(null, "Файл \"" + this.FFileName + "\" был изменен. Сохранить?", "", JOptionPane.YES_NO_CANCEL_OPTION);
-     if (res == JOptionPane.CANCEL_OPTION) {
-     e.Cancel = true;
-     return;
-     }
-     if (res == JOptionPane.YES_OPTION) {
-     this.SaveContents();
-     }
-     }
-     }*/
-    public void ExperimentMaster1Device(Object sender, LabDevice aDevice)
-    {
-        JOptionPane.showConfirmDialog(null, "G");
-    }
-
-    public void miLoadClick(Object sender)
-    {
-        if (this.OpenDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            this.fFileName = this.OpenDialog.getSelectedFile().getName();
-            this.fExperimentMaster.loadFromFile(this.fFileName);
-            this.InterfaceUpdate();
-        }
-    }
-
-    public void miSaveClick(Object sender)
-    {
-        if (StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE)) {
-            this.miSaveAsClick(this);
-        } else {
-            this.fExperimentMaster.saveToFile(this.fFileName);
-        }
-    }
-
-    public void miSaveAsClick(Object sender)
-    {
-        //this.SaveDialog.FileName = "";
-        if (this.SaveDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            this.fFileName = this.SaveDialog.getSelectedFile().getName();
-            this.miSaveClick(this);
-        }
-    }
-
-    public void miCloseClick(Object sender)
-    {
-        if (this.fExperimentMaster.Modified) {
-            int res = JOptionPane.showConfirmDialog(null, "Файл \"" + this.fFileName + "\" был изменен. Сохранить?", "", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (res == JOptionPane.YES_OPTION) {
-                this.SaveContents();
-            }
-        }
-    }
-
-    private void SaveContents()
-    {
-        if (StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE)) {
-            if ((!StringHelper.equals(this.fFileName, "")) && (!StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE))) {
-                String fileName = (new java.io.File(this.fFileName)).getName();
-                //this.SaveDialog.FileName = fileName;
-                //this.SaveDialog.InitialDirectory = (new java.io.File(this.FFileName)).getParent();
-            } else {
-                this.fFileName = "";
-                this.SaveDialog.setCurrentDirectory(new File(AuxUtils.getAppPath()));
-            }
-
-            if (this.SaveDialog.showSaveDialog(this) == JOptionPane.OK_OPTION) {
-                this.fFileName = this.SaveDialog.getSelectedFile().getName();
-            }
-        }
-
-        this.fExperimentMaster.saveToFile(this.fFileName);
-        this.fExperimentMaster.Modified = false;
-    }
-
-    private void InterfaceUpdate()
-    {
     }
 
     private void initializeComponents()
@@ -291,23 +212,104 @@ public final class CLExperimentMaster extends JFrame implements ActionListener
         this.miFileProperties.addActionListener(this);
         this.miFileProperties.setActionCommand("mi_FileProperties");
 
-        this.ListDevices.setLocation(0, 30);
-        this.ListDevices.setSize(100, 443);
         this.ListDevices.setMinimumSize(new Dimension(120, 100));
+        this.ListDevices.setPreferredSize(new Dimension(120, 100));
 
-        this.fExperimentMaster = new ExperimentMaster();
-        this.fExperimentMaster.setLocation(70, 30);
-        this.fExperimentMaster.setSize(596, 443);
-        this.fExperimentMaster.setActive(false);
-        this.fExperimentMaster.setMinimumSize(new Dimension(120, 100));
+        this.fBench = new ExperimentBench();
+        this.fBench.setActive(false);
+        this.fBench.setMinimumSize(new Dimension(120, 100));
+        this.fBench.setBenchListener(this);
         
-        this.fPanelDropTarget = new PanelDropTarget(this.fExperimentMaster);
+        this.fPanelDropTarget = new BenchDropTarget(this.fBench);
 
-        this.Splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, ListDevices, fExperimentMaster);
+        this.Splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, ListDevices, fBench);
         this.Splitter1.setOneTouchExpandable(true);
         this.Splitter1.setDividerLocation(120);
         this.Splitter1.setResizeWeight(0.2);
         this.add(this.Splitter1, BorderLayout.CENTER);
+    }
+
+    /*private void onFormClosing(Object sender, CancelEventArgs e)
+     {
+     if (this.fExperimentMaster.Modified) {
+     int res = JOptionPane.showConfirmDialog(null, "Файл \"" + this.FFileName + "\" был изменен. Сохранить?", "", JOptionPane.YES_NO_CANCEL_OPTION);
+     if (res == JOptionPane.CANCEL_OPTION) {
+     e.Cancel = true;
+     return;
+     }
+     if (res == JOptionPane.YES_OPTION) {
+     this.SaveContents();
+     }
+     }
+     }*/
+    @Override
+    public void deviceProperties(LabDevice device)
+    {
+        //JOptionPane.showConfirmDialog(null, "G");
+        CLDeviceProps devProps = new CLDeviceProps(this, device);
+        devProps.setVisible(true);
+    }
+
+    public void miLoadClick(Object sender)
+    {
+        if (this.OpenDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            this.fFileName = this.OpenDialog.getSelectedFile().getName();
+            this.fBench.loadFromFile(this.fFileName);
+            this.InterfaceUpdate();
+        }
+    }
+
+    public void miSaveClick(Object sender)
+    {
+        if (StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE)) {
+            this.miSaveAsClick(this);
+        } else {
+            this.fBench.saveToFile(this.fFileName);
+        }
+    }
+
+    public void miSaveAsClick(Object sender)
+    {
+        //this.SaveDialog.FileName = "";
+        if (this.SaveDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            this.fFileName = this.SaveDialog.getSelectedFile().getName();
+            this.miSaveClick(this);
+        }
+    }
+
+    public void miCloseClick(Object sender)
+    {
+        if (this.fBench.Modified) {
+            int res = JOptionPane.showConfirmDialog(null, "Файл \"" + this.fFileName + "\" был изменен. Сохранить?", "", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (res == JOptionPane.YES_OPTION) {
+                this.SaveContents();
+            }
+        }
+    }
+
+    private void SaveContents()
+    {
+        if (StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE)) {
+            if ((!StringHelper.equals(this.fFileName, "")) && (!StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE))) {
+                String fileName = (new java.io.File(this.fFileName)).getName();
+                //this.SaveDialog.FileName = fileName;
+                //this.SaveDialog.InitialDirectory = (new java.io.File(this.FFileName)).getParent();
+            } else {
+                this.fFileName = "";
+                this.SaveDialog.setCurrentDirectory(new File(AuxUtils.getAppPath()));
+            }
+
+            if (this.SaveDialog.showSaveDialog(this) == JOptionPane.OK_OPTION) {
+                this.fFileName = this.SaveDialog.getSelectedFile().getName();
+            }
+        }
+
+        this.fBench.saveToFile(this.fFileName);
+        this.fBench.Modified = false;
+    }
+
+    private void InterfaceUpdate()
+    {
     }
 
     @Override
@@ -319,7 +321,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener
         switch (actionPerformed) {
             case "ACTION_CREATE":
                 this.fFileName = CommonUtils.UNTITLED_FILE;
-                this.fExperimentMaster.clear();
+                this.fBench.clear();
                 break;
 
             case "ACTION_EXIT":

@@ -24,12 +24,12 @@ package chemlab.core.controls.experiment;
  */
 public final class Connection
 {
-    public final DeviceCling Cling;
-    public final LabDevice Target;
+    public final LabDevice Dev1;
+    public final LabDevice Dev2;
     
-    public Connection(DeviceCling cling, LabDevice target)
+    public Connection(LabDevice dev1, LabDevice dev2)
     {
-        this.Cling = cling;
-        this.Target = target;
+        this.Dev1 = dev1;
+        this.Dev2 = dev2;
     }
 }

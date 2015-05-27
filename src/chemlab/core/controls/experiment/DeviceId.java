@@ -17,6 +17,9 @@
  */
 package chemlab.core.controls.experiment;
 
+import chemlab.core.controls.experiment.misc.DeviceCling;
+import chemlab.core.controls.experiment.misc.DeviceClingSet;
+
 /**
  *
  * @author Serg V. Zhdanovskih

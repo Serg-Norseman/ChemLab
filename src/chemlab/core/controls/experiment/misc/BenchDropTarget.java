@@ -15,9 +15,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.controls.experiment;
+package chemlab.core.controls.experiment.misc;
 
 import chemlab.core.chemical.CLData;
+import chemlab.core.controls.experiment.DeviceId;
+import chemlab.core.controls.experiment.DeviceRecord;
+import chemlab.core.controls.experiment.ExperimentBench;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -36,14 +39,14 @@ import javax.swing.JPanel;
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public class PanelDropTarget implements DropTargetListener
+public final class BenchDropTarget implements DropTargetListener
 {
     protected JPanel pane;
     protected DropTarget dropTarget;
     protected boolean acceptableType; // Indicates whether data is acceptable
     protected DataFlavor targetFlavor; // Flavor to use for transfer
 
-    public PanelDropTarget(JPanel pane)
+    public BenchDropTarget(JPanel pane)
     {
         this.pane = pane;
 
@@ -108,7 +111,7 @@ public class PanelDropTarget implements DropTargetListener
     {
         Object data = transferable.getTransferData(targetFlavor);
         if (data instanceof String) {
-            ExperimentMaster master = (ExperimentMaster) this.pane;
+            ExperimentBench master = (ExperimentBench) this.pane;
             DeviceRecord dev = CLData.findDevice((String) data);
             int idx = CLData.Devices.indexOf(dev);
             DeviceId devId = DeviceId.forValue(idx);
@@ -150,13 +153,12 @@ public class PanelDropTarget implements DropTargetListener
     {
         // Only accept a flavor that returns a Component
         acceptableType = false;
-        DataFlavor[] fl = dtde.getCurrentDataFlavors();
-        for (int i = 0; i < fl.length; i++) {
-            Class dataClass = fl[i].getRepresentationClass();
-
+        DataFlavor[] fls = dtde.getCurrentDataFlavors();
+        for (DataFlavor fl : fls) {
+            Class dataClass = fl.getRepresentationClass();
             if (dataClass == String.class) {
                 // This flavor returns a Component - accept it.
-                targetFlavor = fl[i];
+                targetFlavor = fl;
                 acceptableType = true;
                 break;
             }

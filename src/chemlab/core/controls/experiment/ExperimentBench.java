@@ -17,13 +17,17 @@
  */
 package chemlab.core.controls.experiment;
 
+import chemlab.core.controls.experiment.misc.ClingHelper;
 import bslib.common.Bitmap;
 import bslib.common.Logger;
 import bslib.common.Point;
+import bslib.common.Rect;
+import bslib.common.RefObject;
 import bslib.common.StringHelper;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
 import chemlab.core.controls.EditorControl;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -37,6 +41,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -47,9 +52,12 @@ import javax.swing.Timer;
  * @author Serg V. Zhdanovskih
  * @since 0.5.0
  */
-public class ExperimentMaster extends EditorControl implements ActionListener
+public class ExperimentBench extends EditorControl implements ActionListener
 {
     private static final boolean DEBUG = true;
+    
+    private final static BasicStroke FOCUS_STROKE = new BasicStroke(1.0f,
+            BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[]{2.0f}, 0.0f);
     
     private LabDevice fCurrentDev;
     private LabDevice fMenuDev;
@@ -64,6 +72,7 @@ public class ExperimentMaster extends EditorControl implements ActionListener
     private Date fCurTime = new Date(0);
     private Date fEndTime = new Date(0);
     private String fDebugInfo;
+    private final ArrayList<Connection> fConnections;
 
     private final Timer fTimer;
     private final JPopupMenu fDeviceMenu;
@@ -72,9 +81,9 @@ public class ExperimentMaster extends EditorControl implements ActionListener
     private final JMenuItem miDelete;
     private final JMenuItem miProperties;
 
-    private DeviceEventHandler fOnDevice;
+    private BenchListener fBenchListener;
 
-    public ExperimentMaster()
+    public ExperimentBench()
     {
         super();
         
@@ -82,15 +91,11 @@ public class ExperimentMaster extends EditorControl implements ActionListener
         this.setBackground(Color.white);
         this.fBuffer = null;
         this.fDevices = new ArrayList<>();
+        this.fConnections = new ArrayList<>();
         this.setDoubleBuffered(true);
 
-        this.fTimer = new Timer(50, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                tickTime();
-            }
+        this.fTimer = new Timer(50, (ActionEvent e) -> {
+            tickTime();
         });
         this.fTimer.setRepeats(true);
 
@@ -299,6 +304,13 @@ public class ExperimentMaster extends EditorControl implements ActionListener
                 dev.paint(canv);
             }
 
+            if (this.fCurrentDev != null) {
+                Rect rt = this.fCurrentDev.getRect();
+                canv.setColor(Color.black);
+                canv.setStroke(FOCUS_STROKE);
+                canv.drawRect(rt.Left, rt.Top, rt.getWidth(), rt.getHeight());
+            }
+
             g.drawImage(this.fBuffer, 0, 0, null);
             
             if (DEBUG) {
@@ -380,7 +392,8 @@ public class ExperimentMaster extends EditorControl implements ActionListener
                     int nY = (e.getY() - this.FY);
                     
                     if (this.canBeDrag(this.fCurrentDev, nX, nY)) {
-                        Point refPoint = ClingHelper.canCling(this.fDevices, this.fCurrentDev, nX, nY);
+                        RefObject<LabDevice> refOther = new RefObject<>();
+                        Point refPoint = ClingHelper.canCling(this.fDevices, this.fCurrentDev, nX, nY, refOther);
                         if (refPoint != null) {
                             nX = refPoint.X;
                             nY = refPoint.Y;
@@ -389,16 +402,47 @@ public class ExperimentMaster extends EditorControl implements ActionListener
                         this.fCurrentDev.setLeft(nX);
                         this.fCurrentDev.setTop(nY);
 
+                        this.checkCling(this.fCurrentDev, nX, nY, refOther.argValue);
+
                         this.repaint();
                     }
                 }
-                
-                //this.FX = e.getX();
-                //this.FY = e.getY();
             }
         //}
     }
 
+    private void checkCling(LabDevice dev, int nX, int nY, LabDevice other)
+    {
+        boolean appendMode = (other != null);
+        boolean connExists = false;
+        
+        List<LabDevice> disconns = new ArrayList<>();
+        
+        List<LabDevice> conns = this.findConnections(dev);
+        for (LabDevice conDev : conns) {
+            // check disconnections
+            Point res = ClingHelper.canCling(dev, nX, nY, conDev);
+            if (res == null) {
+                disconns.add(conDev);
+            }
+            
+            if (appendMode && conDev == other) {
+                // check the possibility of adding a new connection
+                connExists = true;
+            }
+        }
+        
+        // remove disconnections
+        for (LabDevice dc : disconns) {
+            this.removeConnection(dev, dc);
+        }
+        
+        // append new connection
+        if (appendMode && !connExists) {
+            this.addConnection(dev, other);
+        }
+    }
+    
     protected void onMouseMove(MouseEvent e)
     {
         if (e.getButton() == 0) {
@@ -408,8 +452,10 @@ public class ExperimentMaster extends EditorControl implements ActionListener
             if (dev != null) {
                 String realVol = String.valueOf(dev.getRealVolume());
                 String fillVol = String.valueOf(dev.getFillVolume());
-                hint = String.format("<html>Вместимость: %s мл<br>Объем: %s мл<br>Масса: %s<br>Давление: %s<br>Температура: %s<br>pH: %s</html>", 
+                hint = String.format("<html>Вместимость: %s мл<br>Объем: %s мл<br>Масса: %s<br>Давление: %s<br>Температура: %s<br>pH: %s", 
                         new Object[]{realVol, fillVol, String.format("%5.5f г", dev.getSubstancesMass()), String.format("%5.5f кПа", dev.getPressure()), String.format("%5.5f °K", dev.getTemperature()), String.format("%5.5f", dev.getPH())});
+                hint += "<br>Соединения: " + this.getConnectionsString(dev);
+                hint += "</html>";
             }
 
             if (StringHelper.isNullOrEmpty(hint)) {
@@ -475,6 +521,53 @@ public class ExperimentMaster extends EditorControl implements ActionListener
         this.repaint();
     }
 
+    public final Connection addConnection(LabDevice dev1, LabDevice dev2)
+    {
+        Connection result = new Connection(dev1, dev2);
+        this.fConnections.add(result);
+        return result;
+    }
+
+    public final void removeConnection(LabDevice dev1, LabDevice dev2)
+    {
+        for (Connection conn : this.fConnections) {
+            if ((conn.Dev1 == dev1 && conn.Dev2 == dev2) || (conn.Dev1 == dev2 && conn.Dev2 == dev1)) {
+                this.fConnections.remove(conn);
+                return;
+            }
+        }
+    }
+    
+    public final String getConnectionsString(LabDevice dev)
+    {
+        StringBuilder result = new StringBuilder();
+        
+        List<LabDevice> list = this.findConnections(dev);
+        for (LabDevice other : list) {
+            if (result.length() > 0) {
+                result.append(", ");
+            }
+            result.append(other.getID().name());
+        }
+        
+        return result.toString();
+    }
+    
+    public final List<LabDevice> findConnections(LabDevice dev)
+    {
+        List<LabDevice> result = new ArrayList<>();
+        
+        for (Connection conn : this.fConnections) {
+            if (conn.Dev1 == dev) {
+                result.add(conn.Dev2);
+            } else if (conn.Dev2 == dev) {
+                result.add(conn.Dev1);
+            }
+        }
+        
+        return result;
+    }
+    
     @Override
     public void loadFromFile(String fileName)
     {
@@ -522,14 +615,14 @@ public class ExperimentMaster extends EditorControl implements ActionListener
         this.fTimer.stop();
     }
 
-    public final DeviceEventHandler get_OnDevice()
+    public final BenchListener getBenchListener()
     {
-        return this.fOnDevice;
+        return this.fBenchListener;
     }
 
-    public final void set_OnDevice(DeviceEventHandler value)
+    public final void setBenchListener(BenchListener value)
     {
-        this.fOnDevice = value;
+        this.fBenchListener = value;
     }
 
     private void miDeviceActivationSwitchClick()
@@ -560,8 +653,8 @@ public class ExperimentMaster extends EditorControl implements ActionListener
     private void miDevicePropertiesClick()
     {
         LabDevice device = this.fMenuDev;
-        if (this.fOnDevice != null) {
-            this.fOnDevice.invoke(this, device);
+        if (this.fBenchListener != null) {
+            this.fBenchListener.deviceProperties(device);
         }
     }
 

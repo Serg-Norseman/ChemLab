@@ -15,10 +15,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.controls.experiment;
+package chemlab.core.controls.experiment.misc;
 
 import bslib.common.AuxUtils;
 import bslib.common.Point;
+import bslib.common.RefObject;
+import chemlab.core.controls.experiment.LabDevice;
 import java.util.ArrayList;
 
 /**
@@ -125,7 +127,7 @@ public class ClingHelper
         return null;
     }
 
-    public static Point canCling(ArrayList<LabDevice> devices, LabDevice dev, int nX, int nY)
+    public static Point canCling(ArrayList<LabDevice> devices, LabDevice dev, int nX, int nY, RefObject<LabDevice> refOther)
     {
         DeviceClingSet itClings = dev.getID().Cling;
         if (itClings.isEmpty()) {
@@ -137,11 +139,13 @@ public class ClingHelper
                 Point res = canCling(dev, nX, nY, device);
                 
                 if (res != null) {
+                    refOther.argValue = device;
                     return res;
                 }
             }
         }
         
+        refOther.argValue = null;
         return null;
     }    
 }

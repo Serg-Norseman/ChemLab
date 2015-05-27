@@ -21,6 +21,7 @@ import bslib.common.AuxUtils;
 import bslib.common.BaseObject;
 import bslib.common.Bitmap;
 import bslib.common.ImageHelper;
+import bslib.common.Rect;
 import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.Substance;
@@ -40,7 +41,9 @@ import java.util.ArrayList;
  */
 public class LabDevice extends BaseObject
 {
-    private final ExperimentMaster fExpMaster;
+    private static final int FRAME_CHANGE_TICKS = 5;
+
+    private final ExperimentBench fExpMaster;
     private final ReactionSolver fReactionMaster;
     private DeviceRecord fRecord;
 
@@ -54,6 +57,7 @@ public class LabDevice extends BaseObject
 
     private int fFrames;
     private int fFrameIndex;
+    private int fUpdateTicks;
 
     private final ArrayList<Substance> fSubstances;
     private int fAbstVolume;
@@ -66,15 +70,10 @@ public class LabDevice extends BaseObject
     private int fLeft;
     private int fWidth;
     private int fTop;
-    
-    private int TickScale = 5;
-    private int Ticks;
-    
+        
     private final ArrayList<IDeviceEffect> fEffects;
     private boolean fBoiling;
     
-    private final ArrayList<Connection> fConnections;
-
     public final int getLeft()
     {
         return this.fLeft;
@@ -115,18 +114,17 @@ public class LabDevice extends BaseObject
         return this.fLeft + this.fWidth - 1;
     }
 
-    /*public final Rect getRect()
+    public final Rect getRect()
     {
         return new Rect(fLeft, fTop, this.fLeft + this.fWidth - 1, this.fTop + this.fHeight - 1);
-    }*/
+    }
     
-    public LabDevice(ExperimentMaster owner, int x, int y, DeviceId deviceId)
+    public LabDevice(ExperimentBench owner, int x, int y, DeviceId deviceId)
     {
         this.fExpMaster = owner;
         this.fSubstances = new ArrayList<>();
         this.fReactionMaster = new ReactionSolver();
 
-        this.fConnections = new ArrayList<>();
         this.fEffects = new ArrayList<>();
         
         this.fActive = false;
@@ -226,8 +224,8 @@ public class LabDevice extends BaseObject
     public final void tickTime()
     {
         if (this.fActive) {
-            Ticks++;
-            if (Ticks == TickScale) {
+            fUpdateTicks++;
+            if (fUpdateTicks == FRAME_CHANGE_TICKS) {
                 if (this.FID == DeviceId.dev_Bunsen_Burner) {
                     if (this.fFrameIndex < 4) {
                         this.fFrameIndex++;
@@ -235,7 +233,7 @@ public class LabDevice extends BaseObject
                         this.fFrameIndex = 1;
                     }
                 }
-                Ticks = 0;
+                fUpdateTicks = 0;
             }
         }
         

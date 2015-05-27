@@ -15,15 +15,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.controls.experiment;
+package chemlab.core.controls.experiment.misc;
+
+import bslib.common.EnumSet;
 
 /**
  *
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-@FunctionalInterface
-public interface DeviceEventHandler
+public class DeviceClingSet extends EnumSet<DeviceCling>
 {
-    void invoke(Object sender, LabDevice device);
+    public DeviceClingSet(DeviceCling... args)
+    {
+        super(args);
+    }
+
+    @Override
+    protected void initTypeHandler()
+    {
+        this.fEnumTypeHandler = new EnumTypeHandler(DeviceCling.class);
+    }
 }

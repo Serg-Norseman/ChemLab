@@ -15,16 +15,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.controls.experiment;
+package chemlab.core.controls.experiment.misc;
 
 import bslib.common.ImageHelper;
 import chemlab.core.chemical.CLData;
+import chemlab.core.controls.experiment.DeviceId;
 import chemlab.forms.CommonUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.DefaultListCellRenderer;
@@ -43,7 +46,7 @@ import javax.swing.TransferHandler;
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public class DevicesList extends JPanel
+public final class DevicesList extends JPanel
 {
     private final Map<String, ImageIcon> fImageMap;
     private final JList fList;
@@ -106,10 +109,7 @@ public class DevicesList extends JPanel
         public boolean canImport(TransferHandler.TransferSupport info)
         {
             // Check for String flavor
-            if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                return false;
-            }
-            return true;
+            return info.isDataFlavorSupported(DataFlavor.stringFlavor);
         }
 
         @Override
@@ -142,7 +142,7 @@ public class DevicesList extends JPanel
             String data;
             try {
                 data = (String) t.getTransferData(DataFlavor.stringFlavor);
-            } catch (Exception e) {
+            } catch (UnsupportedFlavorException | IOException ex) {
                 return false;
             }
 
@@ -169,8 +169,7 @@ public class DevicesList extends JPanel
             indices = list.getSelectedIndices();
             Object[] values = list.getSelectedValues();
 
-            StringBuffer buff = new StringBuffer();
-
+            StringBuilder buff = new StringBuilder();
             for (int i = 0; i < values.length; i++) {
                 Object val = values[i];
                 buff.append(val == null ? "" : val.toString());
@@ -213,8 +212,8 @@ public class DevicesList extends JPanel
             addIndex = index;
             String[] values = str.split("\n");
             addCount = values.length;
-            for (int i = 0; i < values.length; i++) {
-                listModel.add(index++, values[i]);
+            for (String value : values) {
+                listModel.add(index++, value);
             }
         }
 
