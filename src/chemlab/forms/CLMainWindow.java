@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -38,6 +39,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
+import java.util.Locale;
 
 /**
  * Main frame of application.
@@ -47,6 +49,8 @@ import javax.swing.border.BevelBorder;
  */
 public final class CLMainWindow extends JFrame implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private JPanel StatusBar;
     private JLabel StatusLabel;
     private JMenuBar MainMenu;
@@ -73,6 +77,10 @@ public final class CLMainWindow extends JFrame implements ActionListener
 
         Logger.init(AuxUtils.getAppPath() + "ChemLab.log");
 
+        /*
+        -Duser.country=EN -Duser.language=en
+        */
+        
         this.initializeComponents();
     }
 
@@ -104,7 +112,7 @@ public final class CLMainWindow extends JFrame implements ActionListener
         this.setFont(CommonUtils.DEFAULT_UI_FONT);
         this.setLocationRelativeTo(null);
         //this.IsMdiContainer = true;
-        this.setTitle("Химическая Лаборатория");
+        this.setTitle(res_i18n.getString("CL_APPNAME"));
         //this.WindowState = FormWindowState.Maximized;
         this.setIconImage(ImageHelper.loadBitmap("ui/chemlab.gif", true));
 
@@ -119,82 +127,82 @@ public final class CLMainWindow extends JFrame implements ActionListener
 
         this.MainMenu.setFont(this.getFont());
         
-        this.miRefBooks.setText("Справочники");
+        this.miRefBooks.setText(res_i18n.getString("CL_REFBOOKS"));
         this.miRefBooks.setFont(this.getFont());
 
-        this.miBookElement.setText("Таблица элементов");
+        this.miBookElement.setText(res_i18n.getString("CL_ELEMENTS_BOOK"));
         this.miBookElement.addActionListener(this);
         this.miBookElement.setActionCommand("cmd_PTable");
         this.miBookElement.setFont(this.getFont());
         this.miBookElement.setIcon(ImageHelper.loadIcon("ui/rb_ptable.gif"));
 
-        this.miBookValue.setText("Таблица величин");
+        this.miBookValue.setText(res_i18n.getString("CL_VALUES_BOOK"));
         this.miBookValue.addActionListener(this);
         this.miBookValue.setActionCommand("cmd_UnitsTable");
         this.miBookValue.setFont(this.getFont());
         this.miBookValue.setIcon(ImageHelper.loadIcon("ui/rb_values.gif"));
 
-        this.miBookCompounds.setText("Таблица соединений");
+        this.miBookCompounds.setText(res_i18n.getString("CL_COMPOUNDS_BOOK"));
         this.miBookCompounds.addActionListener(this);
         this.miBookCompounds.setActionCommand("");
         this.miBookCompounds.setFont(this.getFont());
         this.miBookCompounds.setIcon(ImageHelper.loadIcon("ui/rb_compounds.gif"));
         this.miBookCompounds.setEnabled(false);
 
-        this.miBookReactions.setText("Таблица реакций");
+        this.miBookReactions.setText(res_i18n.getString("CL_REACTIONS_BOOK"));
         this.miBookReactions.addActionListener(this);
         this.miBookReactions.setActionCommand("");
         this.miBookReactions.setFont(this.getFont());
         this.miBookReactions.setIcon(ImageHelper.loadIcon("ui/rb_reactions.gif"));
         this.miBookReactions.setEnabled(false);
         
-        this.miService.setText("Сервис");
+        this.miService.setText(res_i18n.getString("CL_SERVICE"));
         this.miService.setFont(this.getFont());
 
-        this.miUnitMaster.setText("Конвертер единиц измерения");
+        this.miUnitMaster.setText(res_i18n.getString("CL_UNITS_CONVERTER"));
         this.miUnitMaster.addActionListener(this);
         this.miUnitMaster.setActionCommand("cmd_UnitsConverter");
         this.miUnitMaster.setFont(this.getFont());
         this.miUnitMaster.setIcon(ImageHelper.loadIcon("ui/measure.gif"));
 
-        this.miCompoundMaster.setText("Мастер соединений");
+        this.miCompoundMaster.setText(res_i18n.getString("CL_COMPOUND_MASTER"));
         this.miCompoundMaster.addActionListener(this);
         this.miCompoundMaster.setActionCommand("cmd_CompoundMaster");
         this.miCompoundMaster.setFont(this.getFont());
         this.miCompoundMaster.setIcon(ImageHelper.loadIcon("ui/compound.gif"));
 
-        this.miReactionMaster.setText("Мастер реакций");
+        this.miReactionMaster.setText(res_i18n.getString("CL_REACTION_MASTER"));
         this.miReactionMaster.addActionListener(this);
         this.miReactionMaster.setActionCommand("cmd_ReactionMaster");
         this.miReactionMaster.setFont(this.getFont());
         this.miReactionMaster.setIcon(ImageHelper.loadIcon("ui/reaction.gif"));
 
-        this.miMoleculeMaster.setText("Мастер молекул");
+        this.miMoleculeMaster.setText(res_i18n.getString("CL_MOLECULE_VIEWER"));
         this.miMoleculeMaster.addActionListener(this);
         this.miMoleculeMaster.setActionCommand("cmd_MoleculeMaster");
         this.miMoleculeMaster.setFont(this.getFont());
         this.miMoleculeMaster.setIcon(ImageHelper.loadIcon("ui/molecule.gif"));
 
-        this.miExperimentMaster.setText("Мастер экспериментов");
+        this.miExperimentMaster.setText(res_i18n.getString("CL_EXPERIMENT_MASTER"));
         this.miExperimentMaster.addActionListener(this);
         this.miExperimentMaster.setActionCommand("cmd_ExperimentMaster");
         this.miExperimentMaster.setFont(this.getFont());
         this.miExperimentMaster.setIcon(ImageHelper.loadIcon("ui/experiment.gif"));
 
-        this.miCalcMaster.setText("Расчеты");
+        this.miCalcMaster.setText(res_i18n.getString("CL_CALCS"));
         this.miCalcMaster.addActionListener(this);
         this.miCalcMaster.setActionCommand("cmd_CalcMaster");
         this.miCalcMaster.setFont(this.getFont());
 
-        this.miHelp.setText("Справка");
+        this.miHelp.setText(res_i18n.getString("CL_HELP"));
         this.miHelp.setFont(this.getFont());
 
-        this.miContents.setText("Помощь");
+        this.miContents.setText(res_i18n.getString("CL_HELP_CONTENTS"));
         this.miContents.setEnabled(false);
         this.miContents.setFont(this.getFont());
         this.miContents.setIcon(ImageHelper.loadIcon("ui/help.gif"));
 
-        this.miAbout.setText("О программе...");
+        this.miAbout.setText(res_i18n.getString("CL_ABOUT"));
         this.miAbout.addActionListener(this);
         this.miAbout.setActionCommand("cmd_About");
         this.miAbout.setFont(this.getFont());

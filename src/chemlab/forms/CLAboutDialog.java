@@ -8,6 +8,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,6 +20,8 @@ import javax.swing.JLabel;
  */
 public final class CLAboutDialog extends JDialog
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private JLabel LabelTitle;
     private JLabel LabelVer;
     private ImagePanel Image1;
@@ -46,14 +49,14 @@ public final class CLAboutDialog extends JDialog
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setFont(CommonUtils.DEFAULT_UI_FONT);
         this.setResizable(false);
-        this.setTitle("О программе");
+        this.setTitle(res_i18n.getString("CL_ABOUT"));
         
-        this.LabelTitle.setText("Химическая Лаборатория");
+        this.LabelTitle.setText(res_i18n.getString("CL_APPNAME"));
         this.LabelTitle.setFont(new Font("Verdana", Font.BOLD, 20));
         this.LabelTitle.setLocation(236, 8);
         this.LabelTitle.setSize(322, 31);
 
-        this.LabelVer.setText("Версия 0.6.0");
+        this.LabelVer.setText(res_i18n.getString("CL_VERSION"));
         this.LabelVer.setFont(this.getFont());
         this.LabelVer.setLocation(236, 48);
         this.LabelVer.setSize(116, 20);
@@ -75,7 +78,7 @@ public final class CLAboutDialog extends JDialog
         this.LabelMail.setSize(240, 20);
         this.LabelMail.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        this.btnClose.setText("Закрыть");
+        this.btnClose.setText(res_i18n.getString("CL_CLOSE"));
         this.btnClose.setFont(this.getFont());
         this.btnClose.setLocation(540, 305);
         this.btnClose.setSize(90, 25);

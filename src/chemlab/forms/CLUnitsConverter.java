@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.measure.Measure;
 import javax.measure.unit.Unit;
 import javax.swing.BorderFactory;
@@ -20,8 +21,10 @@ import javax.swing.JPanel;
  * @author Serg V. Zhdanovskih
  * @since 0.5.0
  */
-public class CLUnitsConverter extends JFrame implements ActionListener
+public final class CLUnitsConverter extends JFrame implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     MeasureBox srcPanel, targetPanel;
     JPanel mainPane;
     JPanel valPane;
@@ -34,7 +37,7 @@ public class CLUnitsConverter extends JFrame implements ActionListener
         
         valPane = new JPanel();
         valPane.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Величина"),
+                BorderFactory.createTitledBorder(res_i18n.getString("CL_DIMENSION")),
                 BorderFactory.createEmptyBorder(3, 3, 3, 3)));
         
         cmbDimensions = new JComboBox();
@@ -46,8 +49,8 @@ public class CLUnitsConverter extends JFrame implements ActionListener
         cmbDimensions.addActionListener(this);
         valPane.add(cmbDimensions);
         
-        srcPanel = new MeasureBox("Исходные данные", ChemUnits.KILOPASCAL);
-        targetPanel = new MeasureBox("Расчетные данные", ChemUnits.KILOPASCAL);
+        srcPanel = new MeasureBox(res_i18n.getString("CL_SOURCE_DATA"), ChemUnits.KILOPASCAL);
+        targetPanel = new MeasureBox(res_i18n.getString("CL_CALC_DATA"), ChemUnits.KILOPASCAL);
 
         srcPanel.addActionListener(this);
         targetPanel.addActionListener(this);
@@ -69,7 +72,7 @@ public class CLUnitsConverter extends JFrame implements ActionListener
 
         mainPane.setOpaque(true); //content panes must be opaque
 
-        this.setTitle("Мастер единиц измерения");
+        this.setTitle(res_i18n.getString("CL_UNITS_CONVERTER"));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setContentPane(mainPane);
         this.setResizable(false);
