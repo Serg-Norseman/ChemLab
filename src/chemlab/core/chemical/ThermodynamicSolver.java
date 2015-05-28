@@ -24,5 +24,117 @@ package chemlab.core.chemical;
  */
 public class ThermodynamicSolver
 {
+    private final ReactionSolver fReaction;
     
+    private double fSM_Entropy;
+    private double fSM_Enthalpy;
+    private double fSM_Gibbs_Energy;
+    private double flg_K;
+    private double fStdBalanceConstant;
+    private double fdN;
+    private double fFBalanceConstant;
+    private double fSBalanceConstant;
+    private double fTemperature;
+    
+    public ThermodynamicSolver(ReactionSolver reaction)
+    {
+        this.fReaction = reaction;
+
+        this.fTemperature = ChemConsts.T0;
+    }
+
+    public final double getSM_Entropy()
+    {
+        return this.fSM_Entropy;
+    }
+
+    public final double getSM_Enthalpy()
+    {
+        return this.fSM_Enthalpy;
+    }
+
+    public final double getSM_Gibbs_Energy()
+    {
+        return this.fSM_Gibbs_Energy;
+    }
+
+    public final double getlg_K()
+    {
+        return this.flg_K;
+    }
+
+    public final double getStdBalanceConstant()
+    {
+        return this.fStdBalanceConstant;
+    }
+
+    public final double getdN()
+    {
+        return this.fdN;
+    }
+
+    public final double getFBalanceConstant()
+    {
+        return this.fFBalanceConstant;
+    }
+
+    public final double getSBalanceConstant()
+    {
+        return this.fSBalanceConstant;
+    }
+
+    public final double getTemperature()
+    {
+        return this.fTemperature;
+    }
+
+    public final void setTemperature(float value)
+    {
+        this.fTemperature = value;
+    }
+
+    public void calculate()
+    {
+        try {
+            this.fSM_Entropy = 0.0;
+            this.fSM_Enthalpy = 0.0;
+            this.fdN = 0.0;
+            double FIntegral = 0.0;
+            double SIntegral = 0.0;
+            double T = this.fTemperature;
+            double dT = (T - ChemConsts.T0);
+
+            for (int i = 0; i < this.fReaction.getSubstanceCount(); i++) {
+                Substance subst = this.fReaction.getSubstance(i);
+
+                switch (subst.Type) {
+                    case Reactant:
+                        this.fSM_Entropy = (this.fSM_Entropy - subst.Factor * subst.getSM_Entropy());
+                        this.fSM_Enthalpy = (this.fSM_Enthalpy - subst.Factor * subst.getSMF_Enthalpy());
+                        this.fdN = (this.fdN - subst.Factor);
+                        FIntegral = (FIntegral - (((subst.getSMHC_A() * dT) + subst.getSMHC_B() * (dT * dT) / 2.0) + (subst.getSMHC_C() * dT) * (dT * dT) / 3.0));
+                        SIntegral = (SIntegral - ((subst.getSMHC_A() * Math.log10((Math.abs(dT))) + subst.getSMHC_B() * dT) + subst.getSMHC_C() * (dT * dT) / 2.0));
+                        break;
+
+                    case Product:
+                        this.fSM_Entropy = (this.fSM_Entropy + subst.Factor * subst.getSM_Entropy());
+                        this.fSM_Enthalpy = (this.fSM_Enthalpy + subst.Factor * subst.getSMF_Enthalpy());
+                        this.fdN = (this.fdN + subst.Factor);
+                        FIntegral = (FIntegral + (((subst.getSMHC_A() * dT) + subst.getSMHC_B() * (dT * dT) / 2.0) + (subst.getSMHC_C() * dT) * (dT * dT) / 3.0));
+                        SIntegral = (SIntegral + ((subst.getSMHC_A() * Math.log10((Math.abs(dT))) + subst.getSMHC_B() * dT) + subst.getSMHC_C() * (dT * dT) / 2.0));
+                        break;
+                }
+            }
+
+            this.fSM_Gibbs_Energy = (this.fSM_Enthalpy - ChemConsts.T0 * this.fSM_Entropy * 0.001);
+            this.flg_K = (-(this.fSM_Gibbs_Energy * 1000.0 / (2.3 * ChemConsts.R * ChemConsts.T0)));
+            this.fStdBalanceConstant = Math.pow(10.0, this.flg_K);
+            this.fFBalanceConstant = (this.fStdBalanceConstant * Math.pow(0.1013, this.fdN));
+            this.flg_K = (-(this.fSM_Enthalpy / (ChemConsts.R * T)) + this.fSM_Entropy / ChemConsts.R - 1.0 / (ChemConsts.R * T) * FIntegral + 1.0 / ChemConsts.R * SIntegral);
+            this.fStdBalanceConstant = Math.pow(10.0, this.flg_K);
+            this.fSBalanceConstant = (this.fStdBalanceConstant * Math.pow(0.1013, this.fdN));
+        } catch (Exception ex) {
+
+        }
+    }
 }

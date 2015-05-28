@@ -177,7 +177,7 @@ public class VirtualTable extends JPanel
     public final int getSelectedRow()
     {
         int row = this.fTable.getSelectedRow();
-        return this.fTable.convertRowIndexToModel(row);
+        return (row < 0) ? row : this.fTable.convertRowIndexToModel(row);
     }
 
     public final void setSelectedRow(int row)
@@ -190,7 +190,7 @@ public class VirtualTable extends JPanel
     public final int getSelectedColumn()
     {
         int column = this.fTable.getSelectedColumn();
-        return this.fTable.convertColumnIndexToModel(column);
+        return (column < 0) ? column : this.fTable.convertColumnIndexToModel(column);
     }
 
     /*public final void setSelectedColumn(int column)

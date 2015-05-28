@@ -1,4 +1,4 @@
-package chemlab.core.controls.molecule;
+package chemlab.core.controls.molecule.loader;
 
 import chemlab.core.chemical.BondKind;
 

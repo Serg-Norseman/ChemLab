@@ -25,6 +25,7 @@ import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
 import chemlab.core.chemical.Substance;
+import chemlab.core.chemical.ThermodynamicSolver;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -33,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -72,6 +74,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
     
     private final ReactionSolver fReactionMaster;
     private final StoichiometricSolver fStoichiometricSolver;
+    private final ThermodynamicSolver fThermodynamicSolver;
 
     public CLReactionMaster()
     {
@@ -80,6 +83,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
         this.fReactionMaster = new ReactionSolver();
         this.fStoichiometricSolver = new StoichiometricSolver(this.fReactionMaster);
+        this.fThermodynamicSolver = new ThermodynamicSolver(this.fReactionMaster);
     }
 
     private void initializeComponents()
@@ -162,6 +166,29 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         tblProperties.addColumn("Значение", 139);
         tblProperties.addColumn("Размерность", 92);
 
+        JPanel panStoicToolbar = new JPanel();
+        panStoicToolbar.setLayout(new BoxLayout(panStoicToolbar, BoxLayout.LINE_AXIS));
+
+        JButton btnSetInput = new JButton();
+        btnSetInput.setText("Задать исходные данные");
+        btnSetInput.setActionCommand("SET_INPUT");
+        btnSetInput.addActionListener(this);
+
+        JButton btnSetOutput = new JButton();
+        btnSetOutput.setText("Задать выходные данные");
+        btnSetOutput.setActionCommand("SET_OUTPUT");
+        btnSetOutput.addActionListener(this);
+
+        JButton btnSolve = new JButton();
+        btnSolve.setText("Расчет");
+        btnSolve.setActionCommand("ST_SOLVE");
+        btnSolve.addActionListener(this);
+        
+        panStoicToolbar.add(btnSetInput);
+        panStoicToolbar.add(btnSetOutput);
+        panStoicToolbar.add(btnSolve);
+
+        
         StoichiometryTableModel model = new StoichiometryTableModel(tblStoichiometry);
         tblStoichiometry.setTableModel(model);
         tblStoichiometry.setEditable(true);
@@ -189,6 +216,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         col.setCellRenderer(new MyComboBoxRenderer(CLData.SubstanceStates));*/
 
         this.panStoichiometry.setLayout(new BorderLayout());
+        this.panStoichiometry.add(panStoicToolbar, BorderLayout.NORTH);
         this.panStoichiometry.add(this.tblStoichiometry, BorderLayout.CENTER);
         this.PageControl.addTab("Стехиометрия", this.panStoichiometry);
         
@@ -237,21 +265,21 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                 super.setEnabled(false);
 
                 this.fReactionMaster.setEquation(this.eEquation.getText());
-                
+                this.fReactionMaster.analyse();
+                this.fReactionMaster.calculate();
+
                 try {
                     String temp = (String) this.cbTemperature.getSelectedItem();
                     if (temp.equals("298.15 °K")) {
-                        this.fReactionMaster.setTemperature(298.15f);
+                        this.fThermodynamicSolver.setTemperature(298.15f);
                     } else {
-                        this.fReactionMaster.setTemperature((float) AuxUtils.ParseFloat(temp, 0));
+                        this.fThermodynamicSolver.setTemperature((float) AuxUtils.ParseFloat(temp, 0));
                     }
                 } catch (ParseException ex) {
                     throw new Exception("Ошибка формата температуры");
                 }
-
-                this.fReactionMaster.analyse();
-                this.fReactionMaster.calculate();
-
+                this.fThermodynamicSolver.calculate();
+                
                 this.eEquation.setText(this.fReactionMaster.getEquation());
 
                 this.updateTables();
@@ -309,14 +337,14 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             this.addProperty("Тип реакции", this.fReactionMaster.getReactionType().name(), "");
             this.addProperty(ChemUtils.rs_ReagentsMass, CommonUtils.formatFloat(this.fReactionMaster.getSourceMass(), 5), "");
             this.addProperty(ChemUtils.rs_ProductsMass, CommonUtils.formatFloat(this.fReactionMaster.getProductMass(), 5), "");
-            this.addProperty("dH° (298 K)", CommonUtils.formatFloat(this.fReactionMaster.getSM_Enthalpy(), 3), "кДж");
-            this.addProperty("dS° (298 K)", CommonUtils.formatFloat(this.fReactionMaster.getSM_Entropy(), 3), "Дж/К");
-            this.addProperty("dG° (298 K)", CommonUtils.formatFloat(this.fReactionMaster.getSM_Gibbs_Energy(), 3), "кДж");
-            this.addProperty("lg K°", CommonUtils.formatFloat(this.fReactionMaster.getlg_K(), 3), "");
-            this.addProperty("K°", CommonUtils.formatFloat(this.fReactionMaster.getStdBalanceConstant(), 3), "");
-            this.addProperty(ChemUtils.rs_MolsInc, CommonUtils.formatFloat(this.fReactionMaster.getdN(), 3), "");
-            this.addProperty(ChemUtils.rs_BCFirstApproximation, CommonUtils.formatFloat(this.fReactionMaster.getFBalanceConstant(), 3), "");
-            this.addProperty(ChemUtils.rs_BCSecondApproximation, CommonUtils.formatFloat(this.fReactionMaster.getSBalanceConstant(), 3), "");
+            this.addProperty("dH° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Enthalpy(), 3), "кДж");
+            this.addProperty("dS° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Entropy(), 3), "Дж/К");
+            this.addProperty("dG° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Gibbs_Energy(), 3), "кДж");
+            this.addProperty("lg K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getlg_K(), 3), "");
+            this.addProperty("K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getStdBalanceConstant(), 3), "");
+            this.addProperty(ChemUtils.rs_MolsInc, CommonUtils.formatFloat(this.fThermodynamicSolver.getdN(), 3), "");
+            this.addProperty(ChemUtils.rs_BCFirstApproximation, CommonUtils.formatFloat(this.fThermodynamicSolver.getFBalanceConstant(), 3), "");
+            this.addProperty(ChemUtils.rs_BCSecondApproximation, CommonUtils.formatFloat(this.fThermodynamicSolver.getSBalanceConstant(), 3), "");
             this.tblProperties.packColumns(10);
             
             this.updateStoic();
@@ -437,25 +465,33 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
             case "SET_INPUT": {
                 int row = this.tblStoichiometry.getSelectedRow();
-                Substance substance = this.fReactionMaster.getSubstance(row);
-                substance.getStoicParams().Type = StoicParams.ParamType.Input;
+                if (row < 0) {
+                    JOptionPane.showMessageDialog(null, "Не выбрано вещество");
+                } else {
+                    Substance substance = this.fReactionMaster.getSubstance(row);
+                    substance.getStoicParams().Type = StoicParams.ParamType.Input;
 
-                CLSubstanceInput input = new CLSubstanceInput(this, substance);
-                input.setVisible(true);
+                    CLSubstanceInput input = new CLSubstanceInput(this, substance);
+                    input.setVisible(true);
 
-                this.updateStoic();
+                    this.updateStoic();
+                }
                 break;
             }
 
             case "SET_OUTPUT": {
                 int row = this.tblStoichiometry.getSelectedRow();
-                Substance substance = this.fReactionMaster.getSubstance(row);
-                substance.getStoicParams().Type = StoicParams.ParamType.Output;
+                if (row < 0) {
+                    JOptionPane.showMessageDialog(null, "Не выбрано вещество");
+                } else {
+                    Substance substance = this.fReactionMaster.getSubstance(row);
+                    substance.getStoicParams().Type = StoicParams.ParamType.Output;
 
-                CLSubstanceInput input = new CLSubstanceInput(this, substance);
-                input.setVisible(true);
+                    CLSubstanceInput input = new CLSubstanceInput(this, substance);
+                    input.setVisible(true);
 
-                this.updateStoic();
+                    this.updateStoic();
+                }
                 break;
             }
 

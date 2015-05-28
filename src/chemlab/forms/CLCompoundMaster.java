@@ -8,6 +8,7 @@ import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +23,8 @@ import javax.swing.JTextField;
  */
 public final class CLCompoundMaster extends JFrame implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private JLabel Label1;
     private JLabel Label4;
     private JTabbedPane PageControl;
@@ -62,9 +65,9 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         FramesHelper.setClientSize(this, 703, 356);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
-        this.setTitle("Мастер соединений");
+        this.setTitle(res_i18n.getString("CL_COMPOUND_MASTER"));
 
-        this.Label1.setText("Формула");
+        this.Label1.setText(res_i18n.getString("CL_FORMULA"));
         this.Label1.setLocation(8, 8);
         this.Label1.setSize(76, 15);
 
@@ -72,7 +75,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.eFormula.setLocation(8, 23);
         this.eFormula.setSize(543, 20);
 
-        this.Label4.setText("Заряд");
+        this.Label4.setText(res_i18n.getString("CL_CHARGE"));
         this.Label4.setLocation(558, 8);
         this.Label4.setSize(40, 15);
         this.Label4.setToolTipText("Предназначен для расчета ионов(для расчета соединений = 0)");
@@ -81,7 +84,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.seCharge.setLocation(558, 23);
         this.seCharge.setSize(45, 20);
 
-        this.btnAnalysis.setText("Анализ");
+        this.btnAnalysis.setText(res_i18n.getString("CL_ANALYSIS"));
         this.btnAnalysis.setLocation(609, 21);
         this.btnAnalysis.setSize(85, 25);
         this.btnAnalysis.addActionListener(this);
@@ -92,26 +95,26 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
 
         this.tsElements.setLayout(new BorderLayout());
         this.tsElements.add(this.ListView1, BorderLayout.CENTER);
-        this.PageControl.addTab("Элементный состав", this.tsElements);
+        this.PageControl.addTab(res_i18n.getString("CL_ELEMENTS_CONTENTS"), this.tsElements);
 
         this.ListView1.setLocation(0, 0);
         this.ListView1.setSize(673, 256);
         this.ListView1.addActionListener(this);
-        this.ListView1.addColumn("Элемент", 60);
-        this.ListView1.addColumn("Индекс", 60);
-        this.ListView1.addColumn("Атом. масса", 79);
-        this.ListView1.addColumn("Эл. отрицательность", 125);
-        this.ListView1.addColumn("Степень окисления", 119);
-        this.ListView1.addColumn("Валентность", 80);
-        this.ListView1.addColumn("Масс. доля", 74);
-        this.ListView1.addColumn("Компонент", 74);
+        this.ListView1.addColumn(res_i18n.getString("CL_ELEMENT"), 60);
+        this.ListView1.addColumn(res_i18n.getString("CL_INDEX"), 60);
+        this.ListView1.addColumn(res_i18n.getString("CL_ATOMIC_MASS"), 79);
+        this.ListView1.addColumn(res_i18n.getString("CL_ENEGATIVITY"), 125);
+        this.ListView1.addColumn(res_i18n.getString("CL_OXIDATION_NUMBER"), 119);
+        this.ListView1.addColumn(res_i18n.getString("CL_VALENCY"), 80);
+        this.ListView1.addColumn(res_i18n.getString("CL_MASS_SHARE"), 74);
+        this.ListView1.addColumn(res_i18n.getString("CL_COMPONENT"), 74);
 
         this.tsProperties.setLayout(null);
         this.tsProperties.add(this.Label3);
         this.tsProperties.add(this.eMolecularMass);
-        this.PageControl.addTab("Свойства", this.tsProperties);
+        this.PageControl.addTab(res_i18n.getString("CL_PROPERTIES"), this.tsProperties);
 
-        this.Label3.setText("Молекулярная масса");
+        this.Label3.setText(res_i18n.getString("CL_MOLAR_MASS"));
         this.Label3.setLocation(8, 15);
         this.Label3.setSize(160, 15);
 

@@ -9,6 +9,18 @@ import java.util.ArrayList;
 
 public class Molecule extends BaseObject
 {
+    private static class ElementX
+    {
+        public String Symbol;
+        public int Count;
+
+        public ElementX(String symbol, int count)
+        {
+            this.Symbol = symbol;
+            this.Count = count;
+        }
+    }
+
     private final MoleculeMaster fMaster;
     private String fName;
 
@@ -545,8 +557,8 @@ public class Molecule extends BaseObject
 
     public final void properties()
     {
-        if (this.fMaster.fMoleculeProperties != null) {
-            this.fMaster.fMoleculeProperties.invoke(this);
+        if (this.fMaster.fMasterListener != null) {
+            this.fMaster.fMasterListener.moleculeProperties(this.fMaster, this);
         }
     }
 }
