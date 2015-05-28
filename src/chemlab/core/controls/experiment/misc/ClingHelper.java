@@ -34,6 +34,22 @@ public class ClingHelper
     
     private enum SimpleCling { Above, Below, Left, Right };
     
+    private static SimpleCling inverse(SimpleCling cling)
+    {
+        switch (cling) {
+            case Above:
+                return SimpleCling.Below;
+            case Below:
+                return SimpleCling.Above;
+            case Left:
+                return SimpleCling.Right;
+            case Right:
+                return SimpleCling.Left;
+        }
+
+        return null;
+    }
+    
     private static boolean isClingCompatibility(LabDevice dev1, LabDevice dev2, SimpleCling cling)
     {
         DeviceClingSet testClings = new DeviceClingSet();
@@ -90,7 +106,7 @@ public class ClingHelper
             result = SimpleCling.Right;
         }
         
-        if (!isClingCompatibility(dev1, dev2, result)) {
+        if (!isClingCompatibility(dev1, dev2, result) || !isClingCompatibility(dev2, dev1, inverse(result))) {
             return null;
         }
         

@@ -133,10 +133,10 @@ public final class BalanceSolver extends BaseObject
             }
         }
 
-        int min = ExtMath.GreatestCommonDivisor(b[this.fReagentsCount], b[this.fReagentsCount - 1]);
+        int min = ExtMath.gcd(b[this.fReagentsCount], b[this.fReagentsCount - 1]);
 
         for (int i = 1; i <= this.fReagentsCount - 2; i++) {
-            int u = ExtMath.GreatestCommonDivisor(b[this.fReagentsCount], b[i]);
+            int u = ExtMath.gcd(b[this.fReagentsCount], b[i]);
             if (u < min) {
                 min = u;
             }
@@ -216,7 +216,7 @@ public final class BalanceSolver extends BaseObject
                 if (A[i][j] != 0) {
                     een = Math.abs(A[i][j]);
                     if (twee > 0) {
-                        G = ExtMath.GreatestCommonDivisor(een, twee);
+                        G = ExtMath.gcd(een, twee);
                         boolean vgl = min == 0 || G < min;
                         if (vgl) {
                             min = G;
@@ -228,7 +228,7 @@ public final class BalanceSolver extends BaseObject
 
             een = Math.abs(b[i]);
             if (een > 0) {
-                G = ExtMath.GreatestCommonDivisor(een, twee);
+                G = ExtMath.gcd(een, twee);
                 boolean vgl = min == 0 || G < min;
                 if (vgl) {
                     min = G;

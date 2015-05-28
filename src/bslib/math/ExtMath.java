@@ -17,10 +17,6 @@
  */
 package bslib.math;
 
-import bslib.common.AuxUtils;
-import java.util.ArrayList;
-import java.util.Objects;
-
 /**
  *
  * @author Serg V. Zhdanovskih
@@ -34,13 +30,13 @@ public final class ExtMath
         return result;
     }
 
-    /*private static int GreatestCommonDivisor_old(int aa, int bb)
-    {
-        int result = (bb == 0) ? aa : ExtMath.GreatestCommonDivisor(bb, aa % bb);
-        return result;
-    }*/
-
-    public static int GreatestCommonDivisor(int aa, int bb)
+    /**
+     * Calculate the Greatest Common Divisor of two numbers.
+     * @param aa
+     * @param bb
+     * @return 
+     */
+    public static int gcd(int aa, int bb)
     {
         while (bb > 0) {
             int tmp = bb;
@@ -50,99 +46,43 @@ public final class ExtMath
         return aa;
     }
 
-    public static int GreatestCommonDivisor(int[] ia)
+    /**
+     * Calculate the Greatest Common Divisor of numbers array.
+     * @param ia
+     * @return 
+     */
+    public static int gcd(int[] ia)
     {
         int res = ia[0];
         for (int i = 1; i < ia.length; i++) {
-            res = GreatestCommonDivisor(res, ia[i]);
+            res = ExtMath.gcd(res, ia[i]);
         }
         return res;
     }
 
-    // FIXME
-    public static int[] lcm(int[] ia)
+    /**
+     * Calculate Least Common Multiple of two numbers.
+     * @param a
+     * @param b
+     * @return 
+     */
+    public static int lcm(int a, int b)
     {
-        int j = GreatestCommonDivisor(ia);
-        if (j == 1) {
-            return ia;
-        }
-        int i = 0;
-        while (i < ia.length) {
-            ia[i] /= j;
-            i += 1;
-        }
-        return lcm(ia);
+        return a * (b / ExtMath.gcd(a, b));
     }
 
-    public static int LeastCommonDividend(ArrayList<Integer> numbers)
+    /**
+     * Calculate Least Common Multiple of numbers array.
+     * @param ia
+     * @return 
+     */
+    public static int lcm(int... ia)
     {
-        ArrayList<Integer> MV = new ArrayList<>();
-        ArrayList<Integer> MC = new ArrayList<>();
-
-        for (Integer num : numbers) {
-            ArrayList<Integer> M = transform(num);
-            optimize(M, MV, MC);
+        int result = ia[0];
+        for (int i = 1; i < ia.length; i++) {
+            result = ExtMath.lcm(result, ia[i]);
         }
 
-        int result = 1;
-        for (int i = 0; i < MV.size(); i++) {
-            for (int k = 1; k <= MC.get(i); k++) {
-                result *= MV.get(i);
-            }
-        }
         return result;
-    }
-
-    private static ArrayList<Integer> transform(int number)
-    {
-        ArrayList<Integer> result = new ArrayList<>();
-        int N = number;
-        while (N > 1) {
-            for (int M = 2; M <= N; M++) {
-                if (AuxUtils.Frac((N / (double) M)) == 0.0f) {
-                    result.add(M);
-                    N /= M;
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    private static int optimize_indexOf(ArrayList<Integer> A, ArrayList<Integer> B, int value)
-    {
-        for (int i = 0; i < A.size(); i++) {
-            if (A.get(i) == value) {
-                return i;
-            }
-        }
-
-        A.add(0);
-        B.add(0);
-        int result = A.size() - 1;
-        return result;
-    }
-
-    private static void optimize(ArrayList<Integer> multiplier, ArrayList<Integer> mValue, ArrayList<Integer> mCount)
-    {
-        for (int i = 0; i < multiplier.size(); i++) {
-            if (multiplier.get(i) == 0) {
-                continue;
-            }
-
-            int count = 1;
-            for (int k = i + 1; k < multiplier.size(); k++) {
-                if (Objects.equals(multiplier.get(k), multiplier.get(i))) {
-                    count++;
-                    multiplier.set(k, 0);
-                }
-            }
-
-            int ind = optimize_indexOf(mValue, mCount, multiplier.get(i));
-            if (mCount.get(ind) < count) {
-                mCount.set(ind, count);
-            }
-            mValue.set(ind, multiplier.get(i));
-        }
     }
 }

@@ -56,7 +56,9 @@ public class ExperimentBench extends EditorControl implements ActionListener
 {
     private static final boolean DEBUG = true;
     
-    private final static BasicStroke FOCUS_STROKE = new BasicStroke(1.0f,
+    private static final int TIMER_DELAY = 50; // milliseconds
+    
+    private static final BasicStroke FOCUS_STROKE = new BasicStroke(1.0f,
             BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[]{2.0f}, 0.0f);
     
     private LabDevice fCurrentDev;
@@ -94,8 +96,9 @@ public class ExperimentBench extends EditorControl implements ActionListener
         this.fConnections = new ArrayList<>();
         this.setDoubleBuffered(true);
 
-        this.fTimer = new Timer(50, (ActionEvent e) -> {
-            tickTime();
+        this.fTimer = new Timer(TIMER_DELAY, (ActionEvent e) -> {
+            long time = System.currentTimeMillis();
+            tickTime(time);
         });
         this.fTimer.setRepeats(true);
 
@@ -321,11 +324,12 @@ public class ExperimentBench extends EditorControl implements ActionListener
         }
     }
 
-    private void tickTime()
+    private void tickTime(long time)
     {
+        // every 50 milliseconds
         for (int i = 0; i < this.getDeviceCount(); i++) {
             LabDevice dev = this.getDevice(i);
-            dev.tickTime();
+            dev.tickTime(time);
         }
 
         this.repaint();

@@ -22,11 +22,11 @@ import bslib.common.BaseObject;
 import bslib.common.Bitmap;
 import bslib.common.ImageHelper;
 import bslib.common.Rect;
-import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.Substance;
 import chemlab.core.controls.experiment.effects.BoilingEffect;
 import chemlab.core.controls.experiment.effects.IDeviceEffect;
+import chemlab.core.controls.experiment.effects.VaporEffect;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -44,12 +44,11 @@ public class LabDevice extends BaseObject
     private static final int FRAME_CHANGE_TICKS = 5;
 
     private final ExperimentBench fExpMaster;
-    private final ReactionSolver fReactionMaster;
-    private DeviceRecord fRecord;
+    private final ReactionSolver fReactionSolver;
 
     private boolean fActive;
     private boolean fFocused;
-    private DeviceId FID = DeviceId.values()[0];
+    private DeviceId fID;
 
     private Bitmap fContentsImage;
     private final Bitmap[] fDevImages = new Bitmap[5];
@@ -58,6 +57,7 @@ public class LabDevice extends BaseObject
     private int fFrames;
     private int fFrameIndex;
     private int fUpdateTicks;
+    private long fPrevTime;
 
     private final ArrayList<Substance> fSubstances;
     private int fAbstVolume;
@@ -73,6 +73,7 @@ public class LabDevice extends BaseObject
         
     private final ArrayList<IDeviceEffect> fEffects;
     private boolean fBoiling;
+    private boolean fVapor;
     
     public final int getLeft()
     {
@@ -123,7 +124,7 @@ public class LabDevice extends BaseObject
     {
         this.fExpMaster = owner;
         this.fSubstances = new ArrayList<>();
-        this.fReactionMaster = new ReactionSolver();
+        this.fReactionSolver = new ReactionSolver();
 
         this.fEffects = new ArrayList<>();
         
@@ -157,17 +158,16 @@ public class LabDevice extends BaseObject
 
     public final DeviceId getID()
     {
-        return this.FID;
+        return this.fID;
     }
 
     public final void setID(DeviceId value)
     {
-        this.FID = value;
-        this.fRecord = CLData.Devices.get(this.FID.getValue());
+        this.fID = value;
         this.fActive = false;
-        this.fFrames = this.FID.Frames;
+        this.fFrames = this.fID.Frames;
 
-        String dev = this.FID.toString().toUpperCase();
+        String dev = this.fID.toString().toUpperCase();
         String Int = "INT_" + dev.substring(0, 0) + dev.substring(0 + 4);
 
         if (this.fFrames > 1) {
@@ -201,12 +201,12 @@ public class LabDevice extends BaseObject
     
     public final boolean isContainer()
     {
-        return (this.FID.Type == DeviceType.Container);
+        return (this.fID.Type == DeviceType.Container);
     }
 
     public final boolean isActivable()
     {
-        return (this.FID == DeviceId.dev_Bunsen_Burner);
+        return (this.fID == DeviceId.dev_Bunsen_Burner);
     }
 
     public final boolean getActive()
@@ -221,27 +221,62 @@ public class LabDevice extends BaseObject
         this.fExpMaster.repaint();
     }
 
-    public final void tickTime()
+    public final void tickTime(long time)
+    {
+        this.updateFrame();
+        this.updateState(time);
+        
+        for (IDeviceEffect effect : this.fEffects) {
+            effect.doStep();
+        }
+        
+        this.fPrevTime = time;
+    }
+
+    private void updateFrame()
     {
         if (this.fActive) {
             fUpdateTicks++;
+
             if (fUpdateTicks == FRAME_CHANGE_TICKS) {
-                if (this.FID == DeviceId.dev_Bunsen_Burner) {
+                if (this.fID == DeviceId.dev_Bunsen_Burner) {
                     if (this.fFrameIndex < 4) {
                         this.fFrameIndex++;
                     } else {
                         this.fFrameIndex = 1;
                     }
                 }
+
                 fUpdateTicks = 0;
             }
         }
+    }
+    
+    private void updateState(long time)
+    {
+        // update internal state
         
-        for (IDeviceEffect effect : this.fEffects) {
-            effect.doStep();
+        // update external influence
+        switch (this.fID.Type) {
+            case Container:
+                break;
+
+            case Heater:
+                float curTemp = this.getTemperature();
+                long dt = time - this.fPrevTime;
+                break;
+
+            case Meter:
+                break;
+
+            case Connector:
+                break;
+
+            case Condenser:
+                break;
         }
     }
-
+    
     public final int getFillVolume()
     {
         return this.fFillVolume;
@@ -249,16 +284,16 @@ public class LabDevice extends BaseObject
 
     public final short getRealVolume()
     {
-        return this.FID.RealVolume;
+        return this.fID.RealVolume;
     }
 
     public final float getTemperature()
     {
-        if (this.FID.Type == DeviceType.Heater && this.fActive) {
-            if (this.FID == DeviceId.dev_Bunsen_Burner) {
+        if (this.fID.Type == DeviceType.Heater && this.fActive) {
+            if (this.fID == DeviceId.dev_Bunsen_Burner) {
                 // Methane, t=2043 °С
                 return 2043.0f;
-            } else if (this.FID == DeviceId.dev_Heater) {
+            } else if (this.fID == DeviceId.dev_Heater) {
                 // controllable temperature
             }
         }
@@ -543,6 +578,33 @@ public class LabDevice extends BaseObject
         } else {
             for (IDeviceEffect effect : this.fEffects) {
                 if (effect instanceof BoilingEffect) {
+                    this.fEffects.remove(effect);
+                    break;
+                }
+            }
+        }
+    }
+    
+    public final boolean getVapor()
+    {
+        return this.fBoiling;
+    }
+    
+    public final void setVapor(boolean value)
+    {
+        if (this.fVapor == value) {
+            return;
+        }
+
+        this.fVapor = value;
+
+        if (value) {
+            IDeviceEffect effect = new VaporEffect();
+            effect.init(this);
+            this.fEffects.add(effect);
+        } else {
+            for (IDeviceEffect effect : this.fEffects) {
+                if (effect instanceof VaporEffect) {
                     this.fEffects.remove(effect);
                     break;
                 }
