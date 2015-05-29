@@ -29,7 +29,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
     private JLabel Label4;
     private JTabbedPane PageControl;
     private JPanel tsElements;
-    private VirtualTable ListView1;
+    private VirtualTable tblElements;
     private JPanel tsProperties;
     private JLabel Label3;
     private JTextField eMolecularMass;
@@ -52,7 +52,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.Label4 = new JLabel();
         this.PageControl = new JTabbedPane();
         this.tsElements = new JPanel();
-        this.ListView1 = new VirtualTable();
+        this.tblElements = new VirtualTable();
         this.tsProperties = new JPanel();
         this.Label3 = new JLabel();
         this.eMolecularMass = new JTextField();
@@ -94,20 +94,21 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.PageControl.setSize(687, 289);
 
         this.tsElements.setLayout(new BorderLayout());
-        this.tsElements.add(this.ListView1, BorderLayout.CENTER);
+        this.tsElements.add(this.tblElements, BorderLayout.CENTER);
         this.PageControl.addTab(res_i18n.getString("CL_ELEMENTS_CONTENTS"), this.tsElements);
 
-        this.ListView1.setLocation(0, 0);
-        this.ListView1.setSize(673, 256);
-        this.ListView1.addActionListener(this);
-        this.ListView1.addColumn(res_i18n.getString("CL_ELEMENT"), 60);
-        this.ListView1.addColumn(res_i18n.getString("CL_INDEX"), 60);
-        this.ListView1.addColumn(res_i18n.getString("CL_ATOMIC_MASS"), 79);
-        this.ListView1.addColumn(res_i18n.getString("CL_ENEGATIVITY"), 125);
-        this.ListView1.addColumn(res_i18n.getString("CL_OXIDATION_NUMBER"), 119);
-        this.ListView1.addColumn(res_i18n.getString("CL_VALENCY"), 80);
-        this.ListView1.addColumn(res_i18n.getString("CL_MASS_SHARE"), 74);
-        this.ListView1.addColumn(res_i18n.getString("CL_COMPONENT"), 74);
+        this.tblElements.setLocation(0, 0);
+        this.tblElements.setSize(673, 256);
+        this.tblElements.addActionListener(this);
+        this.tblElements.addColumn(res_i18n.getString("CL_ELEMENT"), 60);
+        this.tblElements.addColumn(res_i18n.getString("CL_INDEX"), 60);
+        this.tblElements.addColumn(res_i18n.getString("CL_ATOMIC_MASS"), 79);
+        this.tblElements.addColumn(res_i18n.getString("CL_ENEGATIVITY"), 125);
+        this.tblElements.addColumn(res_i18n.getString("CL_OXIDATION_NUMBER"), 119);
+        this.tblElements.addColumn(res_i18n.getString("CL_VALENCY"), 80);
+        this.tblElements.addColumn(res_i18n.getString("CL_MASS_SHARE"), 74);
+        this.tblElements.addColumn(res_i18n.getString("CL_COMPONENT"), 74);
+        this.tblElements.setToolTipText(res_i18n.getString("CL_DETAILS_DBLCLICK"));
 
         this.tsProperties.setLayout(null);
         this.tsProperties.add(this.Label3);
@@ -158,7 +159,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
                 "(" + AuxUtils.FloatToStr(compound.Factor) + ")" + compound.Formula
             };
             
-            this.ListView1.addRow(rowData);
+            this.tblElements.addRow(rowData);
             
             /*ListViewItem item = this.ListView1.Items.Add(elem.Symbol);
 
@@ -178,7 +179,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         try {
             this.fCompoundMaster.analyseFull(this.eFormula.getText(), AuxUtils.ParseInt(this.seCharge.getText(), 0));
 
-            this.ListView1.clear();
+            this.tblElements.clear();
 
             if (this.fCompoundMaster.getCompoundCount() > 0) {
                 for (int i = 0; i < this.fCompoundMaster.getCompoundCount(); i++) {
@@ -188,7 +189,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
                 this.showCompound(this.fCompoundMaster);
             }
 
-            this.ListView1.packColumns(10);
+            this.tblElements.packColumns(10);
             
             this.eMolecularMass.setText(CommonUtils.formatFloat(this.fCompoundMaster.getMolecularMass(), 5));
         } catch (Exception ex) {
@@ -208,9 +209,9 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
                 break;
                 
             case VirtualTable.ACTION_DOUBLE_CLICK:
-                if (source == this.ListView1) {
-                    int row = this.ListView1.getSelectedRow();
-                    String eSymbol = (String) this.ListView1.getValueAt(row, 0);
+                if (source == this.tblElements) {
+                    int row = this.tblElements.getSelectedRow();
+                    String eSymbol = (String) this.tblElements.getValueAt(row, 0);
 
                     CLElementViewer elemViewer = new CLElementViewer(eSymbol);
                     elemViewer.setLocationRelativeTo(this);

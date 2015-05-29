@@ -18,8 +18,6 @@
 package chemlab.core.chemical;
 
 import bslib.common.Logger;
-import java.util.ArrayList;
-import java.util.List;
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;
 import javax.measure.unit.Unit;
@@ -44,9 +42,8 @@ public class StoichiometricSolver
         double result = -1;
 
         try {
-            List<Substance> inputs = new ArrayList<>();
-            List<Substance> outputs = new ArrayList<>();
-            
+            int inputs = 0;
+            int outputs = 0;
             double minMoles = Double.MAX_VALUE;
             for (int i = 0; i < fReaction.getSubstanceCount(); i++) {
                 Substance substance = fReaction.getSubstance(i);
@@ -54,28 +51,23 @@ public class StoichiometricSolver
                 
                 switch (params.Type) {
                     case Input:
-                        inputs.add(substance);
+                        inputs++;
                         double moles = calculateSource(substance);
-                        if (minMoles > moles) {
-                            minMoles = moles;
-                        }
+                        minMoles = Math.min(minMoles, moles);
                         break;
 
                     case Output:
-                        outputs.add(substance);
+                        outputs++;
                         break;
                 }
             }
             
-            if (inputs.size() <= 0 || outputs.size() <= 0) {
+            if (inputs <= 0 || outputs <= 0) {
                 return -1;
-            } else if (inputs.size() == 1) {
-                
-            } else {
-                // избыток-недостаток!
             }
 
-            for (Substance targetSubst : outputs) {
+            for (int i = 0; i < fReaction.getSubstanceCount(); i++) {
+                Substance targetSubst = fReaction.getSubstance(i);
                 result = calculateTarget(minMoles, targetSubst);
             }
         } catch (Exception ex) {

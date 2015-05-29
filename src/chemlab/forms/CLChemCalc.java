@@ -18,6 +18,7 @@
 package chemlab.forms;
 
 import bslib.common.FramesHelper;
+import bslib.components.ComboItem;
 import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.Substance;

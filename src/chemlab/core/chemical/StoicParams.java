@@ -71,6 +71,7 @@ public class StoicParams
     {
         this.Type = ParamType.None;
         this.Mode = InputMode.imSolid_M;
+        this.ResultUnit = ChemUnits.GRAM;
     }
     
     @Override
@@ -105,6 +106,7 @@ public class StoicParams
                     break;
 
                 case imGas_Out:
+                    str.append("Pressure: ").append(Pressure).append(", Temperature: ").append(Temperature);
                     break;
 
                 default:

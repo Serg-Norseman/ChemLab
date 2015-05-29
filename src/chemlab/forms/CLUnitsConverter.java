@@ -1,5 +1,6 @@
 package chemlab.forms;
 
+import bslib.components.ComboItem;
 import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.DimensionsList;
 import chemlab.core.controls.MeasureBox;

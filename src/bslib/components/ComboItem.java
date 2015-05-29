@@ -1,13 +1,12 @@
-package chemlab.forms;
+package bslib.components;
 
 /**
  * @author Serg V. Zhdanovskih
- * @since 0.6.0
  */
 public class ComboItem
 {
-    public String Caption;
-    public Object Data;
+    public final String Caption;
+    public final Object Data;
 
     public ComboItem(String caption, Object data)
     {

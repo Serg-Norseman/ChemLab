@@ -18,6 +18,7 @@
 package chemlab.forms;
 
 import bslib.common.FramesHelper;
+import bslib.components.ComboItem;
 import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
@@ -435,21 +436,56 @@ public class CLSubstanceInput extends JDialog
         
         switch (this.fParams.Mode) {
             case imSolid_M:
+                this.rbSolidByMass.setSelected(false);
+                this.rbSolidByMass.doClick();
+
+                this.txtMass.setMeasure(this.fParams.Mass);
                 break;
             
             case imSolid_V_D:
+                this.rbSolidByVD.setSelected(false);
+                this.rbSolidByVD.doClick();
+
+                this.txtVolume.setMeasure(this.fParams.Volume);
+                this.txtDensity.setMeasure(this.fParams.Density);
                 break;
             
             case imLiquid_M:
+                this.rbLiquidByM.setSelected(false);
+                this.rbLiquidByM.doClick();
+                
+                txtLiqVolume.setMeasure(this.fParams.Volume);
+                txtConcM.setText(String.valueOf(this.fParams.ConcM));
                 break;
             
             case imLiquid_MP_D:
+                this.rbLiquidByMP.setSelected(false);
+                this.rbLiquidByMP.doClick();
+                
+                txtLiqVolume.setMeasure(this.fParams.Volume);
+                txtMP.setText(String.valueOf(this.fParams.MassPercent));
+                txtLiqDensity.setMeasure(this.fParams.Density);
                 break;
             
             case imGas_In:
+                chkSTP.setSelected(!this.fParams.isSTP);
+                chkSTP.doClick();
+
+                if (!chkSTP.isSelected()) {
+                    txtGasPressure.setMeasure(this.fParams.Pressure);
+                    txtGasVolume.setMeasure(this.fParams.Volume);
+                    txtGasTemperature.setMeasure(this.fParams.Temperature);
+                } else {
+                    txtGasVolume.setMeasure(this.fParams.Volume);
+                }
                 break;
 
             case imGas_Out:
+                chkSTP.setSelected(!this.fParams.isSTP);
+                chkSTP.doClick();
+
+                txtGasPressure.setMeasure(this.fParams.Pressure);
+                txtGasTemperature.setMeasure(this.fParams.Temperature);
                 break;
         }
     }

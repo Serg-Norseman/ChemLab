@@ -1,6 +1,6 @@
 # ChemLab
 
-This program - developed as a pilot project in school in 1995-1998.
+This program - developed as a pilot project in 1995-1998.
 It has the following features:
 - Periodic table and a lot of different information about the elements, including the visualization of spectra and 
 the electron clouds of atoms and tree view of radioactive decay of nuclides;
@@ -13,4 +13,4 @@ the electron clouds of atoms and tree view of radioactive decay of nuclides;
 
 The project was shelved until this year. In 2015 was converted from Delphi to Java and modernized. 
 
-Interface language - Russian.
+Interface language - russian and english (localization unfinished).

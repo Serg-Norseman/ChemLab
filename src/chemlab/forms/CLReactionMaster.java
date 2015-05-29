@@ -19,7 +19,7 @@ package chemlab.forms;
 
 import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
-import bslib.common.StringHelper;
+import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.ChemUtils;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.StoicParams;
@@ -34,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -57,6 +58,8 @@ import javax.swing.table.TableCellRenderer;
  */
 public final class CLReactionMaster extends JFrame implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private JLabel Label1;
     private JTextField eEquation;
     private JLabel Label2;
@@ -64,7 +67,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
     private JButton btnAnalysis;
     private JTabbedPane PageControl;
     private JPanel panSubstances;
-    private VirtualTable tblCompounds;
+    private VirtualTable tblSubstances;
     private JPanel panProperties;
     private VirtualTable tblProperties;
     private JPanel panStoichiometry;
@@ -95,7 +98,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.btnAnalysis = new JButton();
         this.PageControl = new JTabbedPane();
         this.panSubstances = new JPanel();
-        this.tblCompounds = new VirtualTable();
+        this.tblSubstances = new VirtualTable();
         this.panProperties = new JPanel();
         this.tblProperties = new VirtualTable();
         this.panStoichiometry = new JPanel();
@@ -107,9 +110,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         FramesHelper.setClientSize(this, 800, 400);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
-        this.setTitle("Мастер реакций");
+        this.setTitle(res_i18n.getString("CL_REACTION_MASTER"));
 
-        Label1.setText("Уравнение реакции");
+        Label1.setText(res_i18n.getString("CL_EQUATION"));
         Label1.setLocation(8, 8);
         Label1.setSize(150, 15);
 
@@ -120,7 +123,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         eEquation.setSize(582, 20);
         //eEquation.TextChanged += this.EqChanged;
 
-        Label2.setText("Температура");
+        Label2.setText(res_i18n.getString("CL_TEMPERATURE"));
         Label2.setLocation(597, 8);
         Label2.setSize(94, 15);
 
@@ -130,7 +133,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         cbTemperature.setSize(90, 20);
         cbTemperature.setEditable(true);
 
-        this.btnAnalysis.setText("Анализ");
+        this.btnAnalysis.setText(res_i18n.getString("CL_ANALYSIS"));
         this.btnAnalysis.setLocation(698, 21);
         this.btnAnalysis.setSize(94, 25);
         this.btnAnalysis.addActionListener(this);
@@ -140,47 +143,47 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.PageControl.setSize(784, 312);
 
         this.panSubstances.setLayout(new BorderLayout());
-        this.panSubstances.add(this.tblCompounds, BorderLayout.CENTER);
-        this.PageControl.addTab("Реагенты", this.panSubstances);
+        this.panSubstances.add(this.tblSubstances, BorderLayout.CENTER);
+        this.PageControl.addTab(res_i18n.getString("CL_SUBSTANCES"), this.panSubstances);
 
-        tblCompounds.setLocation(0, 0);
-        tblCompounds.setSize(583, 285);
-        tblCompounds.addActionListener(this);
-        tblCompounds.addColumn("Коэффициент", 88);
-        tblCompounds.addColumn("Соединение", 88);
-        tblCompounds.addColumn("Молек. масса", 88);
-        tblCompounds.addColumn("Тип", 57);
-        tblCompounds.addColumn("Cp°", 59);
-        tblCompounds.addColumn("S°", 59);
-        tblCompounds.addColumn("dH°", 59);
-        tblCompounds.addColumn("dG°", 59);
+        tblSubstances.setLocation(0, 0);
+        tblSubstances.setSize(583, 285);
+        tblSubstances.addActionListener(this);
+        tblSubstances.addColumn(res_i18n.getString("CL_FACTOR"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_COMPOUND"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_MOLAR_MASS"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_TYPE"), 57);
+        tblSubstances.addColumn("Cp°", 59);
+        tblSubstances.addColumn("S°", 59);
+        tblSubstances.addColumn("dH°", 59);
+        tblSubstances.addColumn("dG°", 59);
 
         this.panProperties.setLayout(new BorderLayout());
         this.panProperties.add(this.tblProperties, BorderLayout.CENTER);
-        this.PageControl.addTab("Свойства", this.panProperties);
+        this.PageControl.addTab(res_i18n.getString("CL_PROPERTIES"), this.panProperties);
 
         tblProperties.setLocation(0, 0);
         tblProperties.setSize(583, 285);
 
-        tblProperties.addColumn("Величина", 231);
-        tblProperties.addColumn("Значение", 139);
-        tblProperties.addColumn("Размерность", 92);
+        tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
+        tblProperties.addColumn(res_i18n.getString("CL_VALUE"), 139);
+        tblProperties.addColumn(res_i18n.getString("CL_UNIT"), 92);
 
         JPanel panStoicToolbar = new JPanel();
         panStoicToolbar.setLayout(new BoxLayout(panStoicToolbar, BoxLayout.LINE_AXIS));
 
         JButton btnSetInput = new JButton();
-        btnSetInput.setText("Задать исходные данные");
+        btnSetInput.setText(res_i18n.getString("CL_SET_SOURCE"));
         btnSetInput.setActionCommand("SET_INPUT");
         btnSetInput.addActionListener(this);
 
         JButton btnSetOutput = new JButton();
-        btnSetOutput.setText("Задать выходные данные");
+        btnSetOutput.setText(res_i18n.getString("CL_SET_TARGET"));
         btnSetOutput.setActionCommand("SET_OUTPUT");
         btnSetOutput.addActionListener(this);
 
         JButton btnSolve = new JButton();
-        btnSolve.setText("Расчет");
+        btnSolve.setText(res_i18n.getString("CL_SOLVE"));
         btnSolve.setActionCommand("ST_SOLVE");
         btnSolve.addActionListener(this);
         
@@ -188,17 +191,16 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         panStoicToolbar.add(btnSetOutput);
         panStoicToolbar.add(btnSolve);
 
-        
         StoichiometryTableModel model = new StoichiometryTableModel(tblStoichiometry);
         tblStoichiometry.setTableModel(model);
         tblStoichiometry.setEditable(true);
-        tblStoichiometry.addColumn("[К] Соединение", 88);
-        tblStoichiometry.addColumn("Молек. масса", 88);
-        tblStoichiometry.addColumn("Тип", 57);
-        tblStoichiometry.addColumn("Состояние", 57);
-        tblStoichiometry.addColumn("Вх/Вых", 57);
-        tblStoichiometry.addColumn("Данные", 57);
-        tblStoichiometry.addColumn("Результат", 57);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_F_COMPOUND"), 88);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_MOLAR_MASS"), 88);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_TYPE"), 57);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_STATE"), 57);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_IO"), 57);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_DATA"), 57);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_RESULT"), 57);
         
         tblStoichiometry.addMouseListener(new MouseAdapter()
         {
@@ -218,7 +220,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.panStoichiometry.setLayout(new BorderLayout());
         this.panStoichiometry.add(panStoicToolbar, BorderLayout.NORTH);
         this.panStoichiometry.add(this.tblStoichiometry, BorderLayout.CENTER);
-        this.PageControl.addTab("Стехиометрия", this.panStoichiometry);
+        this.PageControl.addTab(res_i18n.getString("CL_STOICHIOMETRY"), this.panStoichiometry);
         
         JMenuItem miSetInput = new JMenuItem();
         miSetInput.setText("Задать исходные данные");
@@ -294,7 +296,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
     private void updateTables()
     {
         try {
-            this.tblCompounds.clear();
+            this.tblSubstances.clear();
             
             for (int i = 0; i < this.fReactionMaster.getSubstanceCount(); i++) {
                 Substance substance = this.fReactionMaster.getSubstance(i);
@@ -320,7 +322,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                     CommonUtils.formatFloat(substance.getSMF_Gibbs_Energy(), 3)
                 };
 
-                this.tblCompounds.addRow(rowData);
+                this.tblSubstances.addRow(rowData);
 
                 /*ListViewItem item = this.lvCompounds.Items.Add(AuxUtils.FloatToStr(substance.Factor));
                  item.SubItems.Add(substance.Formula);
@@ -331,10 +333,10 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                  item.SubItems.Add(CLData.formatFloat(substance.getSMF_Enthalpy(), 3));
                  item.SubItems.Add(CLData.formatFloat(substance.getSMF_Gibbs_Energy(), 3));*/
             }
-            this.tblCompounds.packColumns(10);
+            this.tblSubstances.packColumns(10);
 
             this.tblProperties.clear();
-            this.addProperty("Тип реакции", this.fReactionMaster.getReactionType().name(), "");
+            this.addProperty(res_i18n.getString("CL_REACTION_TYPE"), this.fReactionMaster.getReactionType().name(), "");
             this.addProperty(ChemUtils.rs_ReagentsMass, CommonUtils.formatFloat(this.fReactionMaster.getSourceMass(), 5), "");
             this.addProperty(ChemUtils.rs_ProductsMass, CommonUtils.formatFloat(this.fReactionMaster.getProductMass(), 5), "");
             this.addProperty("dH° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Enthalpy(), 3), "кДж");
@@ -410,27 +412,36 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
     private void solve()
     {
-        String source = null;
-        String target = null;
+        boolean hasSourceData = false;
+        boolean hasTargetData = false;
         for (int i = 0; i < this.fReactionMaster.getSubstanceCount(); i++) {
             Substance substance = this.fReactionMaster.getSubstance(i);
             StoicParams params = substance.getStoicParams();
             
             if (params != null) {
-                if (params.Type == StoicParams.ParamType.Input) {
-                    source = substance.Formula;
-                }
-                if (params.Type == StoicParams.ParamType.Output) {
-                    target = substance.Formula;
+                switch (params.Type) {
+                    case None:
+                        params.Type = StoicParams.ParamType.Output;
+                        params.Mode = StoicParams.InputMode.imSolid_M;
+                        params.ResultUnit = ChemUnits.GRAM;
+                        hasTargetData = true;
+                        break;
+
+                    case Input:
+                        hasSourceData = true;
+                        break;
+
+                    case Output:
+                        hasTargetData = true;
+                        break;
                 }
             }
         }
         
-        if (!StringHelper.isNullOrEmpty(source) && !StringHelper.isNullOrEmpty(target)) {
+        if (hasSourceData && hasTargetData) {
             double result = this.fStoichiometricSolver.calculate();
             if (result < 0) {
                 JOptionPane.showMessageDialog(null, "Error");
-                //Answer.setText("Error");
             } else {
                 this.updateStoic();
             }
@@ -451,9 +462,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                 break;
 
             case VirtualTable.ACTION_DOUBLE_CLICK:
-                if (source == this.tblCompounds) {
-                    int row = this.tblCompounds.getSelectedRow();
-                    String formula = (String) this.tblCompounds.getValueAt(row, 1);
+                if (source == this.tblSubstances) {
+                    int row = this.tblSubstances.getSelectedRow();
+                    String formula = (String) this.tblSubstances.getValueAt(row, 1);
 
                     CLCompoundMaster compoundMaster = new CLCompoundMaster();
                     compoundMaster.setLocationRelativeTo(this);

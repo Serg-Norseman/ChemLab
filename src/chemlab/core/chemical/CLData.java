@@ -33,6 +33,7 @@ public class CLData
     public static String[] ElementABProperty;
     public static DecayModeRecord[] DecayMode;
     public static String[] SubstanceStates;
+    public static String[] SubstanceStateSigns;
 
     public static AllotropeRecord[] dbAllotropes;
 
@@ -97,6 +98,7 @@ public class CLData
         CLData.DecayMode = decays;
 
         CLData.SubstanceStates = new String[]{"Твердое тело", "Жидкость", "Газ", "Ион"};
+        CLData.SubstanceStateSigns = new String[]{" (s)", " (l)", " (g)", " (i)"};
 
         BondKinds = new char[]{'S', 'D', 'T', 'C', 'Q'};
 

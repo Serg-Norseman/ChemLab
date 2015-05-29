@@ -1,7 +1,7 @@
 package chemlab.core.controls;
 
+import bslib.components.ComboItem;
 import chemlab.core.chemical.ChemUnits;
-import chemlab.forms.ComboItem;
 import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -163,6 +163,23 @@ public class MeasureBox extends JPanel implements ActionListener, PropertyChange
         }
     }
 
+    public final void setSelectedUnit(Unit<?> value)
+    {
+        if (value == null) {
+            fUnitChooser.setSelectedItem(null);
+            return;
+        }
+        
+        for (int i = 0; i < fUnitChooser.getItemCount(); i++) {
+            Object item = fUnitChooser.getItemAt(i);
+            Unit<?> unit = (Unit<?>) ((ComboItem) item).Data;
+            if (unit == value) {
+                fUnitChooser.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+    
     public final Measure<Double, ?> getMeasure()
     {
         Unit<?> unit = this.getSelectedUnit();
@@ -186,6 +203,16 @@ public class MeasureBox extends JPanel implements ActionListener, PropertyChange
         return result;
     }
 
+    public final void setMeasure(Measure<Double, ?> value)
+    {
+        if (value == null) {
+            return;
+        }
+        
+        this.setValue(value.getValue());
+        this.setSelectedUnit(value.getUnit());
+    }
+    
     /**
      * Adds an <code>ActionListener</code>.
      * <p>

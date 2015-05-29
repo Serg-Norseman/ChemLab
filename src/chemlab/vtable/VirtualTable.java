@@ -127,6 +127,12 @@ public class VirtualTable extends JPanel
         return this.fTable;
     }
     
+    @Override
+    public void setToolTipText(String text)
+    {
+        fTable.setToolTipText(text);
+    }
+    
     public void setReorderingAllowed(boolean reorderingAllowed)
     {
         this.fTable.getTableHeader().setReorderingAllowed(reorderingAllowed);
