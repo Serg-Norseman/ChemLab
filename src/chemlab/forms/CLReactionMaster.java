@@ -19,6 +19,7 @@ package chemlab.forms;
 
 import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
+import chemlab.core.chemical.ChemDraw;
 import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.ChemUtils;
 import chemlab.core.chemical.ReactionSolver;
@@ -28,7 +29,6 @@ import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.ThermodynamicSolver;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -36,20 +36,17 @@ import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -121,7 +118,28 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         eEquation.setText("K2O + HNO3 = KNO3 + H2O");
         eEquation.setLocation(8, 23);
         eEquation.setSize(582, 20);
-        //eEquation.TextChanged += this.EqChanged;
+        
+        // TODO: debug, remove
+        eEquation.getDocument().addDocumentListener(new DocumentListener()
+        {
+            @Override
+            public void insertUpdate(DocumentEvent e)
+            {
+                setTitle(ChemDraw.textToChem(eEquation.getText()));
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e)
+            {
+                setTitle(ChemDraw.textToChem(eEquation.getText()));
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e)
+            {
+                setTitle(ChemDraw.textToChem(eEquation.getText()));
+            }
+        });
 
         Label2.setText(res_i18n.getString("CL_TEMPERATURE"));
         Label2.setLocation(597, 8);
@@ -146,8 +164,6 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.panSubstances.add(this.tblSubstances, BorderLayout.CENTER);
         this.PageControl.addTab(res_i18n.getString("CL_SUBSTANCES"), this.panSubstances);
 
-        tblSubstances.setLocation(0, 0);
-        tblSubstances.setSize(583, 285);
         tblSubstances.addActionListener(this);
         tblSubstances.addColumn(res_i18n.getString("CL_FACTOR"), 88);
         tblSubstances.addColumn(res_i18n.getString("CL_COMPOUND"), 88);
@@ -162,9 +178,6 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.panProperties.add(this.tblProperties, BorderLayout.CENTER);
         this.PageControl.addTab(res_i18n.getString("CL_PROPERTIES"), this.panProperties);
 
-        tblProperties.setLocation(0, 0);
-        tblProperties.setSize(583, 285);
-
         tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
         tblProperties.addColumn(res_i18n.getString("CL_VALUE"), 139);
         tblProperties.addColumn(res_i18n.getString("CL_UNIT"), 92);
@@ -172,18 +185,15 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         JPanel panStoicToolbar = new JPanel();
         panStoicToolbar.setLayout(new BoxLayout(panStoicToolbar, BoxLayout.LINE_AXIS));
 
-        JButton btnSetInput = new JButton();
-        btnSetInput.setText(res_i18n.getString("CL_SET_SOURCE"));
+        JButton btnSetInput = new JButton(res_i18n.getString("CL_SET_SOURCE"));
         btnSetInput.setActionCommand("SET_INPUT");
         btnSetInput.addActionListener(this);
 
-        JButton btnSetOutput = new JButton();
-        btnSetOutput.setText(res_i18n.getString("CL_SET_TARGET"));
+        JButton btnSetOutput = new JButton(res_i18n.getString("CL_SET_TARGET"));
         btnSetOutput.setActionCommand("SET_OUTPUT");
         btnSetOutput.addActionListener(this);
 
-        JButton btnSolve = new JButton();
-        btnSolve.setText(res_i18n.getString("CL_SOLVE"));
+        JButton btnSolve = new JButton(res_i18n.getString("CL_SOLVE"));
         btnSolve.setActionCommand("ST_SOLVE");
         btnSolve.addActionListener(this);
         
@@ -191,9 +201,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         panStoicToolbar.add(btnSetOutput);
         panStoicToolbar.add(btnSolve);
 
-        StoichiometryTableModel model = new StoichiometryTableModel(tblStoichiometry);
-        tblStoichiometry.setTableModel(model);
-        tblStoichiometry.setEditable(true);
+        //StoichiometryTableModel model = new StoichiometryTableModel(tblStoichiometry);
+        //tblStoichiometry.setTableModel(model);
+        //tblStoichiometry.setEditable(true);
         tblStoichiometry.addColumn(res_i18n.getString("CL_F_COMPOUND"), 88);
         tblStoichiometry.addColumn(res_i18n.getString("CL_MOLAR_MASS"), 88);
         tblStoichiometry.addColumn(res_i18n.getString("CL_TYPE"), 57);
@@ -222,18 +232,15 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.panStoichiometry.add(this.tblStoichiometry, BorderLayout.CENTER);
         this.PageControl.addTab(res_i18n.getString("CL_STOICHIOMETRY"), this.panStoichiometry);
         
-        JMenuItem miSetInput = new JMenuItem();
-        miSetInput.setText("Задать исходные данные");
+        JMenuItem miSetInput = new JMenuItem(res_i18n.getString("CL_SET_SOURCE"));
         miSetInput.setActionCommand("SET_INPUT");
         miSetInput.addActionListener(this);
 
-        JMenuItem miSetOutput = new JMenuItem();
-        miSetOutput.setText("Задать выходные данные");
+        JMenuItem miSetOutput = new JMenuItem(res_i18n.getString("CL_SET_TARGET"));
         miSetOutput.setActionCommand("SET_OUTPUT");
         miSetOutput.addActionListener(this);
 
-        JMenuItem miSolve = new JMenuItem();
-        miSolve.setText("Расчет");
+        JMenuItem miSolve = new JMenuItem(res_i18n.getString("CL_SOLVE"));
         miSolve.setActionCommand("ST_SOLVE");
         miSolve.addActionListener(this);
         
@@ -249,15 +256,6 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.add(this.PageControl);
         
         CommonUtils.changeFont(this);
-    }
-
-    public void EqChanged(Object sender)
-    {
-        /*try {
-            Graphics gr = Graphics.FromHwnd(this.Handle);
-            CLCommon.ChemTextOut(gr, this.Font, ExtRect.Create(8, 377, 607, 400), eEquation.Text);
-        } catch (Exception ex) {
-        }*/
     }
 
     public final void actAnalysis()
@@ -278,7 +276,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                         this.fThermodynamicSolver.setTemperature((float) AuxUtils.ParseFloat(temp, 0));
                     }
                 } catch (ParseException ex) {
-                    throw new Exception("Ошибка формата температуры");
+                    throw new Exception(res_i18n.getString("CL_TEMPERATURE_FORMAT_INVALID"));
                 }
                 this.fThermodynamicSolver.calculate();
                 
@@ -289,7 +287,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                 super.setEnabled(true);
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "ChemLab", JOptionPane.ERROR_MESSAGE);
+            CommonUtils.showError(this, ex.getMessage());
         }
     }
 
@@ -337,8 +335,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
             this.tblProperties.clear();
             this.addProperty(res_i18n.getString("CL_REACTION_TYPE"), this.fReactionMaster.getReactionType().name(), "");
-            this.addProperty(ChemUtils.rs_ReagentsMass, CommonUtils.formatFloat(this.fReactionMaster.getSourceMass(), 5), "");
-            this.addProperty(ChemUtils.rs_ProductsMass, CommonUtils.formatFloat(this.fReactionMaster.getProductMass(), 5), "");
+            this.addProperty(res_i18n.getString("CL_DIRECTION"), this.fReactionMaster.getReactionDirection().name(), "");
+            this.addProperty(res_i18n.getString("CL_REACTANTS_MASS"), CommonUtils.formatFloat(this.fReactionMaster.getSourceMass(), 5), "");
+            this.addProperty(res_i18n.getString("CL_PRODUCTS_MASS"), CommonUtils.formatFloat(this.fReactionMaster.getProductMass(), 5), "");
             this.addProperty("dH° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Enthalpy(), 3), "кДж");
             this.addProperty("dS° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Entropy(), 3), "Дж/К");
             this.addProperty("dG° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Gibbs_Energy(), 3), "кДж");
@@ -351,7 +350,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             
             this.updateStoic();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "ChemLab", JOptionPane.ERROR_MESSAGE);
+            CommonUtils.showError(this, ex.getMessage());
         }
     }
 
@@ -393,7 +392,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             }
             this.tblStoichiometry.packColumns(10);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "ChemLab", JOptionPane.ERROR_MESSAGE);
+            CommonUtils.showError(this, ex.getMessage());
         }
     }
     
@@ -441,12 +440,12 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         if (hasSourceData && hasTargetData) {
             double result = this.fStoichiometricSolver.calculate();
             if (result < 0) {
-                JOptionPane.showMessageDialog(null, "Error");
+                CommonUtils.showError(this, "Error");
             } else {
                 this.updateStoic();
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Не заданы исходное и расчитываемое вещества");
+            CommonUtils.showError(this, res_i18n.getString("CL_INPUT_OUTPUT_SUBSTANCES_NOT_DEFINED"));
         }
     }
 
@@ -477,7 +476,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             case "SET_INPUT": {
                 int row = this.tblStoichiometry.getSelectedRow();
                 if (row < 0) {
-                    JOptionPane.showMessageDialog(null, "Не выбрано вещество");
+                    CommonUtils.showError(this, res_i18n.getString("CL_SUBSTANCE_NOT_SELECTED"));
                 } else {
                     Substance substance = this.fReactionMaster.getSubstance(row);
                     substance.getStoicParams().Type = StoicParams.ParamType.Input;
@@ -493,7 +492,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             case "SET_OUTPUT": {
                 int row = this.tblStoichiometry.getSelectedRow();
                 if (row < 0) {
-                    JOptionPane.showMessageDialog(null, "Не выбрано вещество");
+                    CommonUtils.showError(this, res_i18n.getString("CL_SUBSTANCE_NOT_SELECTED"));
                 } else {
                     Substance substance = this.fReactionMaster.getSubstance(row);
                     substance.getStoicParams().Type = StoicParams.ParamType.Output;
@@ -513,7 +512,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         }
     }
     
-    private class StoichiometryTableModel extends DefaultTableModel
+    /*private class StoichiometryTableModel extends DefaultTableModel
     {
         private final VirtualTable fTable;
 
@@ -560,5 +559,5 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         {
             super(new JComboBox(items));
         }
-    }
+    }*/
 }

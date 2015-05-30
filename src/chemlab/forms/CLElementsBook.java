@@ -4,8 +4,8 @@ import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
 import bslib.common.ImageHelper;
 import bslib.common.Logger;
-import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.AtomSolver;
+import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.CrystalKind;
 import chemlab.core.chemical.DegreeId;
 import chemlab.core.chemical.DegreeSet;
@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -46,6 +47,8 @@ import javax.swing.JToolBar;
  */
 public final class CLElementsBook extends JFrame implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private JTabbedPane PageControl;
     private JPanel tsTables;
     private JPanel tsInfo;

@@ -20,6 +20,7 @@ package chemlab.forms;
 import bslib.common.FramesHelper;
 import java.awt.Component;
 import java.awt.Font;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -42,5 +43,10 @@ public class CommonUtils
     {
         String fmt = "%5." + String.valueOf(decimals) + "f";
         return String.format(fmt, value);
+    }
+    
+    public static final void showError(Component parent, String message)
+    {
+        JOptionPane.showMessageDialog(parent, message, "ChemLab", JOptionPane.ERROR_MESSAGE);
     }
 }

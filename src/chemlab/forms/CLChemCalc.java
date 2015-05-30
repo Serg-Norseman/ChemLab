@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Pressure;
@@ -63,6 +64,8 @@ public class CLChemCalc extends JDialog
         Pressure, Volume, Temperature, Density
     }
     
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private Substance fSubstance;
     private StoicParams fParams;
     private boolean fIsInputSubst;

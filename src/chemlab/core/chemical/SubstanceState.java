@@ -5,7 +5,8 @@ public enum SubstanceState
     Solid,
     Liquid,
     Gas,
-    Ion;
+    Ion,
+    Plasma;
 
     public int getValue()
     {

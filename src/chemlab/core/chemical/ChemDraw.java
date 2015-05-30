@@ -34,7 +34,8 @@ public class ChemDraw
     private static final String SND = ". ,;(*";
     private static final String PM = "+-";
     private static final String SNA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-)";
-
+    private static final char[] SUB_INDEXES = new char[]{'₀','₁','₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'};
+    
     private static int drawTextSlice(Graphics canvas, Font font, /*Brush brush, */String s, int x, int y)
     {
         canvas.setFont(font);
@@ -106,5 +107,41 @@ public class ChemDraw
 
             i++;
         }
+    }
+
+    public static String textToChem(String text)
+    {
+        if (StringHelper.isNullOrEmpty(text)) {
+            return "";
+        }
+
+        StringBuilder res = new StringBuilder(text);
+        
+        boolean subNos = false;
+        int i = 0;
+        while (i < res.length()) {
+            char sym = res.charAt(i);
+
+            if (ChemDraw.SNE.indexOf(sym) >= 0) {
+                subNos = true;
+            }
+            if (ChemDraw.SND.indexOf(sym) >= 0) {
+                subNos = false;
+            }
+
+            if (CLData.DecimNumbers.indexOf(sym) >= 0) {
+                while (i < res.length() && CLData.DecimNumbers.indexOf(res.charAt(i)) >= 0) {
+                    if (subNos) {
+                        int n = ((int) res.charAt(i)) - 48;
+                        res.setCharAt(i, SUB_INDEXES[n]);
+                    }
+                    i++;
+                }
+            }
+
+            i++;
+        }
+        
+        return res.toString();
     }
 }

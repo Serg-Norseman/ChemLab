@@ -291,12 +291,17 @@ public class ReactionSolver extends BaseObject
                 return ReactionType.DoubleReplacement;
             }
         } else if (reactants.size() == 1) {
-            if (!reactants.get(0).isElement()) // 1 compound
-            {
+            if (!reactants.get(0).isElement()) {
+                // 1 compound
                 return ReactionType.Decomposition;
             }
         }
 
         return ReactionType.Unknown;
+    }
+    
+    public final ReactionDirection getReactionDirection()
+    {
+        return ReactionDirection.Unknown;
     }
 }

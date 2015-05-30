@@ -3,8 +3,8 @@ package chemlab.forms;
 import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
 import chemlab.core.chemical.CLData;
-import chemlab.refbooks.UnitRecord;
 import chemlab.core.chemical.ValueId;
+import chemlab.refbooks.UnitRecord;
 import chemlab.refbooks.ValueRecord;
 import chemlab.vtable.VTableModel;
 import chemlab.vtable.VirtualTable;
@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,6 +25,8 @@ import javax.swing.JSplitPane;
  */
 public final class CLValuesBook extends JFrame implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private JSplitPane splitPane;
     private JPanel gbValues;
     private JPanel gbUnits;

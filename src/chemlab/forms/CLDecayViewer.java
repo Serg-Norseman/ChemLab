@@ -4,6 +4,7 @@ import bslib.common.FramesHelper;
 import chemlab.core.controls.decay.DecayViewer;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.ResourceBundle;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
@@ -13,6 +14,8 @@ import javax.swing.JScrollPane;
  */
 public final class CLDecayViewer extends JFrame
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private final DecayViewer fDecayViewer;
 
     public CLDecayViewer(String nuclide)

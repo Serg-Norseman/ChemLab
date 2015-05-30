@@ -6,6 +6,7 @@ import chemlab.core.chemical.CLData;
 import chemlab.refbooks.ElementRecord;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
+import java.util.ResourceBundle;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -15,6 +16,8 @@ import javax.swing.WindowConstants;
  */
 public final class CLElementViewer extends JFrame
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private VirtualTable lvElement;
 
     public CLElementViewer(String eSymbol)

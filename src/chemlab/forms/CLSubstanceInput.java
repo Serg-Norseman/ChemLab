@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Pressure;
@@ -59,6 +60,8 @@ import javax.swing.JTextField;
  */
 public class CLSubstanceInput extends JDialog
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private final Substance fSubstance;
     private StoicParams fParams;
     private final boolean fIsInputSubst;

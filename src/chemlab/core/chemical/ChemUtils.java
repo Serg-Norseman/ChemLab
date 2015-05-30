@@ -14,8 +14,6 @@ public class ChemUtils
     public static final String rs_AllComponents = "Все компоненты";
     public static final String rs_SubstReagent = "реагент";
     public static final String rs_SubstProduct = "продукт";
-    public static final String rs_ReagentsMass = "Масса реагентов";
-    public static final String rs_ProductsMass = "Масса продуктов";
     public static final String rs_MolsInc = "Приращение числа молей";
     public static final String rs_BCFirstApproximation = "K(реакц., первое прибл.)";
     public static final String rs_BCSecondApproximation = "K(реакц., второе прибл.)";

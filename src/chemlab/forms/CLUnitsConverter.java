@@ -26,9 +26,7 @@ public final class CLUnitsConverter extends JFrame implements ActionListener
 {
     private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
 
-    MeasureBox srcPanel, targetPanel;
-    JPanel mainPane;
-    JPanel valPane;
+    MeasureBox fSourceMeasure, fTargetMeasure;
     JComboBox cmbDimensions;
     private boolean fDimChanging;
 
@@ -36,8 +34,8 @@ public final class CLUnitsConverter extends JFrame implements ActionListener
     {
         super();
         
-        valPane = new JPanel();
-        valPane.setBorder(BorderFactory.createCompoundBorder(
+        JPanel valPanel = new JPanel();
+        valPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(res_i18n.getString("CL_DIMENSION")),
                 BorderFactory.createEmptyBorder(3, 3, 3, 3)));
         
@@ -48,34 +46,34 @@ public final class CLUnitsConverter extends JFrame implements ActionListener
         }
         cmbDimensions.setSelectedIndex(0);
         cmbDimensions.addActionListener(this);
-        valPane.add(cmbDimensions);
+        valPanel.add(cmbDimensions);
         
-        srcPanel = new MeasureBox(res_i18n.getString("CL_SOURCE_DATA"), ChemUnits.KILOPASCAL);
-        targetPanel = new MeasureBox(res_i18n.getString("CL_CALC_DATA"), ChemUnits.KILOPASCAL);
+        fSourceMeasure = new MeasureBox(res_i18n.getString("CL_SOURCE_DATA"), ChemUnits.KILOPASCAL);
+        fTargetMeasure = new MeasureBox(res_i18n.getString("CL_CALC_DATA"), ChemUnits.KILOPASCAL);
 
-        srcPanel.addActionListener(this);
-        targetPanel.addActionListener(this);
+        fSourceMeasure.addActionListener(this);
+        fTargetMeasure.addActionListener(this);
         
-        mainPane = new JPanel();
-        mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.PAGE_AXIS));
-        mainPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        mainPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        mainPane.add(valPane);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        mainPanel.add(valPanel);
 
-        mainPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        mainPane.add(srcPanel);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        mainPanel.add(fSourceMeasure);
         
-        mainPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        mainPane.add(targetPanel);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        mainPanel.add(fTargetMeasure);
         
-        mainPane.add(Box.createGlue());
+        mainPanel.add(Box.createGlue());
 
-        mainPane.setOpaque(true); //content panes must be opaque
+        mainPanel.setOpaque(true);
 
         this.setTitle(res_i18n.getString("CL_UNITS_CONVERTER"));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setContentPane(mainPane);
+        this.setContentPane(mainPanel);
         this.setResizable(false);
         this.pack();
     }
@@ -84,16 +82,16 @@ public final class CLUnitsConverter extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         if (MeasureBox.actionCommand.equals(e.getActionCommand()) && !this.fDimChanging) {
-            Unit<?> targetUnit = targetPanel.getSelectedUnit();
+            Unit<?> targetUnit = fTargetMeasure.getSelectedUnit();
             if (targetUnit != null) {
-                Measure<Double, ?> result = srcPanel.getRequiredMeasure(targetUnit);
-                targetPanel.setValue(result.getValue());
+                Measure<Double, ?> result = fSourceMeasure.getRequiredMeasure(targetUnit);
+                fTargetMeasure.setValue(result.getValue());
             }
         } else if ("comboBoxChanged".equals(e.getActionCommand()) && e.getSource() == cmbDimensions) {
             this.fDimChanging = true;
             Unit<?> baseUnit = (Unit<?>) ((ComboItem) cmbDimensions.getSelectedItem()).Data;
-            srcPanel.setBaseUnit(baseUnit);
-            targetPanel.setBaseUnit(baseUnit);
+            fSourceMeasure.setBaseUnit(baseUnit);
+            fTargetMeasure.setBaseUnit(baseUnit);
             this.fDimChanging = false;
         }
     }

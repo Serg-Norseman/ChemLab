@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -27,6 +28,8 @@ import javax.swing.JToolBar;
  */
 public final class CLMoleculeViewer extends JFrame implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private JMenuBar MainMenu;
     private JMenuItem miFile;
     private JMenuItem miLoad;

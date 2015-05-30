@@ -24,9 +24,9 @@ package chemlab.core.chemical;
  */
 public enum ReactionType
 {
-    Unknown, 
-    Synthesis, 
-    SingleReplacement, 
-    DoubleReplacement, 
-    Decomposition
+    Unknown,
+    Synthesis,
+    Decomposition,
+    SingleReplacement,
+    DoubleReplacement
 }

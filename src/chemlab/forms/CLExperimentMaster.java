@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -31,6 +32,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public final class CLExperimentMaster extends JFrame implements ActionListener, BenchListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private JMenuBar MainMenu;
     private JMenu miFile;
     private JMenuItem miCreate;
