@@ -47,11 +47,15 @@ import org.w3c.dom.NodeList;
  */
 public final class CompoundsBook extends RefBook
 {
+    private static final int VERSION = 2;
+    
     private static final String FILENAME = "/compounds.xml";
     private static final String BACKNAME = "/compounds.bak";
     
     private final ArrayList<CompoundRecord> fList;
     private final HashMap<String, CompoundRecord> fMap;
+    
+    private int fCurrentVer;
     
     public CompoundsBook()
     {
@@ -85,22 +89,68 @@ public final class CompoundsBook extends RefBook
         this.fList.clear();
         this.fMap.clear();
         
+        this.fCurrentVer = 0;
+        
         RefBook.loadFile(AuxUtils.getAppPath() + FILENAME, "compounds", "compound", new IElementLoader<CompoundRecord>()
         {
+            @Override
+            public void processRoot(Element root)
+            {
+                try {
+                    String verAttr = root.getAttribute("version");
+                    fCurrentVer = Integer.parseInt(verAttr);
+                } catch (NumberFormatException ex) {
+                    fCurrentVer = 0;
+                }
+            }
+            
             @Override
             public int load(Element el) throws ParseException
             {
                 CompoundRecord compRec = new CompoundRecord();
                 compRec.Formula = el.getAttribute("formula");
                 
-                Element physEl = getElement(el, "physical");
-                if (physEl != null) {
-                    compRec.Charge = AuxUtils.ParseInt(physEl.getAttribute("charge"), 0);
-                    compRec.Density = AuxUtils.ParseFloat(physEl.getAttribute("density"), 0);
-                    compRec.MolecularMass = AuxUtils.ParseFloat(physEl.getAttribute("mass"), 0);
+                if (fCurrentVer == 1) {
+                    Element physEl = getElement(el, "physical");
+                    if (physEl != null) {
+                        compRec.MolecularMass = AuxUtils.ParseFloat(physEl.getAttribute("mass"), 0);
+                        String st = physEl.getAttribute("state");
+                        double density = AuxUtils.ParseFloat(physEl.getAttribute("density"), 0);
 
-                    String state = physEl.getAttribute("state");
-                    compRec.State = (StringHelper.isNullOrEmpty(state) || state.equals("null")) ? null : SubstanceState.valueOf(SubstanceState.class, state);
+                        SubstanceState state = (StringHelper.isNullOrEmpty(st) || st.equals("null")) ? SubstanceState.Solid : SubstanceState.valueOf(SubstanceState.class, st);
+                        CompoundRecord.PhysicalState ps = compRec.getPhysicalState(state, true);
+                        if (ps != null) {
+                            ps.State = state;
+                            ps.Density = density;
+                        }
+                    }
+                } else {
+                    compRec.MolecularMass = AuxUtils.ParseFloat(el.getAttribute("mass"), 0);
+                    
+                    Element pssEl = getElement(el, "physicals");
+                    if (pssEl != null) {
+                        NodeList nl = pssEl.getChildNodes();
+                        for (int i = 0; i < nl.getLength(); i++) {
+                            Node n = nl.item(i);
+                            if (n instanceof Element) {
+                                Element psEl = (Element) n;
+                                
+                                String st = psEl.getAttribute("state");
+                                double density = AuxUtils.ParseFloat(psEl.getAttribute("density"), 0);
+                                
+                                SubstanceState state = (StringHelper.isNullOrEmpty(st) || st.equals("null")) ? SubstanceState.Solid : SubstanceState.valueOf(SubstanceState.class, st);
+                                CompoundRecord.PhysicalState ps = compRec.getPhysicalState(state, true);
+                                if (ps != null) {
+                                    ps.State = state;
+                                    ps.Density = density;
+
+                                    ps.HeatFormation = AuxUtils.ParseFloat(psEl.getAttribute("HeatFormation"), 0);
+                                    ps.GibbsFreeEnergy = AuxUtils.ParseFloat(psEl.getAttribute("GibbsFreeEnergy"), 0);
+                                    ps.StdEntropy = AuxUtils.ParseFloat(psEl.getAttribute("StdEntropy"), 0);
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 Element namesEl = getElement(el, "names");
@@ -113,6 +163,20 @@ public final class CompoundsBook extends RefBook
                             String lang = nameEl.getAttribute("lang");
                             String value = nameEl.getTextContent();
                             compRec.Names.put(lang, value);
+                        }
+                    }
+                }
+                
+                Element radicalsEl = getElement(el, "radicals");
+                if (radicalsEl != null) {
+                    NodeList nl = radicalsEl.getChildNodes();
+                    for (int i = 0; i < nl.getLength(); i++) {
+                        Node n = nl.item(i);
+                        if (n instanceof Element) {
+                            Element radEl = (Element) n;
+                            String formula = radEl.getAttribute("formula");
+                            int charge = Integer.parseInt(radEl.getAttribute("charge"));
+                            compRec.Radicals.add(new RadicalRecord(formula, charge));
                         }
                     }
                 }
@@ -167,20 +231,36 @@ public final class CompoundsBook extends RefBook
             Element rootElement = doc.createElement("compounds");
             doc.appendChild(rootElement);
 
+            writeAttr(doc, rootElement, "version", String.valueOf(VERSION));
+            
             for (CompoundRecord compRec : this.fList) {
                 Element compElement = doc.createElement("compound");
                 rootElement.appendChild(compElement);
 
                 writeAttr(doc, compElement, "formula", compRec.Formula);
+                writeAttr(doc, compElement, "mass", String.valueOf(compRec.MolecularMass));
 
-                Element physEl = doc.createElement("physical");
-                compElement.appendChild(physEl);
+                //
 
-                writeAttr(doc, physEl, "charge", String.valueOf(compRec.Charge));
-                writeAttr(doc, physEl, "density", String.valueOf(compRec.Density));
-                writeAttr(doc, physEl, "mass", String.valueOf(compRec.MolecularMass));
-                writeAttr(doc, physEl, "state", String.valueOf(compRec.State));
+                Element pssElement = doc.createElement("physicals");
+                compElement.appendChild(pssElement);
+                for (SubstanceState state : SubstanceState.values()) {
+                    if (state != SubstanceState.Ion) {
+                        CompoundRecord.PhysicalState ps = compRec.getPhysicalState(state, false);
+                        if (ps != null) {
+                            Element psEl = doc.createElement("physical");
+                            pssElement.appendChild(psEl);
+                            
+                            writeAttr(doc, psEl, "state", String.valueOf(ps.State));
+                            writeAttr(doc, psEl, "density", String.valueOf(ps.Density));
 
+                            writeAttr(doc, psEl, "HeatFormation", String.valueOf(ps.HeatFormation));
+                            writeAttr(doc, psEl, "GibbsFreeEnergy", String.valueOf(ps.GibbsFreeEnergy));
+                            writeAttr(doc, psEl, "StdEntropy", String.valueOf(ps.StdEntropy));
+                        }
+                    }
+                }
+                                
                 //
 
                 Element namesElement = doc.createElement("names");
@@ -191,6 +271,18 @@ public final class CompoundsBook extends RefBook
                     
                     writeAttr(doc, nameEl, "lang", entry.getKey());
                     nameEl.setTextContent(entry.getValue());
+                }
+
+                //
+
+                Element radicalsElement = doc.createElement("radicals");
+                compElement.appendChild(radicalsElement);
+                for (RadicalRecord rad : compRec.Radicals) {
+                    Element radEl = doc.createElement("radical");
+                    radicalsElement.appendChild(radEl);
+
+                    writeAttr(doc, radEl, "formula", rad.Formula);
+                    writeAttr(doc, radEl, "charge", String.valueOf(rad.Charge));
                 }
             }
 

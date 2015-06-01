@@ -85,6 +85,11 @@ public class NuclidesBook extends RefBook
         RefBook.loadResource("/resources/data/NuclideTable.xml", "nuclides", "nuclide", new IElementLoader<NuclideRecord>()
         {
             @Override
+            public void processRoot(Element root)
+            {                
+            }
+            
+            @Override
             public int load(Element el) throws ParseException
             {
                 NuclideRecord nucRec = new NuclideRecord();

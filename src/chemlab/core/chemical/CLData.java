@@ -127,6 +127,11 @@ public class CLData
         RefBook.loadResource("/resources/data/ValuesTable.xml", "values", "value", new IElementLoader<ValueRecord>()
         {
             @Override
+            public void processRoot(Element root)
+            {                
+            }
+            
+            @Override
             public int load(Element el) throws ParseException
             {
                 String vId = el.getAttribute("ID");
@@ -154,6 +159,11 @@ public class CLData
         RefBook.loadResource("/resources/data/UnitsTable.xml", "units", "unit", new IElementLoader<UnitRecord>()
         {
             @Override
+            public void processRoot(Element root)
+            {                
+            }
+            
+            @Override
             public int load(Element el) throws ParseException
             {
                 String vId = el.getAttribute("ValueID");
@@ -178,6 +188,11 @@ public class CLData
     {
         RefBook.loadResource("/resources/data/DevicesTable.xml", "devices", "device", new IElementLoader<DeviceRecord>()
         {
+            @Override
+            public void processRoot(Element root)
+            {                
+            }
+            
             @Override
             public int load(Element el)
             {

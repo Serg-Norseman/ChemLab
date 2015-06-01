@@ -72,6 +72,11 @@ public class DecayBook extends RefBook
         RefBook.loadResource("/resources/data/DecayTable.xml", "decays", "decay", new IElementLoader<DecayRecord>()
         {
             @Override
+            public void processRoot(Element root)
+            {                
+            }
+            
+            @Override
             public int load(Element el)
             {
                 DecayRecord decRec = new DecayRecord();

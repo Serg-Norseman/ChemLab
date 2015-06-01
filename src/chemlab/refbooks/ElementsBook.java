@@ -17,12 +17,12 @@
  */
 package chemlab.refbooks;
 
-import chemlab.core.chemical.CrystalKind;
-import chemlab.core.chemical.ElementABPropertyId;
-import chemlab.core.chemical.ElementClass;
 import bslib.common.AuxUtils;
 import bslib.common.Logger;
 import bslib.common.StringHelper;
+import chemlab.core.chemical.CrystalKind;
+import chemlab.core.chemical.ElementABPropertyId;
+import chemlab.core.chemical.ElementClass;
 import java.text.ParseException;
 import java.util.ArrayList;
 import org.w3c.dom.Element;
@@ -93,6 +93,11 @@ public final class ElementsBook extends RefBook
     {
         RefBook.loadResource("/resources/data/ElementsTable.xml", "elements", "element", new IElementLoader<ElementRecord>()
         {
+            @Override
+            public void processRoot(Element root)
+            {                
+            }
+            
             @Override
             public int load(Element el) throws ParseException
             {

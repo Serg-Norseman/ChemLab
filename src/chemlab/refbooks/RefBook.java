@@ -67,9 +67,9 @@ public abstract class RefBook<T>
         return "";
     }
 
-    protected static void loadDataStream(InputStream stream, String rootName, String elementName, IElementLoader<?> elementloader)
+    protected static void loadDataStream(InputStream stream, String rootName, String elementName, IElementLoader<?> elementLoader)
     {
-        if (elementloader == null) return;
+        if (elementLoader == null) return;
         
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -81,7 +81,7 @@ public abstract class RefBook<T>
                 throw new Exception("Invalid root");
             }
 
-            String verAttr = root.getAttribute("version");
+            elementLoader.processRoot(root);
             
             NodeList nl = root.getChildNodes();
             for (int i = 0; i < nl.getLength(); i++) {
@@ -90,7 +90,7 @@ public abstract class RefBook<T>
                     Element el = (Element) n;
                     if (el.getTagName().equals(elementName)) {
                         try {
-                            elementloader.load(el);
+                            elementLoader.load(el);
                         } catch (ParseException ex) {
                             Logger.write("RefBook.loadDataStream.parse(): " + ex.getMessage());
                         } catch (Exception ex) {

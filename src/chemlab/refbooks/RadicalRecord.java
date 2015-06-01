@@ -17,16 +17,26 @@
  */
 package chemlab.refbooks;
 
-import java.text.ParseException;
-import org.w3c.dom.Element;
-
 /**
  *
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public interface IElementLoader<T>
+public final class RadicalRecord
 {
-    void processRoot(Element root);
-    int load(Element el) throws ParseException;
+    public final String Formula;
+    public final int Charge;
+    
+    public RadicalRecord(String formula, int charge)
+    {
+        this.Formula = formula;
+        this.Charge = charge;
+    }
+    
+    @Override
+    public final RadicalRecord clone()
+    {
+        RadicalRecord copy = new RadicalRecord(this.Formula, this.Charge);
+        return copy;
+    }
 }

@@ -398,17 +398,20 @@ public class LabDevice extends BaseObject
         for (int i = 0; i < this.fSubstances.size(); i++) {
             Substance subst = this.fSubstances.get(i);
             double substVol = (subst.Mass / subst.Density);
+            Color substColor;
 
             switch (subst.State) {
                 case Solid:
+                    substColor = (subst.Color == null) ? Color.gray : subst.Color;
                     subVol = substVol;
                     solidVolume = (int) (solidVolume + ((long) Math.round(subVol)));
-                    solColor = (i == 0) ? subst.Color : AuxUtils.blend(solColor, subst.Color, 0.5);
+                    solColor = (i == 0) ? substColor : AuxUtils.blend(solColor, substColor, 0.5);
                     break;
 
                 case Liquid:
+                    substColor = (subst.Color == null) ? Color.cyan : subst.Color;
                     subVol = substVol;
-                    liqColor = (i == 0) ? subst.Color : AuxUtils.blend(liqColor, subst.Color, 0.5);
+                    liqColor = (i == 0) ? substColor : AuxUtils.blend(liqColor, substColor, 0.5);
                     break;
 
                 case Gas:
@@ -416,8 +419,9 @@ public class LabDevice extends BaseObject
                     break;
 
                 case Ion:
+                    substColor = (subst.Color == null) ? Color.cyan : subst.Color;
                     subVol = substVol;
-                    liqColor = (i == 0) ? subst.Color : AuxUtils.blend(liqColor, subst.Color, 0.5);
+                    liqColor = (i == 0) ? substColor : AuxUtils.blend(liqColor, substColor, 0.5);
                     break;
             }
 

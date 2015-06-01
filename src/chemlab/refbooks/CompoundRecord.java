@@ -18,7 +18,9 @@
 package chemlab.refbooks;
 
 import chemlab.core.chemical.SubstanceState;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -27,19 +29,46 @@ import java.util.HashMap;
  */
 public final class CompoundRecord
 {
-    public String Formula;
-
     // physical properties
-    public int Charge;
-    public double Density;
-    public double MolecularMass;
-    public SubstanceState State;
+    public static final class PhysicalState
+    {
+        public SubstanceState State;
+        public double Density;
 
-    // common
+        public double HeatFormation;
+        public double GibbsFreeEnergy;
+        public double StdEntropy;
+    }
+    
+    public String Formula;
+    public double MolecularMass;
+
+    private final PhysicalState[] fPhysicalStates;
+    
     public final HashMap<String, String> Names;
+    public final List<RadicalRecord> Radicals;
 
     public CompoundRecord()
     {
+        this.fPhysicalStates = new PhysicalState[3];
+        
         this.Names = new HashMap<>();
+        this.Radicals = new ArrayList<>();
+    }
+    
+    public final PhysicalState getPhysicalState(SubstanceState state, boolean canCreate)
+    {
+        if (state == null || state == SubstanceState.Ion) {
+            return null;
+        }
+        
+        int idx = state.getValue();
+        PhysicalState phState = this.fPhysicalStates[idx];
+        if (phState == null && canCreate) {
+            phState = new PhysicalState();
+            this.fPhysicalStates[idx] = phState;
+        }
+
+        return phState;
     }
 }

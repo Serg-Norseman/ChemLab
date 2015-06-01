@@ -21,6 +21,7 @@ import bslib.common.AuxUtils;
 import chemlab.core.chemical.ChemUtils;
 import chemlab.core.chemical.Substance;
 import chemlab.core.controls.experiment.LabDevice;
+import chemlab.sandbox.ReactionsEnv;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -51,6 +52,8 @@ public class CLDeviceProps extends JDialog implements ActionListener
     private VirtualTable tblSubstances;
     private JPanel panProperties;
     private VirtualTable tblProperties;
+    private JPanel panReactions;
+    private VirtualTable tblReactions;
     
     public CLDeviceProps(Frame owner, LabDevice device)
     {
@@ -67,6 +70,8 @@ public class CLDeviceProps extends JDialog implements ActionListener
         this.tblSubstances = new VirtualTable();
         this.panProperties = new JPanel();
         this.tblProperties = new VirtualTable();
+        this.panReactions = new JPanel();
+        this.tblReactions = new VirtualTable();
         
         this.add(PageControl, BorderLayout.CENTER);
 
@@ -76,6 +81,9 @@ public class CLDeviceProps extends JDialog implements ActionListener
         this.panProperties.setLayout(new BorderLayout());
         this.panProperties.add(this.tblProperties, BorderLayout.CENTER);
         this.PageControl.addTab(res_i18n.getString("CL_PROPERTIES"), this.panProperties);
+
+        this.panReactions.setLayout(new BorderLayout());
+        this.PageControl.addTab(res_i18n.getString("CL_REACTIONS"), this.panReactions);
 
         JPanel panSubstToolbar = new JPanel();
         panSubstToolbar.setLayout(new BoxLayout(panSubstToolbar, BoxLayout.LINE_AXIS));
@@ -105,6 +113,22 @@ public class CLDeviceProps extends JDialog implements ActionListener
         tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
         tblProperties.addColumn(res_i18n.getString("CL_VALUE"), 139);
         tblProperties.addColumn(res_i18n.getString("CL_UNIT"), 92);
+
+
+        JPanel panReactsToolbar = new JPanel();
+        panReactsToolbar.setLayout(new BoxLayout(panReactsToolbar, BoxLayout.LINE_AXIS));
+
+        JButton btnSearch = new JButton();
+        btnSearch.setText("Search reactions");
+        btnSearch.setActionCommand("SEARCH");
+        btnSearch.addActionListener(this);
+        panReactsToolbar.add(btnSearch);
+
+        this.panReactions.add(panReactsToolbar, BorderLayout.NORTH);
+        this.panReactions.add(this.tblReactions, BorderLayout.CENTER);
+
+        tblReactions.setPreferredSize(tblDim);
+        tblReactions.addColumn(res_i18n.getString("CL_EQUATION"), 400);
 
         this.pack();
         this.setLocationRelativeTo(owner);
@@ -180,6 +204,25 @@ public class CLDeviceProps extends JDialog implements ActionListener
     {
         CLDevSubstAdd addDlg = new CLDevSubstAdd(null, this.fDevice);
         addDlg.setVisible(true);
+        
+        this.updateControls();
+    }
+    
+    private void searchReactions()
+    {
+        ReactionsEnv reactsEnv = new ReactionsEnv();
+        
+        for (int i = 0; i < this.fDevice.getSubstancesCount(); i++) {
+            reactsEnv.addSubstance(this.fDevice.getSubstance(i));
+        }
+        
+        reactsEnv.search();
+        
+        tblReactions.clear();
+        Object[] rowData = new Object[]{
+            reactsEnv.toString()
+        };
+        this.tblReactions.addRow(rowData);
     }
     
     @Override
@@ -191,6 +234,10 @@ public class CLDeviceProps extends JDialog implements ActionListener
         switch (actionPerformed) {
             case "ADD_SUBST":
                 this.addSubst();
+                break;
+                
+            case "SEARCH":
+                this.searchReactions();
                 break;
         }
     }

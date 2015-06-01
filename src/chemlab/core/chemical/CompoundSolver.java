@@ -321,9 +321,14 @@ public class CompoundSolver extends BaseObject
 
     public final void loadData()
     {
+        this.loadData(false);
+    }
+
+    private void loadData(boolean sub)
+    {
         if (this.fCompounds.size() > 0) {
             for (CompoundSolver subComp : this.fCompounds) {
-                subComp.loadData();
+                subComp.loadData(true);
             }
         } else {
             for (CompoundElement elem : this.fElements) {
@@ -341,7 +346,9 @@ public class CompoundSolver extends BaseObject
         this.sortByENeg();
         
         // data
-        CompoundRecord compRec = CLData.CompoundsBook.checkCompound(this.Formula);
+        if (!sub && this.Charge == 0) {
+            CompoundRecord compRec = CLData.CompoundsBook.checkCompound(this.Formula);
+        }
     }
 
     private void sortByENeg()

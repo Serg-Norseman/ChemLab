@@ -20,6 +20,7 @@ package chemlab.forms;
 import bslib.components.ComboItem;
 import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.ChemUnits;
+import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
 import chemlab.core.controls.MeasureBox;
 import chemlab.core.controls.experiment.LabDevice;
@@ -74,19 +75,23 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
         cmbCompounds = new JComboBox();
         CompoundsBook cmbBook = CLData.CompoundsBook;
         for (CompoundRecord cmp : cmbBook.getList()) {
-            if (cmp.State == SubstanceState.Ion) continue;
-
             String name = cmp.Formula;
-            if (cmp.State != null) {
-                name += CLData.SubstanceStateSigns[cmp.State.getValue()];
-            }
-
             cmbCompounds.addItem(new ComboItem(name, cmp));
         }
         cmbCompounds.setSelectedIndex(0);
         cmbCompounds.addActionListener(this);
         cmbCompounds.setEditable(true);
         panSubstance.add(cmbCompounds);
+        
+        JButton btnAddCompound = new JButton("Add");
+        btnAddCompound.setActionCommand("ADD_COMPOUND");
+        btnAddCompound.addActionListener(this);
+        panSubstance.add(btnAddCompound);
+        
+        JButton btnEditCompound = new JButton("Edit");
+        btnEditCompound.setActionCommand("EDIT_COMPOUND");
+        btnEditCompound.addActionListener(this);
+        panSubstance.add(btnEditCompound);
         
         panProps = new JPanel();
         panProps.setBorder(null);
@@ -132,7 +137,8 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
             return;
         }
         
-        SubstanceState state = this.fCompound.State;
+        // FIXME
+        SubstanceState state = SubstanceState.Solid; //this.fCompound.State;
         if (state == null) {
             // TODO: activate edit button;
         } else {
@@ -149,6 +155,20 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
         }
     }
 
+    private void addCompound()
+    {
+        if (this.fCompound == null) {
+            return;
+        }
+        
+        Substance subst = this.fDevice.addSubstance();
+        subst.Formula = this.fCompound.Formula;
+        
+        this.fDevice.changeContents();
+        
+        this.setVisible(false);
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -164,10 +184,19 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
         
         switch (actionPerformed) {
             case "CMD_ADD":
-                //this.addSubst();
+                this.addCompound();
                 break;
+
             case "CMD_CLOSE":
                 this.setVisible(false);
+                break;
+
+            case "ADD_COMPOUND":
+                break;
+
+            case "EDIT_COMPOUND":
+                CLCompoundEditor editor = new CLCompoundEditor(this, this.fCompound);
+                editor.setVisible(true);
                 break;
         }
     }
