@@ -71,13 +71,13 @@ public class CLCompoundEditor extends JDialog implements ActionListener
         this.add(PageControl, BorderLayout.CENTER);
 
         this.panGeneral.setLayout(new BorderLayout());
-        this.PageControl.addTab("Common", this.panGeneral);
+        this.PageControl.addTab(res_i18n.getString("CL_COMMON"), this.panGeneral);
 
         this.panNames.setLayout(new BorderLayout());
-        this.PageControl.addTab("Names", this.panNames);
+        this.PageControl.addTab(res_i18n.getString("CL_NAMES"), this.panNames);
 
         this.panRadicals.setLayout(new BorderLayout());
-        this.PageControl.addTab("Radicals", this.panRadicals);
+        this.PageControl.addTab(res_i18n.getString("CL_RADICALS"), this.panRadicals);
 
         JPanel panNamesToolbar = new JPanel();
         panNamesToolbar.setLayout(new BoxLayout(panNamesToolbar, BoxLayout.LINE_AXIS));

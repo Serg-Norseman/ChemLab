@@ -335,9 +335,9 @@ public final class PeriodicTable extends JPanel implements ActionListener
         array[6][6] = "Bh ";
         array[6][7] = "Hs ";
         array[6][8] = "Mt ";
-        array[6][9] = "Uun";
-        array[6][10] = "Uuu";
-        array[6][11] = "Uub";
+        array[6][9] = "Ds ";
+        array[6][10] = "Rg ";
+        array[6][11] = "Cn ";
         array[6][12] = "Uut";
         array[6][13] = "Uuq";
         array[6][14] = "Uup";

@@ -25,7 +25,7 @@ public final class CLDecayViewer extends JFrame
         this.setLayout(new BorderLayout());
         FramesHelper.setClientSize(this, 640, 480);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setTitle("Радиоактивный распад нуклида [" + nuclide + "]");
+        this.setTitle(String.format(res_i18n.getString("CL_DECAY_TITLE"), nuclide));
 
         this.fDecayViewer = new DecayViewer();
         this.fDecayViewer.setFont(CommonUtils.DEFAULT_UI_FONT);

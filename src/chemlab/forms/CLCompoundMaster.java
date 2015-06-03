@@ -78,7 +78,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.Label4.setText(res_i18n.getString("CL_CHARGE"));
         this.Label4.setLocation(558, 8);
         this.Label4.setSize(40, 15);
-        this.Label4.setToolTipText("Предназначен для расчета ионов(для расчета соединений = 0)");
+        this.Label4.setToolTipText(res_i18n.getString("CL_CM_CHARGE_DEST"));
 
         this.seCharge.setText("0");
         this.seCharge.setLocation(558, 23);
@@ -213,8 +213,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
                     int row = this.tblElements.getSelectedRow();
                     String eSymbol = (String) this.tblElements.getValueAt(row, 0);
 
-                    CLElementViewer elemViewer = new CLElementViewer(eSymbol);
-                    elemViewer.setLocationRelativeTo(this);
+                    CLElementViewer elemViewer = new CLElementViewer(this, eSymbol);
                     elemViewer.setVisible(true);
                 }
                 break;
