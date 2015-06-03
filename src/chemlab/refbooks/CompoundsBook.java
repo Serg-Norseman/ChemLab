@@ -21,6 +21,7 @@ import bslib.common.AuxUtils;
 import bslib.common.Logger;
 import bslib.common.StringHelper;
 import chemlab.core.chemical.SubstanceState;
+import java.awt.Color;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -147,6 +148,9 @@ public final class CompoundsBook extends RefBook
                                     ps.HeatFormation = AuxUtils.ParseFloat(psEl.getAttribute("HeatFormation"), 0);
                                     ps.GibbsFreeEnergy = AuxUtils.ParseFloat(psEl.getAttribute("GibbsFreeEnergy"), 0);
                                     ps.StdEntropy = AuxUtils.ParseFloat(psEl.getAttribute("StdEntropy"), 0);
+                                    ps.MolarHeatCapacity = AuxUtils.ParseFloat(psEl.getAttribute("SpecificHeat"), 0);
+                                    
+                                    ps.Color = getHexColor(psEl.getAttribute("Color"));
                                 }
                             }
                         }
@@ -213,6 +217,25 @@ public final class CompoundsBook extends RefBook
             // File was not successfully renamed
         }
     }
+
+    private static Color getHexColor(String str)
+    {
+        if (StringHelper.isNullOrEmpty(str)) {
+            return Color.black;
+        }
+        
+        return Color.decode(str);
+    }
+    
+    private static String getColorHex(Color color)
+    {
+        if (color == null) {
+            return "#000000";
+        }
+        
+        String hex = "#"+Integer.toHexString(color.getRGB()).substring(2);
+        return hex;
+    }
     
     public void saveXML()
     {
@@ -257,10 +280,13 @@ public final class CompoundsBook extends RefBook
                             writeAttr(doc, psEl, "HeatFormation", String.valueOf(ps.HeatFormation));
                             writeAttr(doc, psEl, "GibbsFreeEnergy", String.valueOf(ps.GibbsFreeEnergy));
                             writeAttr(doc, psEl, "StdEntropy", String.valueOf(ps.StdEntropy));
+                            writeAttr(doc, psEl, "SpecificHeat", String.valueOf(ps.MolarHeatCapacity));
+                            
+                            writeAttr(doc, psEl, "Color", getColorHex(ps.Color));
                         }
                     }
                 }
-                                
+
                 //
 
                 Element namesElement = doc.createElement("names");

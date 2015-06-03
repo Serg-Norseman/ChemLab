@@ -22,11 +22,19 @@ import bslib.common.BaseObject;
 import bslib.common.Bitmap;
 import bslib.common.ImageHelper;
 import bslib.common.Rect;
+import bslib.math.DoubleHelper;
+import chemlab.core.chemical.ChemConsts;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.Substance;
+import chemlab.core.chemical.SubstanceState;
+import chemlab.core.controls.experiment.devices.BunsenBurner;
 import chemlab.core.controls.experiment.effects.BoilingEffect;
 import chemlab.core.controls.experiment.effects.IDeviceEffect;
 import chemlab.core.controls.experiment.effects.VaporEffect;
+import chemlab.core.controls.experiment.matter.Liquid;
+import chemlab.core.controls.experiment.matter.Matter;
+import chemlab.core.controls.experiment.matter.Solid;
+import chemlab.core.controls.experiment.matter.Steam;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -43,10 +51,13 @@ public class LabDevice extends BaseObject
 {
     private static final int FRAME_CHANGE_TICKS = 5;
 
-    private final ExperimentBench fExpMaster;
     private final ReactionSolver fReactionSolver;
 
-    private boolean fActive;
+    protected final ExperimentBench fBench;
+
+    protected boolean fActive;
+    protected long fPrevTime;
+
     private boolean fFocused;
     private DeviceId fID;
 
@@ -57,9 +68,9 @@ public class LabDevice extends BaseObject
     private int fFrames;
     private int fFrameIndex;
     private int fUpdateTicks;
-    private long fPrevTime;
 
-    private final ArrayList<Substance> fSubstances;
+    private final ArrayList<Matter> fSubstances;
+    
     private int fAbstVolume;
     private int fFillVolume;
     private int fLiquidLevel;
@@ -120,10 +131,12 @@ public class LabDevice extends BaseObject
         return new Rect(fLeft, fTop, this.fLeft + this.fWidth - 1, this.fTop + this.fHeight - 1);
     }
     
-    public LabDevice(ExperimentBench owner, int x, int y, DeviceId deviceId)
+    protected LabDevice(ExperimentBench owner, int x, int y, DeviceId deviceId)
     {
-        this.fExpMaster = owner;
+        this.fBench = owner;
+
         this.fSubstances = new ArrayList<>();
+        
         this.fReactionSolver = new ReactionSolver();
 
         this.fEffects = new ArrayList<>();
@@ -186,7 +199,7 @@ public class LabDevice extends BaseObject
         this.fContentsImage = new Bitmap(this.fWidth, this.fHeight);
         this.fAbstVolume = this.getAbstractVolume();
 
-        this.fExpMaster.repaint();
+        this.fBench.repaint();
     }
 
     private static Bitmap loadImage(String resName, boolean transparent)
@@ -218,9 +231,25 @@ public class LabDevice extends BaseObject
     {
         this.fActive = value;
         this.fFrameIndex = 0;
-        this.fExpMaster.repaint();
+        this.fBench.repaint();
+        
+        if (value) {
+            this.activate();
+        } else {
+            this.deactivate();
+        }
     }
 
+    protected void activate()
+    {
+        
+    }
+    
+    protected void deactivate()
+    {
+        
+    }
+    
     public final void tickTime(long time)
     {
         this.updateFrame();
@@ -252,9 +281,19 @@ public class LabDevice extends BaseObject
         }
     }
     
-    private void updateState(long time)
+    protected void updateState(long time)
     {
         // update internal state
+        if (this.isContainer()) {
+            for (int i = this.fSubstances.size() - 1; i >= 0; i--) {
+                Substance subst = this.fSubstances.get(i);
+                if (DoubleHelper.equals(subst.getMass(), 0.0D, 0.0001)) {
+                    this.fSubstances.remove(i);
+                }
+            }
+
+            this.changeContents();
+        }
         
         // update external influence
         switch (this.fID.Type) {
@@ -262,8 +301,6 @@ public class LabDevice extends BaseObject
                 break;
 
             case Heater:
-                float curTemp = this.getTemperature();
-                long dt = time - this.fPrevTime;
                 break;
 
             case Meter:
@@ -287,15 +324,23 @@ public class LabDevice extends BaseObject
         return this.fID.RealVolume;
     }
 
-    public final float getTemperature()
+    public final double getTemperature()
     {
-        if (this.fID.Type == DeviceType.Heater && this.fActive) {
+        /*if (this.fID.Type == DeviceType.Heater && this.fActive) {
             if (this.fID == DeviceId.dev_Bunsen_Burner) {
                 // Methane, t=2043 °С
                 return 2043.0f;
             } else if (this.fID == DeviceId.dev_Heater) {
                 // controllable temperature
             }
+        }*/
+        
+        if (this.isContainer()) {
+            double temp = 0;
+            for (Matter subst : this.fSubstances) {
+                temp += subst.getTemperature();
+            }
+            return temp / this.fSubstances.size();
         }
         
         return 0f;
@@ -328,9 +373,9 @@ public class LabDevice extends BaseObject
         return 0f;
     }
 
-    public final Substance getSubstance(int index)
+    public final Matter getSubstance(int index)
     {
-        Substance result = null;
+        Matter result = null;
         if (index >= 0 && index < this.fSubstances.size()) {
             result = this.fSubstances.get(index);
         }
@@ -346,7 +391,7 @@ public class LabDevice extends BaseObject
     {
         double result = 0.0;
         for (Substance subst : this.fSubstances) {
-            result = (result + subst.Mass);
+            result = (result + subst.getMass());
         }
         return result;
     }
@@ -397,19 +442,19 @@ public class LabDevice extends BaseObject
 
         for (int i = 0; i < this.fSubstances.size(); i++) {
             Substance subst = this.fSubstances.get(i);
-            double substVol = (subst.Mass / subst.Density);
-            Color substColor;
+            SubstanceState state = subst.getState();
+            
+            double substVol = (subst.getMass() / subst.getDensity(state));
+            Color substColor = subst.getColor(state);
 
-            switch (subst.State) {
+            switch (state) {
                 case Solid:
-                    substColor = (subst.Color == null) ? Color.gray : subst.Color;
                     subVol = substVol;
                     solidVolume = (int) (solidVolume + ((long) Math.round(subVol)));
                     solColor = (i == 0) ? substColor : AuxUtils.blend(solColor, substColor, 0.5);
                     break;
 
                 case Liquid:
-                    substColor = (subst.Color == null) ? Color.cyan : subst.Color;
                     subVol = substVol;
                     liqColor = (i == 0) ? substColor : AuxUtils.blend(liqColor, substColor, 0.5);
                     break;
@@ -419,7 +464,6 @@ public class LabDevice extends BaseObject
                     break;
 
                 case Ion:
-                    substColor = (subst.Color == null) ? Color.cyan : subst.Color;
                     subVol = substVol;
                     liqColor = (i == 0) ? substColor : AuxUtils.blend(liqColor, substColor, 0.5);
                     break;
@@ -481,7 +525,7 @@ public class LabDevice extends BaseObject
         
         this.fContentsImage = Bitmap.makeTransparent(this.fContentsImage, Color.BLACK);
 
-        this.fExpMaster.repaint();
+        this.fBench.repaint();
     }
 
     public final void paint(Graphics2D deskCanvas)
@@ -523,9 +567,9 @@ public class LabDevice extends BaseObject
         return this.fBottom;
     }
     
-    public final Substance addSubstance()
+    public final Substance addSubstance(String formula, SubstanceState state, double mass)
     {
-        Substance result = new Substance();
+        Matter result = Matter.createMatter(formula, state, mass);
         this.fSubstances.add(result);
 
         //this.changeContents();
@@ -538,7 +582,7 @@ public class LabDevice extends BaseObject
 
         this.changeContents();
     }
-
+    
     public final void clear()
     {
         for (Substance substance : this.fSubstances) {
@@ -621,5 +665,68 @@ public class LabDevice extends BaseObject
         boolean result = false;
         
         return result;
+    }
+    
+    public static LabDevice createDevice(ExperimentBench owner, int x, int y, DeviceId deviceId)
+    {
+        LabDevice device = null;
+        
+        switch (deviceId) {
+            case dev_Bunsen_Burner:
+                device = new BunsenBurner(owner, x, y, deviceId);
+                break;
+
+            case dev_Beaker_100:
+            case dev_Beaker_250:
+            case dev_Beaker_600:
+            case dev_Conical_Flask_100:
+            case dev_Conical_Flask_250:
+            case dev_Roundbottom_Flask_100:
+            case dev_TestTube_50:
+            case dev_Buret_10:
+            case dev_Buret_50:
+            case dev_Electronic_Balance_250:
+            case dev_Graduated_Cylinder_10:
+            case dev_Graduated_Cylinder_100:
+            case dev_Heater:
+                device = new LabDevice(owner, x, y, deviceId);
+                break;
+
+            default:
+                throw new AssertionError(deviceId.name());
+        }
+        
+        return device;
+    }
+    
+    public final boolean isClosedSystem()
+    {
+        return false;
+    }
+    
+    /**
+     *
+     * @param energy in J
+     */
+    public void addHeatEnergy(double energy)
+    {
+        if (this.isContainer()) {
+            for (Matter matter : this.fSubstances) {
+                if (matter instanceof Liquid) {
+                    Steam steam = ((Liquid) matter).addEnergy(energy, ChemConsts.ATMOSPHERIC_PRESSURE);
+                    if (this.isClosedSystem()) {
+                        this.fSubstances.add(steam);
+                    } else {
+                        // lost
+                    }
+                } else {
+                    if (matter instanceof Solid) {
+                        matter.addEnergy(energy);
+                    } else {
+                        // not steam
+                    }
+                }
+            }
+        }
     }
 }

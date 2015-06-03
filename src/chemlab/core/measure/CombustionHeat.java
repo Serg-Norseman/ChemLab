@@ -15,31 +15,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.chemical;
+package chemlab.core.measure;
+
+import javax.measure.quantity.Quantity;
+import javax.measure.unit.ProductUnit;
+import javax.measure.unit.Unit;
 
 /**
  *
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public class ChemConsts
+public interface CombustionHeat extends Quantity
 {
-    public static final double AVOGADRO = 6.0221413 * Math.pow(10, 23);
-    public static final double GAS_CONST_R = 8.3144621; // gas constant
-    public static final double BOLTZMAN_CONSTANT = GAS_CONST_R / AVOGADRO;
-    public static final double T0 = 298.15;
-
-    public static final double ATMOSPHERIC_PRESSURE = 100_000; // Pa
-    public static final double ROOM_TEMP = 273.15; // K, 0 °С
-
-    // others
-    public static final double GRAVITATIONAL_ACCELERATION = 9.8;
-
-    /**
-     * Spectrum constants.
-     */
-    public static final double WavelengthMinimum = 380.0;
-    public static final double WavelengthMaximum = 780.0;
-    public static final double BlueWavelength = WavelengthMinimum;
-    public static final double RedWavelength = WavelengthMaximum;
+    public final static Unit<CombustionHeat> UNIT = new ProductUnit<CombustionHeat>(
+            ChemUnits.JOULE.divide(ChemUnits.KILOGRAM));
 }

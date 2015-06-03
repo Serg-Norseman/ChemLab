@@ -17,16 +17,15 @@
  */
 package chemlab.core.controls.experiment;
 
-import chemlab.core.controls.experiment.misc.ClingHelper;
 import bslib.common.Bitmap;
 import bslib.common.Logger;
 import bslib.common.Point;
 import bslib.common.Rect;
 import bslib.common.RefObject;
 import bslib.common.StringHelper;
-import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
 import chemlab.core.controls.EditorControl;
+import chemlab.core.controls.experiment.misc.ClingHelper;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -316,7 +315,7 @@ public class ExperimentBench extends EditorControl implements ActionListener
 
             g.drawImage(this.fBuffer, 0, 0, null);
             
-            if (DEBUG) {
+            if (DEBUG && !StringHelper.isNullOrEmpty(fDebugInfo)) {
                 g.drawString(this.fDebugInfo, 10, 10);
             }
         } catch (Exception ex) {
@@ -486,23 +485,12 @@ public class ExperimentBench extends EditorControl implements ActionListener
 
     public final LabDevice addDevice(int left, int top, DeviceId deviceId)
     {
-        LabDevice result = new LabDevice(this, left, top, deviceId);
+        LabDevice result = LabDevice.createDevice(this, left, top, deviceId);
         this.fDevices.add(result);
 
         if (result.getID() == DeviceId.dev_Beaker_100) {
-            Substance compound = result.addSubstance();
-            compound.Color = Color.GRAY;
-            compound.Mass = 20;
-            compound.Density = 1.2;
-            compound.Formula = "CaO";
-            compound.State = SubstanceState.Solid;
-
-            compound = result.addSubstance();
-            compound.Color = Color.BLUE;
-            compound.Mass = 40;
-            compound.Density = 0.9982;
-            compound.Formula = "H2O";
-            compound.State = SubstanceState.Liquid;
+            result.addSubstance("CaO", SubstanceState.Solid, 20);
+            result.addSubstance("H2O", SubstanceState.Liquid, 40);
 
             result.changeContents();
             

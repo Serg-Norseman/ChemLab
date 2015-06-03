@@ -1,9 +1,9 @@
 package chemlab.forms;
 
 import bslib.components.ComboItem;
-import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.DimensionsList;
 import chemlab.core.controls.MeasureBox;
+import chemlab.core.measure.ChemUnits;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

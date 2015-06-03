@@ -18,6 +18,7 @@
 package chemlab.refbooks;
 
 import chemlab.core.chemical.SubstanceState;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,9 @@ public final class CompoundRecord
         public double HeatFormation;
         public double GibbsFreeEnergy;
         public double StdEntropy;
+        public double MolarHeatCapacity;
+        
+        public Color Color;
     }
     
     public String Formula;

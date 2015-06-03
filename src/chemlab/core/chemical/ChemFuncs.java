@@ -17,10 +17,12 @@
  */
 package chemlab.core.chemical;
 
+import chemlab.core.measure.ChemUnits;
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Pressure;
 import javax.measure.quantity.Temperature;
+import javax.measure.quantity.Velocity;
 import javax.measure.quantity.Volume;
 import javax.measure.quantity.VolumetricDensity;
 import javax.measure.unit.Unit;
@@ -34,12 +36,12 @@ public final class ChemFuncs
 {
     public static double moleculesToMoles(double molecules)
     {
-        return molecules / ChemConsts.Avogadro;
+        return molecules / ChemConsts.AVOGADRO;
     }
 
     public static double molesToMolecules(double moles)
     {
-        return moles * ChemConsts.Avogadro;
+        return moles * ChemConsts.AVOGADRO;
     }
 
     public static double volumeToMoles(Measure<Double, Volume> volume, double molarity)
@@ -132,16 +134,16 @@ public final class ChemFuncs
         Unit<?> unit = Unit.ONE;
 
         if (want == 'P') {
-            res = (moles * ChemConsts.R * temp) / vol;
+            res = (moles * ChemConsts.GAS_CONST_R * temp) / vol;
             unit = ChemUnits.KILOPASCAL;
         } else if (want == 'V') {
-            res = (moles * ChemConsts.R * temp) / pres;
+            res = (moles * ChemConsts.GAS_CONST_R * temp) / pres;
             unit = ChemUnits.LITER;
         } else if (want == 'n') {
-            res = (pres * vol) / (ChemConsts.R * temp);
+            res = (pres * vol) / (ChemConsts.GAS_CONST_R * temp);
             unit = ChemUnits.MOLE;
         } else if (want == 'T') {
-            res = (pres * vol) / (ChemConsts.R * moles);
+            res = (pres * vol) / (ChemConsts.GAS_CONST_R * moles);
             unit = ChemUnits.KELVIN;
         }
         
@@ -150,17 +152,17 @@ public final class ChemFuncs
 
     public static double getPressure(double temperature, double volume)
     {
-        return ChemConsts.R * temperature / volume;
+        return ChemConsts.GAS_CONST_R * temperature / volume;
     }
 
     public static double getVolume(double pressure, double temperature)
     {
-        return ChemConsts.R * temperature / pressure;
+        return ChemConsts.GAS_CONST_R * temperature / pressure;
     }
 
     public static double getTemperature(double pressure, double volume)
     {
-        return pressure * volume / ChemConsts.R;
+        return pressure * volume / ChemConsts.GAS_CONST_R;
     }
 
     public static double DPmRT(Measure<Double, VolumetricDensity> density, Measure<Double, Pressure> pressure, 
@@ -171,13 +173,37 @@ public final class ChemFuncs
         double dens = (density == null) ? 0 : ChemUnits.convert(density, ChemUnits.G_LITER).getValue();
         
         if (want == 'D') {
-            return (pres * molarMass) / (ChemConsts.R * temp);
+            return (pres * molarMass) / (ChemConsts.GAS_CONST_R * temp);
         } else if (want == 'P') {
-            return (ChemConsts.R * temp * pres) / (molarMass);
+            return (ChemConsts.GAS_CONST_R * temp * pres) / (molarMass);
         } else if (want == 'T') {
-            return (pres * molarMass) / (ChemConsts.R * dens);
+            return (pres * molarMass) / (ChemConsts.GAS_CONST_R * dens);
         } else {
             return -1;
         }
+    }
+
+    public static Measure<Double, Velocity> velocity(Measure<Double, Pressure> pressure, Measure<Double, VolumetricDensity> density)
+    {
+        double pres = (pressure == null) ? 0 : ChemUnits.convert(pressure, ChemUnits.PASCAL).getValue();
+        double dens = (density == null) ? 0 : ChemUnits.convert(density, ChemUnits.KG_M3).getValue();
+
+        return Measure.valueOf(Math.sqrt(2 * pres * dens), ChemUnits.METRES_PER_SECOND);
+    }
+
+    public static Measure<Double, VolumetricDensity> density(Measure<Double, Pressure> pressure, Measure<Double, Velocity> velocity)
+    {
+        double pres = (pressure == null) ? 0 : ChemUnits.convert(pressure, ChemUnits.PASCAL).getValue();
+        double vel = (velocity == null) ? 0 : ChemUnits.convert(velocity, ChemUnits.METRES_PER_SECOND).getValue();
+
+        return Measure.valueOf((2 * pres) / Math.pow(vel, 2), ChemUnits.KG_M3);
+    }
+
+    public static Measure<Double, Pressure> pressure(Measure<Double, VolumetricDensity> density, Measure<Double, Velocity> velocity)
+    {
+        double dens = (density == null) ? 0 : ChemUnits.convert(density, ChemUnits.KG_M3).getValue();
+        double vel = (velocity == null) ? 0 : ChemUnits.convert(velocity, ChemUnits.METRES_PER_SECOND).getValue();
+
+        return Measure.valueOf(0.5 * dens * Math.pow(vel, 2), ChemUnits.PASCAL);
     }
 }

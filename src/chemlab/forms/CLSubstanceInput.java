@@ -19,11 +19,11 @@ package chemlab.forms;
 
 import bslib.common.FramesHelper;
 import bslib.components.ComboItem;
-import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
 import chemlab.core.chemical.Substance;
 import chemlab.core.controls.MeasureBox;
+import chemlab.core.measure.ChemUnits;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -346,12 +346,12 @@ public class CLSubstanceInput extends JDialog
         ///
         
         cmbPhase.addActionListener((ActionEvent e) -> {
-            this.fSubstance.State = StoichiometricSolver.getState((String) cmbPhase.getSelectedItem());
+            this.fSubstance.setState(StoichiometricSolver.getState((String) cmbPhase.getSelectedItem()));
 
             cardLayout.show(panMain, (String) cmbPhase.getSelectedItem());
             updateControls();
             
-            switch (this.fSubstance.State) {
+            switch (this.fSubstance.getState()) {
                 case Solid:
                     cmbUnits.setEnabled(true);
                     break;
@@ -417,7 +417,7 @@ public class CLSubstanceInput extends JDialog
 
                 setVisible(false);
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Необходимо правильно заполнить поля");
+                CommonUtils.showError(this, "Необходимо правильно заполнить поля");
             }
         });
         
@@ -426,7 +426,7 @@ public class CLSubstanceInput extends JDialog
     
     private void setParams()
     {
-        cmbPhase.setSelectedIndex(this.fSubstance.State.getValue());
+        cmbPhase.setSelectedIndex(this.fSubstance.getState().getValue());
         
         for (int i = 0; i < cmbUnits.getItemCount(); i++) {
             Object item = cmbUnits.getItemAt(i);
@@ -496,7 +496,7 @@ public class CLSubstanceInput extends JDialog
     private void updateControls()
     {
         if (this.fIsInputSubst) {
-            switch (this.fSubstance.State) {
+            switch (this.fSubstance.getState()) {
                 case Solid:
                     rbSolidByMass.setEnabled(true);
                     rbSolidByVD.setEnabled(true);
@@ -569,7 +569,7 @@ public class CLSubstanceInput extends JDialog
                     break;
             }
         } else {
-            switch (this.fSubstance.State) {
+            switch (this.fSubstance.getState()) {
                 case Solid:
                     rbSolidByMass.setEnabled(false);
                     rbSolidByVD.setEnabled(false);

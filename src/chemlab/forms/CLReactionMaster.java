@@ -20,13 +20,13 @@ package chemlab.forms;
 import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
 import chemlab.core.chemical.ChemDraw;
-import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.ChemUtils;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.ThermodynamicSolver;
+import chemlab.core.measure.ChemUnits;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -372,7 +372,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                 }
 
                 String comp = "[" + AuxUtils.FloatToStr(substance.Factor) + "] " + substance.Formula;
-                String state = substance.State.toString();
+                String state = substance.getState().toString();
                 StoicParams params = substance.getStoicParams();
                 String strParams = (params == null) ? "" : params.toString();
                 String typ = (params == null) ? "" : params.Type.toString();

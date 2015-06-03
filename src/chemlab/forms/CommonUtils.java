@@ -20,6 +20,7 @@ package chemlab.forms;
 import bslib.common.FramesHelper;
 import java.awt.Component;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 
 /**
@@ -45,6 +46,11 @@ public class CommonUtils
         return String.format(fmt, value);
     }
     
+    private static String formatFloat3dp(double number) {
+        DecimalFormat form = new DecimalFormat("#.###");
+        return form.format(number);
+    }
+
     public static final void showError(Component parent, String message)
     {
         JOptionPane.showMessageDialog(parent, message, "ChemLab", JOptionPane.ERROR_MESSAGE);

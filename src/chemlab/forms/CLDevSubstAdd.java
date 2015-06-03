@@ -19,11 +19,11 @@ package chemlab.forms;
 
 import bslib.components.ComboItem;
 import chemlab.core.chemical.CLData;
-import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
 import chemlab.core.controls.MeasureBox;
 import chemlab.core.controls.experiment.LabDevice;
+import chemlab.core.measure.ChemUnits;
 import chemlab.refbooks.CompoundRecord;
 import chemlab.refbooks.CompoundsBook;
 import java.awt.BorderLayout;
@@ -51,10 +51,12 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
     private CompoundRecord fCompound;
     
     private final JPanel panSubstance;
+    private final JPanel panCompound;
     private final JPanel panProps;
     private final JPanel panControl;
     
     private final JComboBox cmbCompounds;
+    private final JComboBox cmbStates;
     private final MeasureBox meaAmount;
     
     public CLDevSubstAdd(Frame owner, LabDevice device)
@@ -72,6 +74,8 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
                 BorderFactory.createTitledBorder(res_i18n.getString("CL_COMPOUND")),
                 BorderFactory.createEmptyBorder(3, 3, 3, 3)));
                 
+        panCompound = new JPanel();
+        
         cmbCompounds = new JComboBox();
         CompoundsBook cmbBook = CLData.CompoundsBook;
         for (CompoundRecord cmp : cmbBook.getList()) {
@@ -81,7 +85,18 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
         cmbCompounds.setSelectedIndex(0);
         cmbCompounds.addActionListener(this);
         cmbCompounds.setEditable(true);
-        panSubstance.add(cmbCompounds);
+        
+        cmbStates = new JComboBox();
+        cmbStates.addItem("gas");
+        cmbStates.addItem("liquid");
+        cmbStates.addItem("solid");
+        cmbStates.setSelectedItem(null);
+        cmbStates.addActionListener(this);
+        
+        panCompound.add(cmbCompounds);
+        panCompound.add(cmbStates);
+        
+        panSubstance.add(panCompound);
         
         JButton btnAddCompound = new JButton("Add");
         btnAddCompound.setActionCommand("ADD_COMPOUND");
@@ -137,8 +152,8 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
             return;
         }
         
-        // FIXME
-        SubstanceState state = SubstanceState.Solid; //this.fCompound.State;
+        Object item = cmbStates.getSelectedItem();
+        SubstanceState state = (item == null) ? null : (SubstanceState) ((ComboItem) item).Data;
         if (state == null) {
             // TODO: activate edit button;
         } else {
@@ -161,8 +176,7 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
             return;
         }
         
-        Substance subst = this.fDevice.addSubstance();
-        subst.Formula = this.fCompound.Formula;
+        Substance subst = this.fDevice.addSubstance(this.fCompound.Formula, SubstanceState.Solid, 10);
         
         this.fDevice.changeContents();
         
@@ -175,10 +189,27 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
         String actionPerformed = e.getActionCommand();
         Object source = e.getSource();
 
-        if ("comboBoxChanged".equals(e.getActionCommand()) && e.getSource() == cmbCompounds) {
-            ComboItem item = (ComboItem) cmbCompounds.getSelectedItem();
-            this.fCompound = (item == null) ? null : (CompoundRecord) item.Data;
-            this.updateProps();
+        if ("comboBoxChanged".equals(e.getActionCommand())) {
+            if (e.getSource() == cmbCompounds) {
+                ComboItem item = (ComboItem) cmbCompounds.getSelectedItem();
+                this.fCompound = (item == null) ? null : (CompoundRecord) item.Data;
+
+                cmbStates.removeAllItems();
+                for (SubstanceState state : SubstanceState.values()) {
+                    CompoundRecord.PhysicalState ps = this.fCompound.getPhysicalState(state, false);
+                    if (ps != null) {
+                        cmbStates.addItem(new ComboItem(state.name(), state));
+                    }
+                }
+                cmbStates.setSelectedItem(null);
+
+                this.updateProps();
+            }
+
+            if (e.getSource() == cmbStates) {
+                this.updateProps();
+            }
+            
             return;
         }
         

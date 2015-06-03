@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Bad attempt, wasted time :(
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */

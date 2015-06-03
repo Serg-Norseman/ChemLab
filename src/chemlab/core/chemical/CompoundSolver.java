@@ -47,9 +47,23 @@ public class CompoundSolver extends BaseObject
         super.dispose(disposing);
     }
 
+    /**
+     *
+     * @return gram / mole
+     */
     public final double getMolecularMass()
     {
-        return this.fMolecularMass;
+        double molMass = this.fMolecularMass;
+        
+        if (molMass < 1.0) {
+            this.analyse();
+            this.loadData();
+            this.calculateMolecularMass();
+            
+            molMass = this.fMolecularMass;
+        }
+        
+        return molMass;
     }
 
     public final double getTotalAtoms()
@@ -499,8 +513,8 @@ public class CompoundSolver extends BaseObject
 
         this.analyse();
         this.loadData();
-
         this.calculateMolecularMass();
+
         this.calculateShare();
         this.calculateDegrees();
         //this.calculateValencies();

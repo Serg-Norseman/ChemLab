@@ -17,6 +17,7 @@
  */
 package chemlab.core.chemical;
 
+import chemlab.core.measure.ChemUnits;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

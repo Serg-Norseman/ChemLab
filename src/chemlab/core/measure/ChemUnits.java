@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.chemical;
+package chemlab.core.measure;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,11 +25,13 @@ import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.AmountOfSubstance;
 import javax.measure.quantity.Area;
 import javax.measure.quantity.Duration;
+import javax.measure.quantity.Energy;
 import javax.measure.quantity.Force;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Pressure;
 import javax.measure.quantity.Temperature;
+import javax.measure.quantity.Velocity;
 import javax.measure.quantity.Volume;
 import javax.measure.quantity.VolumetricDensity;
 import javax.measure.unit.NonSI;
@@ -104,6 +106,20 @@ public final class ChemUnits
     public static final Unit<VolumetricDensity> G_LITER = add(new ProductUnit<VolumetricDensity>(
             SI.GRAM.divide(NonSI.LITER)));
 
+    public static final Unit<Velocity> METRES_PER_SECOND = add(SI.METRES_PER_SECOND);
+    
+    public static final Unit<Energy> JOULE = add(SI.JOULE);
+    public static final Unit<Energy> KILOJOULE = add(JOULE.times(1000));
+    public static final Unit<Energy> MEGAJOULE = add(KILOJOULE.times(1000));
+    
+    public static final Unit<CombustionHeat> JOULE_PER_KILOGRAM = add(CombustionHeat.UNIT);
+    public static final Unit<CombustionHeat> JOULE_PER_GRAM = add(new ProductUnit<CombustionHeat>(
+            JOULE.divide(GRAM)));
+    public static final Unit<CombustionHeat> KILOJOULE_PER_KILOGRAM = add(new ProductUnit<CombustionHeat>(
+            KILOJOULE.divide(KILOGRAM)));
+    public static final Unit<CombustionHeat> MEGAJOULE_PER_KILOGRAM = add(new ProductUnit<CombustionHeat>(
+            MEGAJOULE.divide(KILOGRAM)));
+    
     public static Measure<Double, ?> convert(Measure<Double, ?> src, Unit<?> targetUnit)
     {
         Unit<?> sourceUnit = src.getUnit();

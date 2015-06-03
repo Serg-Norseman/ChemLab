@@ -17,6 +17,7 @@
  */
 package chemlab.core.chemical;
 
+import chemlab.core.measure.ChemUnits;
 import bslib.common.Logger;
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;

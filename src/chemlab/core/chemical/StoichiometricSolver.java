@@ -17,6 +17,7 @@
  */
 package chemlab.core.chemical;
 
+import chemlab.core.measure.ChemUnits;
 import bslib.common.Logger;
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;
@@ -82,7 +83,7 @@ public class StoichiometricSolver
         double moles = 0;
         StoicParams sourceParams = sourceSubst.getStoicParams();
 
-        SubstanceState state = sourceSubst.State;
+        SubstanceState state = sourceSubst.getState();
         switch (state) {
             case Solid: {
                 Measure<Double, Mass> mass;
@@ -137,7 +138,7 @@ public class StoichiometricSolver
                 targetParams.Result = mass;
             } else {
                 // calc to volume
-                switch (targetSubst.State) {
+                switch (targetSubst.getState()) {
                     case Solid: {
                         Measure<Double, Mass> mass = molesToMass(moles, targetSubst);
                         targetParams.Result = ChemFuncs.massToVolume(mass, targetParams.Density);

@@ -127,10 +127,10 @@ public class ThermodynamicSolver
             }
 
             this.fSM_Gibbs_Energy = (this.fSM_Enthalpy - ChemConsts.T0 * this.fSM_Entropy * 0.001);
-            this.flg_K = (-(this.fSM_Gibbs_Energy * 1000.0 / (2.3 * ChemConsts.R * ChemConsts.T0)));
+            this.flg_K = (-(this.fSM_Gibbs_Energy * 1000.0 / (2.3 * ChemConsts.GAS_CONST_R * ChemConsts.T0)));
             this.fStdBalanceConstant = Math.pow(10.0, this.flg_K);
             this.fFBalanceConstant = (this.fStdBalanceConstant * Math.pow(0.1013, this.fdN));
-            this.flg_K = (-(this.fSM_Enthalpy / (ChemConsts.R * T)) + this.fSM_Entropy / ChemConsts.R - 1.0 / (ChemConsts.R * T) * FIntegral + 1.0 / ChemConsts.R * SIntegral);
+            this.flg_K = (-(this.fSM_Enthalpy / (ChemConsts.GAS_CONST_R * T)) + this.fSM_Entropy / ChemConsts.GAS_CONST_R - 1.0 / (ChemConsts.GAS_CONST_R * T) * FIntegral + 1.0 / ChemConsts.GAS_CONST_R * SIntegral);
             this.fStdBalanceConstant = Math.pow(10.0, this.flg_K);
             this.fSBalanceConstant = (this.fStdBalanceConstant * Math.pow(0.1013, this.fdN));
         } catch (Exception ex) {

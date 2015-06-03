@@ -17,6 +17,7 @@
  */
 package chemlab.core.chemical;
 
+import chemlab.refbooks.CompoundRecord;
 import java.awt.Color;
 
 /**
@@ -27,9 +28,11 @@ import java.awt.Color;
 public class Substance extends CompoundSolver
 {
     public SubstanceRedoxType RedoxType = SubstanceRedoxType.Oxidant;
-    public SubstanceState State = SubstanceState.Solid;
     public SubstanceType Type = SubstanceType.Reactant;
 
+    private CompoundRecord fRecord;
+    private SubstanceState fState = SubstanceState.Solid;
+    
     private double FSM_Entropy;
     private double FSM_HeatCapacity;
     private double FSMF_Gibbs_Energy;
@@ -38,27 +41,37 @@ public class Substance extends CompoundSolver
     private double FSMHC_C;
     private double FSMHC_B;
 
-    private StoicParams fStoicParams;
+    private double fMass; // used in LabDevice
+    protected double fTemperature;
 
-    public double Mass; // used in LabDevice
+    private StoicParams fStoicParams;
 
     public double Melting_Point;
     public double Boiling_Point;
-    public double Density;
     public double Solubility_at_0C;
     public double Solubility_at_100C;
 
-    public Color Color;
-    
     public Substance()
     {
         super();
 
+        this.fRecord = null;
+        this.fState = SubstanceState.Solid;
+
         this.RedoxType = SubstanceRedoxType.Oxidant;
-        this.State = SubstanceState.Solid;
         this.Type = SubstanceType.Reactant;
     }
 
+    public SubstanceState getState()
+    {
+        return this.fState;
+    }
+
+    public void setState(SubstanceState value)
+    {
+        this.fState = value;
+    }
+    
     public final StoicParams getStoicParams()
     {
         if (fStoicParams == null) {
@@ -74,6 +87,102 @@ public class Substance extends CompoundSolver
             molMass *= this.Factor;
         }
         return molMass;
+    }
+
+    public final double getMoles()
+    {
+        double moles = (this.fMass /*gram*/ / this.getMolecularMass());
+        return moles;
+    }
+    
+    public final double getMass()
+    {
+        return this.fMass;
+    }
+    
+    public final void setMass(double value)
+    {
+        this.fMass = value;
+    }
+    
+    public final void adjustMass(double value)
+    {
+        this.fMass += value;
+    }
+
+    public final double getTemperature()
+    {
+        return fTemperature;
+    }
+
+    public final void setTemperature(double value)
+    {
+        this.fTemperature = value;
+    }
+    
+    protected final CompoundRecord getRecord()
+    {
+        if (this.fRecord == null) {
+            this.fRecord = CLData.CompoundsBook.checkCompound(this.Formula);
+        }
+        
+        return this.fRecord;
+    }
+
+    /**
+     *
+     * @return J / (mole * K)
+     */
+    public final double getMolarHeatCapacity()
+    {
+        return this.getMolarHeatCapacity(this.getState());
+    }
+
+    public final double getMolarHeatCapacity(SubstanceState state)
+    {
+        CompoundRecord record = this.getRecord();
+        double specHeat = (record == null) ? 0 : record.getPhysicalState(state, true).MolarHeatCapacity;
+        return specHeat;
+    }
+
+    public final double getDensity(SubstanceState state)
+    {
+        CompoundRecord record = this.getRecord();
+        double density = (record == null) ? 0 : record.getPhysicalState(state, true).Density;
+        return density;
+    }
+    
+    public final Color getColor(SubstanceState state)
+    {
+        CompoundRecord record = this.getRecord();
+        
+        Color color;
+        if (record != null) {
+            color = record.getPhysicalState(state, true).Color;
+        } else {
+            switch (state) {
+                case Solid:
+                    color = Color.gray;
+                    break;
+
+                case Liquid:
+                    color = Color.cyan;
+                    break;
+
+                case Gas:
+                    color = Color.cyan.brighter();
+                    break;
+
+                case Ion:
+                    color = Color.yellow;
+                    break;
+
+                default:
+                    color = Color.black;
+            }
+        }
+        
+        return color;
     }
 
     public final double getSM_HeatCapacity()

@@ -1,7 +1,7 @@
 package chemlab.core.controls;
 
 import bslib.components.ComboItem;
-import chemlab.core.chemical.ChemUnits;
+import chemlab.core.measure.ChemUnits;
 import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.EventQueue;

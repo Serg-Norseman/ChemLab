@@ -19,10 +19,10 @@ package chemlab.forms;
 
 import bslib.common.FramesHelper;
 import bslib.components.ComboItem;
-import chemlab.core.chemical.ChemUnits;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.Substance;
 import chemlab.core.controls.MeasureBox;
+import chemlab.core.measure.ChemUnits;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -47,7 +47,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -502,7 +501,7 @@ public class CLChemCalc extends JDialog
 
                 setVisible(false);
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Необходимо правильно заполнить поля");
+                CommonUtils.showError(this, "Необходимо правильно заполнить поля");
             }
         });
     }
@@ -510,7 +509,7 @@ public class CLChemCalc extends JDialog
     private void updateControls()
     {
         if (this.fIsInputSubst) {
-            switch (this.fSubstance.State) {
+            switch (this.fSubstance.getState()) {
                 case Solid:
                     rbSolidByMass.setEnabled(true);
                     rbSolidByVD.setEnabled(true);
@@ -588,7 +587,7 @@ public class CLChemCalc extends JDialog
                     break;
             }
         } else {
-            switch (this.fSubstance.State) {
+            switch (this.fSubstance.getState()) {
                 case Solid:
                     rbSolidByMass.setEnabled(false);
                     rbSolidByVD.setEnabled(false);

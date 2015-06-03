@@ -108,6 +108,7 @@ public class CLDeviceProps extends JDialog implements ActionListener
         tblSubstances.addColumn("S°", 59);
         tblSubstances.addColumn("dH°", 59);
         tblSubstances.addColumn("dG°", 59);
+        tblSubstances.addColumn("Mass", 59);
 
         tblProperties.setPreferredSize(tblDim);
         tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
@@ -164,7 +165,8 @@ public class CLDeviceProps extends JDialog implements ActionListener
                     CommonUtils.formatFloat(substance.getSM_HeatCapacity(), 3),
                     CommonUtils.formatFloat(substance.getSM_Entropy(), 3),
                     CommonUtils.formatFloat(substance.getSMF_Enthalpy(), 3),
-                    CommonUtils.formatFloat(substance.getSMF_Gibbs_Energy(), 3)
+                    CommonUtils.formatFloat(substance.getSMF_Gibbs_Energy(), 3),
+                    CommonUtils.formatFloat(substance.getMass(), 2)
                 };
 
                 this.tblSubstances.addRow(rowData);
@@ -196,7 +198,7 @@ public class CLDeviceProps extends JDialog implements ActionListener
             
             this.updateStoic();*/
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "ChemLab", JOptionPane.ERROR_MESSAGE);
+            CommonUtils.showError(this, ex.getMessage());
         }
     }
 

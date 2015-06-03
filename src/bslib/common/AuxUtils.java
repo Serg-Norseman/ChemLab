@@ -356,6 +356,10 @@ public final class AuxUtils
 
     public static int ParseInt(String str, int Default)
     {
+        if (StringHelper.isNullOrEmpty(str)) {
+            return Default;
+        }
+
         //try {
         return Integer.parseInt(str);
         //} catch (Exception ex) {
