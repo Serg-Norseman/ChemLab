@@ -381,21 +381,26 @@ public class CompoundSolver extends BaseObject
     {
         boolean result = false;
 
-        if (this.fCompounds.size() > 0) {
-            for (CompoundSolver subComp : this.fCompounds) {
-                subComp.calculateDegrees();
-            }
-        } else if (this.fElements.size() == 1) {
-            this.fElements.get(0).DegreeID = DegreeId.Zero;
-        } else {
-            result = this.checkDegreesChoice(0);
-            if (!result) {
-                for (CompoundElement elem : this.fElements) {
-                    elem.DegreeID = DegreeId.Zero;
+        try {
+            if (this.fCompounds.size() > 0) {
+                for (CompoundSolver subComp : this.fCompounds) {
+                    subComp.calculateDegrees();
                 }
-                //throw new Exception(CLCommon.rs_EODCalcImpossible);
+            } else if (this.fElements.size() == 1) {
+                this.fElements.get(0).DegreeID = DegreeId.Zero;
+            } else {
+                result = this.checkDegreesChoice(0);
+                if (!result) {
+                    for (CompoundElement elem : this.fElements) {
+                        elem.DegreeID = DegreeId.Zero;
+                    }
+                    //throw new Exception(CLCommon.rs_EODCalcImpossible);
+                }
             }
+        } catch (Exception ex) {
+            throw new RuntimeException("Невозможно рассчитать степени окисления");
         }
+
         return result;
     }
 
@@ -428,7 +433,7 @@ public class CompoundSolver extends BaseObject
                 }
             }
         } catch (Exception ex) {
-            throw new RuntimeException(ChemUtils.rs_EMMCalcImpossible);
+            throw new RuntimeException("Невозможно рассчитать молекулярную массу");
         }
     }
 
@@ -503,7 +508,7 @@ public class CompoundSolver extends BaseObject
             elem.ValencyID = ValencyId.V1;
         }
         
-        throw new RuntimeException(ChemUtils.rs_EVCalcImpossible);
+        throw new RuntimeException("Невозможно рассчитать валентности.");
     }
 
     public final void analyseFull(String formula, int charge)

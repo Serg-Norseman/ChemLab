@@ -39,7 +39,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
-import java.util.Locale;
 
 /**
  * Main frame of application.

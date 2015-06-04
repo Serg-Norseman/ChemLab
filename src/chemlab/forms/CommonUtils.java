@@ -31,8 +31,6 @@ import javax.swing.JOptionPane;
 public class CommonUtils
 {
     public static final Font DEFAULT_UI_FONT = new Font("Verdana", Font.PLAIN, 12);
-    
-    public static final String UNTITLED_FILE = "<Безымянный>";
 
     public static void changeFont(Component component)
     {

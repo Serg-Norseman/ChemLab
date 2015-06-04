@@ -21,7 +21,7 @@ import bslib.components.ComboItem;
 import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
-import chemlab.core.controls.MeasureBox;
+import chemlab.core.measure.MeasureBox;
 import chemlab.core.controls.experiment.LabDevice;
 import chemlab.core.measure.ChemUnits;
 import chemlab.refbooks.CompoundRecord;

@@ -20,7 +20,6 @@ package chemlab.forms;
 import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
 import chemlab.core.chemical.ChemDraw;
-import chemlab.core.chemical.ChemUtils;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
@@ -302,10 +301,10 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                 String substType = "";
                 switch (substance.Type) {
                     case Reactant:
-                        substType = ChemUtils.rs_SubstReagent;
+                        substType = res_i18n.getString("CL_reactant");
                         break;
                     case Product:
-                        substType = ChemUtils.rs_SubstProduct;
+                        substType = res_i18n.getString("CL_product");
                         break;
                 }
 
@@ -343,9 +342,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             this.addProperty("dG° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Gibbs_Energy(), 3), "кДж");
             this.addProperty("lg K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getlg_K(), 3), "");
             this.addProperty("K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getStdBalanceConstant(), 3), "");
-            this.addProperty(ChemUtils.rs_MolsInc, CommonUtils.formatFloat(this.fThermodynamicSolver.getdN(), 3), "");
-            this.addProperty(ChemUtils.rs_BCFirstApproximation, CommonUtils.formatFloat(this.fThermodynamicSolver.getFBalanceConstant(), 3), "");
-            this.addProperty(ChemUtils.rs_BCSecondApproximation, CommonUtils.formatFloat(this.fThermodynamicSolver.getSBalanceConstant(), 3), "");
+            this.addProperty("Приращение числа молей", CommonUtils.formatFloat(this.fThermodynamicSolver.getdN(), 3), "");
+            this.addProperty("K(реакц., первое прибл.)", CommonUtils.formatFloat(this.fThermodynamicSolver.getFBalanceConstant(), 3), "");
+            this.addProperty("K(реакц., второе прибл.)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSBalanceConstant(), 3), "");
             this.tblProperties.packColumns(10);
             
             this.updateStoic();
@@ -364,10 +363,10 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                 String substType = "";
                 switch (substance.Type) {
                     case Reactant:
-                        substType = ChemUtils.rs_SubstReagent;
+                        substType = res_i18n.getString("CL_reactant");
                         break;
                     case Product:
-                        substType = ChemUtils.rs_SubstProduct;
+                        substType = res_i18n.getString("CL_product");
                         break;
                 }
 

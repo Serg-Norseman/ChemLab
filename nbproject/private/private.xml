@@ -19,11 +19,14 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="ZRL">
-            <file>file:/E:/TMP/ChemLab/src/chemlab/forms/CLDevSubstAdd.java</file>
-            <file>file:/E:/TMP/ChemLab/src/chemlab/forms/CLChemCalc.java</file>
-            <file>file:/E:/TMP/ChemLab/src/chemlab/refbooks/CompoundRecord.java</file>
-        </group>
         <group/>
+        <group name="ZRL">
+            <file>file:/E:/TMP/ChemLab/src/chemlab/core/measure/MeasureBox.java</file>
+            <file>file:/E:/TMP/ChemLab/src/chemlab/core/measure/ChemUnits.java</file>
+            <file>file:/E:/TMP/ChemLab/src/chemlab/core/measure/CombustionHeat.java</file>
+            <file>file:/E:/TMP/ChemLab/src/chemlab/core/controls/molecule/loader/FilesLoader.java</file>
+            <file>file:/E:/TMP/ChemLab/src/chemlab/forms/CLMoleculeViewer.java</file>
+            <file>file:/E:/TMP/ChemLab/src/chemlab/core/controls/molecule/loader/HINBond.java</file>
+        </group>
     </open-files>
 </project-private>

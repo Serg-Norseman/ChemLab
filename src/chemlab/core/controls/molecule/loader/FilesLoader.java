@@ -32,9 +32,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
- *
+ * 
  * @author Serg V. Zhdanovskih
- * @since 0.6.0
+ * @since 0.4.0
  */
 public class FilesLoader
 {

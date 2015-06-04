@@ -1,3 +1,20 @@
+/*
+ *  "ChemLab", Desktop helper application for chemists.
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package chemlab.forms;
 
 import bslib.common.AuxUtils;
@@ -455,20 +472,20 @@ public final class CLElementsBook extends JFrame implements ActionListener
     private void updateElementsList()
     {
         this.ListElements.clear();
-        this.addColumn("Номер");
-        this.addColumn("Символ");
-        this.addColumn("Название");
-        this.addColumn("Лат. название");
-        this.addColumn("Оригинальное название");
-        this.addColumn("Класс");
+        this.addColumn(res_i18n.getString("CL_Number"));
+        this.addColumn(res_i18n.getString("CL_Symbol"));
+        this.addColumn(res_i18n.getString("CL_Name"));
+        this.addColumn(res_i18n.getString("CL_LatName"));
+        this.addColumn(res_i18n.getString("CL_OriginalName"));
+        this.addColumn(res_i18n.getString("CL_Class"));
         this.addColumn("Характер");
-        this.addColumn("Атом. масса");
-        this.addColumn("Атом. радиус");
-        this.addColumn("Атом. объем");
-        this.addColumn("Ковалентный радиус");
-        this.addColumn("Электроотрицательность");
-        this.addColumn("Степени окисления");
-        this.addColumn("Валентности");
+        this.addColumn(res_i18n.getString("CL_ATOMIC_MASS"));
+        this.addColumn(res_i18n.getString("CL_ATOMIC_RADIUS"));
+        this.addColumn(res_i18n.getString("CL_ATOMIC_VOLUME"));
+        this.addColumn(res_i18n.getString("CL_COVALENT_RADIUS"));
+        this.addColumn(res_i18n.getString("CL_ENEGATIVITY"));
+        this.addColumn(res_i18n.getString("CL_OXIDATION_DEGREES"));
+        this.addColumn(res_i18n.getString("CL_VALENCIES"));
         this.addColumn("Дата открытия");
         this.addColumn("Исследователи");
         this.addColumn("Содер-ние в зем. коре");
@@ -476,20 +493,20 @@ public final class CLElementsBook extends JFrame implements ActionListener
         this.addColumn("Первый потенциал ионизации");
         this.addColumn("Второй потенциал ионизации");
         this.addColumn("Третий потенциал ионизации");
-        this.addColumn("Сродство к электрону");
-        this.addColumn("Твердость");
+        this.addColumn(res_i18n.getString("CL_ELECTRON_AFFINITY"));
+        this.addColumn(res_i18n.getString("CL_HARDNESS"));
         this.addColumn("Крит. температура");
         this.addColumn("Крит. плотность");
         this.addColumn("Крит. давление");
-        this.addColumn("Радиус Ван-дер-Ваальса");
-        this.addColumn("Точка кипения");
-        this.addColumn("Точка плавления");
-        this.addColumn("Плотность");
-        this.addColumn("Теплота парообразования");
-        this.addColumn("Теплота слияния");
-        this.addColumn("Электропроводность");
+        this.addColumn(res_i18n.getString("CL_VDW_RADIUS"));
+        this.addColumn(res_i18n.getString("CL_BOILING_POINT"));
+        this.addColumn(res_i18n.getString("CL_MELTING_POINT"));
+        this.addColumn(res_i18n.getString("CL_DENSITY"));
+        this.addColumn(res_i18n.getString("CL_VAPORIZATION_HEAT"));
+        this.addColumn(res_i18n.getString("CL_FUSION_HEAT"));
+        this.addColumn(res_i18n.getString("CL_ELECTRIC_CONDUCTIVITY"));
         this.addColumn("Теплопроводность");
-        this.addColumn("Уд. теплоемкость");
+        this.addColumn(res_i18n.getString("CL_SPECIFIC_HEAT_CAPACITY"));
 
         //this.ListElements.BeginUpdate();
         this.ListElements.clear();
@@ -709,7 +726,7 @@ public final class CLElementsBook extends JFrame implements ActionListener
         FramesHelper.setClientSize(this, 800, 600);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setFont(CommonUtils.DEFAULT_UI_FONT);
-        this.setTitle("Справочник элементов");
+        this.setTitle(res_i18n.getString("CL_ELEMENTS_BOOK"));
         //this.WindowState = FormWindowState.Maximized;
 
         this.add(this.DBNavigator1, BorderLayout.NORTH);

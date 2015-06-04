@@ -12,11 +12,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public final class AtomViewer extends JPanel
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private static final Color[] OrbitalColors;
 
     private int fCtX, fCtY;
@@ -129,7 +132,7 @@ public final class AtomViewer extends JPanel
                 if (this.fOrbitalRadiuses[shl.getValue()][orb.getValue()] >= iRad - 2 && this.fOrbitalRadiuses[shl.getValue()][orb.getValue()] <= iRad + 2) {
                     int cnt = this.fStructure[shl.getValue()][orb.getValue()];
                     String text = String.valueOf(cnt);
-                    hint = String.format("Оболочка: %s; орбиталь: %s; электронов: %s", shl.Sym, orb.Sym, text);
+                    hint = String.format(res_i18n.getString("CL_AV_Hint"), shl.Sym, orb.Sym, text);
                 }
             }
         }

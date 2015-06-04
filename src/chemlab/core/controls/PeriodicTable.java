@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ResourceBundle;
 import javax.swing.ButtonGroup;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -21,6 +22,8 @@ import javax.swing.JToggleButton;
 
 public final class PeriodicTable extends JPanel implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     public enum Colouration
     {
         ByClass,
@@ -97,13 +100,13 @@ public final class PeriodicTable extends JPanel implements ActionListener
         ButtonGroup menuGroup = new ButtonGroup();
 
         this.miColourationByClass = new JRadioButtonMenuItem();
-        this.miColourationByClass.setText("Окраска по классу");
+        this.miColourationByClass.setText(res_i18n.getString("CL_ColorationByClass"));
         this.miColourationByClass.addActionListener(this);
         this.miColourationByClass.setActionCommand("ColByClass");
         this.miColourationByClass.setSelected(true);
 
         this.miColourationByABP = new JRadioButtonMenuItem();
-        this.miColourationByABP.setText("Окраска по Кислотно-Основности");
+        this.miColourationByABP.setText(res_i18n.getString("CL_ColorationByAcidBase"));
         this.miColourationByABP.addActionListener(this);
         this.miColourationByABP.setActionCommand("ColByABP");
 

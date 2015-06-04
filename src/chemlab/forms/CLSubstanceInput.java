@@ -22,7 +22,7 @@ import bslib.components.ComboItem;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
 import chemlab.core.chemical.Substance;
-import chemlab.core.controls.MeasureBox;
+import chemlab.core.measure.MeasureBox;
 import chemlab.core.measure.ChemUnits;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -48,7 +48,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -110,7 +109,7 @@ public class CLSubstanceInput extends JDialog
         
         this.setLocationRelativeTo(owner);
         this.setFont(CommonUtils.DEFAULT_UI_FONT);
-        this.setTitle("Input");
+        this.setTitle(res_i18n.getString("CL_SubstanceParams"));
 
         KeyAdapter numKeys = new KeyAdapter()
         {
@@ -132,7 +131,7 @@ public class CLSubstanceInput extends JDialog
         this.add(panHeader, BorderLayout.NORTH);
         
         JLabel lblPhase = new JLabel();
-        lblPhase.setText("Состояние");
+        lblPhase.setText(res_i18n.getString("CL_State"));
         panHeader.add(lblPhase);
         
         cmbPhase = new JComboBox();
@@ -142,7 +141,7 @@ public class CLSubstanceInput extends JDialog
         panHeader.add(cmbPhase);
         
         JLabel lblUnits = new JLabel();
-        lblUnits.setText("Ед. изм. результата");
+        lblUnits.setText(res_i18n.getString("CL_ResultUnit"));
         panHeader.add(lblUnits);
         
         cmbUnits = new JComboBox();
@@ -174,26 +173,26 @@ public class CLSubstanceInput extends JDialog
         JPanel panSolidContent = new JPanel(new GridLayout(5, 2, 4, 4));
         panSolid.add(panSolidContent, BorderLayout.NORTH);
         
-        rbSolidByMass = new JRadioButton("по массе");
+        rbSolidByMass = new JRadioButton(res_i18n.getString("CL_SolidByMass"));
         panSolidContent.add(rbSolidByMass);
         
         panSolidContent.add(new JLabel(" "));
         
         JLabel lblMass = new JLabel();
-        lblMass.setText("Масса, г");
+        lblMass.setText(res_i18n.getString("CL_Mass"));
         panSolidContent.add(lblMass);
         
         txtMass = new MeasureBox("", ChemUnits.KILOGRAM);
         txtMass.addKeyListener(numKeys);
         panSolidContent.add(txtMass);
         
-        rbSolidByVD = new JRadioButton("по объему и плотности");
+        rbSolidByVD = new JRadioButton(res_i18n.getString("CL_SolidByVD"));
         panSolidContent.add(rbSolidByVD);
         
         panSolidContent.add(new JLabel(" "));
         
         JLabel lblVolume = new JLabel();
-        lblVolume.setText("Объем, л");
+        lblVolume.setText(res_i18n.getString("CL_Volume"));
         panSolidContent.add(lblVolume);
         
         txtVolume = new MeasureBox("", ChemUnits.CUBIC_METRE);
@@ -201,7 +200,7 @@ public class CLSubstanceInput extends JDialog
         panSolidContent.add(txtVolume);
         
         JLabel lblDensity = new JLabel();
-        lblDensity.setText("Плотность, г/л");
+        lblDensity.setText(res_i18n.getString("CL_DENSITY"));
         panSolidContent.add(lblDensity);
         
         txtDensity = new MeasureBox("", ChemUnits.KG_M3);
@@ -224,7 +223,7 @@ public class CLSubstanceInput extends JDialog
         panLiquid.add(panLiquidContent, BorderLayout.NORTH);
         
         JLabel lblLiqVolume = new JLabel();
-        lblLiqVolume.setText("Объем, л");
+        lblLiqVolume.setText(res_i18n.getString("CL_Volume"));
         lblLiqVolume.setMinimumSize(dim);
         lblLiqVolume.setPreferredSize(dim);
         panLiquidContent.add(lblLiqVolume);
@@ -233,7 +232,7 @@ public class CLSubstanceInput extends JDialog
         txtLiqVolume.addKeyListener(numKeys);
         panLiquidContent.add(txtLiqVolume);
         
-        rbLiquidByM = new JRadioButton("Концентрация, М");
+        rbLiquidByM = new JRadioButton(res_i18n.getString("CL_ConcM"));
         rbLiquidByM.setLocation(10, 10);
         rbLiquidByM.setSize(100, 25);
         panLiquidContent.add(rbLiquidByM);
@@ -242,7 +241,7 @@ public class CLSubstanceInput extends JDialog
         txtConcM.addKeyListener(numKeys);
         panLiquidContent.add(txtConcM);
         
-        rbLiquidByMP = new JRadioButton("% по массе");
+        rbLiquidByMP = new JRadioButton(res_i18n.getString("CL_MassPercent"));
         rbLiquidByMP.setLocation(10, 10);
         rbLiquidByMP.setSize(100, 25);
         panLiquidContent.add(rbLiquidByMP);
@@ -252,7 +251,7 @@ public class CLSubstanceInput extends JDialog
         panLiquidContent.add(txtMP);
         
         JLabel lblLiqDensity = new JLabel();
-        lblLiqDensity.setText("Плотность, г/л");
+        lblLiqDensity.setText(res_i18n.getString("CL_DENSITY"));
         panLiquidContent.add(lblLiqDensity);
         
         txtLiqDensity = new MeasureBox("", ChemUnits.KG_M3);
@@ -276,7 +275,7 @@ public class CLSubstanceInput extends JDialog
         panGas.add(panGasContent, BorderLayout.NORTH);
         
         JLabel lblGasPressure = new JLabel();
-        lblGasPressure.setText("Давление");
+        lblGasPressure.setText(res_i18n.getString("CL_Pressure"));
         lblGasPressure.setLocation(10, 10);
         lblGasPressure.setSize(100, 25);
         panGasContent.add(lblGasPressure);
@@ -286,7 +285,7 @@ public class CLSubstanceInput extends JDialog
         panGasContent.add(txtGasPressure);
         
         JLabel lblGasVolume = new JLabel();
-        lblGasVolume.setText("Объем");
+        lblGasVolume.setText(res_i18n.getString("CL_Volume"));
         lblGasVolume.setLocation(10, 35);
         lblGasVolume.setSize(100, 25);
         panGasContent.add(lblGasVolume);
@@ -296,7 +295,7 @@ public class CLSubstanceInput extends JDialog
         panGasContent.add(txtGasVolume);
         
         JLabel lblGasTemperature = new JLabel();
-        lblGasTemperature.setText("Температура");
+        lblGasTemperature.setText(res_i18n.getString("CL_TEMPERATURE"));
         lblGasTemperature.setLocation(10, 60);
         lblGasTemperature.setSize(100, 25);
         panGasContent.add(lblGasTemperature);
@@ -306,7 +305,7 @@ public class CLSubstanceInput extends JDialog
         panGasContent.add(txtGasTemperature);
         
         JLabel lblGasDensity = new JLabel();
-        lblGasDensity.setText("Плотность, г/л");
+        lblGasDensity.setText(res_i18n.getString("CL_DENSITY"));
         lblGasDensity.setLocation(10, 85);
         lblGasDensity.setSize(100, 25);
         panGasContent.add(lblGasDensity);
@@ -331,7 +330,7 @@ public class CLSubstanceInput extends JDialog
         this.add(panFooter, BorderLayout.SOUTH);
 
         JButton btnDone = new JButton();
-        btnDone.setText("Принять");
+        btnDone.setText(res_i18n.getString("CL_Apply"));
         btnDone.setPreferredSize(new Dimension(100, 30));
         panFooter.add(btnDone);
 
@@ -417,7 +416,7 @@ public class CLSubstanceInput extends JDialog
 
                 setVisible(false);
             } catch (NumberFormatException ex) {
-                CommonUtils.showError(this, "Необходимо правильно заполнить поля");
+                CommonUtils.showError(this, res_i18n.getString("CL_FieldsInvalid"));
             }
         });
         

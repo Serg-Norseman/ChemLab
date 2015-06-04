@@ -1,3 +1,20 @@
+/*
+ *  "ChemLab", Desktop helper application for chemists.
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package chemlab.forms;
 
 import bslib.common.AuxUtils;
@@ -26,7 +43,7 @@ public final class CLElementViewer extends JDialog
         super(owner);
 
         this.tblElementProps = new VirtualTable();
-        this.tblElementProps.addColumn(res_i18n.getString("CL_PROPERTY"), 185);
+        this.tblElementProps.addColumn(res_i18n.getString("CL_Property"), 185);
         this.tblElementProps.addColumn(res_i18n.getString("CL_VALUE"), 323);
 
         this.setTitle(String.format(res_i18n.getString("CL_EV_TITLE"), eSymbol));
@@ -39,10 +56,10 @@ public final class CLElementViewer extends JDialog
 
         ElementRecord elem = CLData.ElementsBook.findElement(eSymbol);
 
-        this.addProperty(res_i18n.getString("CL_NUMBER"), (new Integer(elem.FNumber)).toString());
-        this.addProperty(res_i18n.getString("CL_SYMBOL"), elem.FSymbol);
-        this.addProperty(res_i18n.getString("CL_NAME"), elem.FRus_Name);
-        this.addProperty(res_i18n.getString("CL_CLASS"), CLData.ElementClasses[elem.FClass.getValue()]);
+        this.addProperty(res_i18n.getString("CL_Number"), (new Integer(elem.FNumber)).toString());
+        this.addProperty(res_i18n.getString("CL_Symbol"), elem.FSymbol);
+        this.addProperty(res_i18n.getString("CL_Name"), elem.FRus_Name);
+        this.addProperty(res_i18n.getString("CL_Class"), CLData.ElementClasses[elem.FClass.getValue()]);
         this.addProperty(res_i18n.getString("CL_ATOMIC_MASS"), AuxUtils.FloatToStr(elem.FAtomic_Mass));
         this.addProperty(res_i18n.getString("CL_ATOMIC_RADIUS"), AuxUtils.FloatToStr(elem.FAtomic_Radius));
         this.addProperty(res_i18n.getString("CL_ATOMIC_VOLUME"), AuxUtils.FloatToStr(elem.FAtomic_Volume));

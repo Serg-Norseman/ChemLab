@@ -1,3 +1,20 @@
+/*
+ *  "ChemLab", Desktop helper application for chemists.
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package chemlab.forms;
 
 import bslib.common.AuxUtils;
@@ -364,7 +381,7 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setFont(CommonUtils.DEFAULT_UI_FONT);
         this.setJMenuBar(this.MainMenu);
-        this.setTitle("Мастер молекул");
+        this.setTitle(res_i18n.getString("CL_MOLECULE_VIEWER"));
 
         this.ToolBarCommon.setLocation(11, 2);
         this.ToolBarCommon.setSize(142, 22);
@@ -372,58 +389,58 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         //this.ToolBarCommon.ButtonClick += this.ToolButtonClick;
         this.add(this.ToolBarCommon, BorderLayout.NORTH);
 
-        this.tbLoad.setText("Открыть...");
+        this.tbLoad.setText(res_i18n.getString("CL_Load"));
         this.tbLoad.addActionListener(this);
         this.tbLoad.setActionCommand("act_Load");
         //tToolButton2.ImageIndex = 1;
 
         //tbClear.ImageIndex = 13;
-        tbClear.setText("clear");
+        tbClear.setText(res_i18n.getString("CL_Clear"));
         tbClear.setEnabled(false);
 
-        this.tbEditMode.setText("Правка");
+        this.tbEditMode.setText(res_i18n.getString("CL_Edit"));
         //tToolButton6.ImageIndex = 0;
         this.tbEditMode.setSelected(true);
         //tToolButton6.Click += this.tbEditModeClick;
         this.tbEditMode.addActionListener(this);
         this.tbEditMode.setActionCommand("act_EditMode");
 
-        this.tbScaleMode.setText("Масштабирование");
+        this.tbScaleMode.setText(res_i18n.getString("CL_ModeScale"));
         //tToolButton7.ImageIndex = 1;
         //tToolButton7.Click += this.tbScaleModeClick;
         this.tbScaleMode.addActionListener(this);
         this.tbScaleMode.setActionCommand("act_ScaleMode");
 
-        this.tbSpaceMoveMode.setText("Перемещение вне плана");
+        this.tbSpaceMoveMode.setText(res_i18n.getString("CL_ModeSpaceMove"));
         //tToolButton8.ImageIndex = 5;
         //tToolButton8.Click += this.tbSpaceMoveModeClick;
         this.tbSpaceMoveMode.addActionListener(this);
         this.tbSpaceMoveMode.setActionCommand("act_SpaceMoveMode");
 
-        this.tbPlaneMoveMode.setText("Перемещение в плане");
+        this.tbPlaneMoveMode.setText(res_i18n.getString("CL_ModePlaneMove"));
         //tToolButton9.ImageIndex = 2;
         //tToolButton9.Click += this.tbPlaneMoveModeClick;
         this.tbPlaneMoveMode.addActionListener(this);
         this.tbPlaneMoveMode.setActionCommand("act_PlaneMoveMode");
 
-        this.tbSpaceRotateMode.setText("Вращение вне плана");
+        this.tbSpaceRotateMode.setText(res_i18n.getString("CL_ModeSpaceRotate"));
         //tToolButton10.ImageIndex = 3;
         //tToolButton10.Click += this.tbSpaceRotateModeClick;
         this.tbSpaceRotateMode.addActionListener(this);
         this.tbSpaceRotateMode.setActionCommand("act_SpaceRotateMode");
 
-        this.tbPlaneRotateMode.setText("Вращение в плане");
+        this.tbPlaneRotateMode.setText(res_i18n.getString("CL_ModePlaneRotate"));
         //tToolButton11.ImageIndex = 4;
         //tToolButton11.Click += this.tbPlaneRotateModeClick;
         this.tbPlaneRotateMode.addActionListener(this);
         this.tbPlaneRotateMode.setActionCommand("act_PlaneRotateMode");
 
-        this.tbFitToWnd.setText("actFitToWnd");
+        this.tbFitToWnd.setText(res_i18n.getString("CL_FitToWin"));
         //this.tbFitToWnd.ImageIndex = 6;
         //tToolButton12.Hint = "Выровнять по окну";
         //tToolButton12.Click += this.tbFitToWndClick;
 
-        this.tbAutoRotate.setText("actAutoRotate");
+        this.tbAutoRotate.setText(res_i18n.getString("CL_AutoRotate"));
         this.tbAutoRotate.addActionListener(this);
         this.tbAutoRotate.setActionCommand("act_AutoRotate");
 
@@ -439,7 +456,7 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         tJComboBox.Height = 20;*/
         //tJComboBox.set_OnChange(new EventHandler(this.cbMoleculesChange));
 
-        this.tbRenameMolecule.setText("Свойства молекулы");
+        this.tbRenameMolecule.setText(res_i18n.getString("CL_FileProperties"));
         //this.tbRenameMolecule.ImageIndex = 10;
         //tToolButton14.Click += this.tbRenameMoleculeClick;
 
@@ -462,39 +479,39 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.MainMenu.add(this.miView);
         this.MainMenu.add(this.miFunctions);
 
-        this.miFile.setText("Файл");
+        this.miFile.setText(res_i18n.getString("CL_File"));
 
         this.miFile.add(this.miLoad);
         this.miFile.add(this.miClose);
         this.miFile.add(this.miExit);
 
-        this.miLoad.setText("Открыть...");
+        this.miLoad.setText(res_i18n.getString("CL_Load"));
         this.miLoad.addActionListener(this);
         this.miLoad.setActionCommand("act_Load");
 
-        this.miClose.setText("Закрыть");
+        this.miClose.setText(res_i18n.getString("CL_Close"));
         //this.miClose.Click += this.miCloseClick;
 
-        this.miExit.setText("Выход");
+        this.miExit.setText(res_i18n.getString("CL_Exit"));
         //this.miExit.Click += this.miExitClick;
 
-        this.miEdit.setText("Правка");
+        this.miEdit.setText(res_i18n.getString("CL_Edit"));
         this.miEdit.add(this.miDelete);
         this.miEdit.add(this.miSelectAll);
 
-        this.miDelete.setText("Удалить");
+        this.miDelete.setText(res_i18n.getString("CL_Delete"));
         this.miDelete.setEnabled(false);
         //tMenuItem9.Click += this.miDeleteClick;
 
-        this.miSelectAll.setText("Выделение всех объектов");
+        this.miSelectAll.setText(res_i18n.getString("CL_SelectAll"));
         this.miSelectAll.setEnabled(false);
         //tMenuItem10.Click += this.miSelectAllClick;
 
-        this.miView.setText("Вид");
+        this.miView.setText(res_i18n.getString("CL_View"));
         this.miView.add(this.miAtomView);
         this.miView.add(this.miMoleculeView);
 
-        this.miAtomView.setText("Атома");
+        this.miAtomView.setText(res_i18n.getString("CL_ViewAtom"));
         this.miAtomView.add(this.miSign); 
         this.miAtomView.add(this.miName);
         this.miAtomView.add(this.miNumber);
@@ -503,44 +520,44 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.miAtomView.add(this.miMass);
         this.miAtomView.add(this.miChirality);
 
-        this.miSign.setText("Символ");
+        this.miSign.setText(res_i18n.getString("CL_Symbol"));
         this.miSign.setSelected(true);
         //this.miSign.Click += this.miAtomViewsClick;
 
-        this.miName.setText("Название");
+        this.miName.setText(res_i18n.getString("CL_Name"));
         //this.miName.Click += this.miAtomViewsClick;
 
-        this.miNumber.setText("Номер");
+        this.miNumber.setText(res_i18n.getString("CL_Number"));
         //this.miNumber.Click += this.miAtomViewsClick;
 
-        this.miCharge.setText("Заряд");
+        this.miCharge.setText(res_i18n.getString("CL_CHARGE"));
         //this.miCharge.Click += this.miAtomViewsClick;
 
-        this.miAtomType.setText("Тип");
+        this.miAtomType.setText(res_i18n.getString("CL_TYPE"));
         this.miAtomType.setEnabled(false);
         //this.miAtomType.Click += this.miAtomViewsClick;
 
-        this.miMass.setText("Масса");
+        this.miMass.setText(res_i18n.getString("CL_Mass"));
         //this.miMass.Click += this.miAtomViewsClick;
 
         this.miChirality.setText("Хиральность");
         this.miChirality.setEnabled(false);
         //this.miChirality.Click += this.miAtomViewsClick;
 
-        this.miMoleculeView.setText("Молекулы");
+        this.miMoleculeView.setText(res_i18n.getString("CL_ViewMolecule"));
         this.miMoleculeView.add(this.miBalls);
         this.miMoleculeView.add(this.miSticks);
 
-        this.miBalls.setText("Шарики");
+        this.miBalls.setText(res_i18n.getString("CL_Balls"));
         //this.miBalls.Click += this.miMoleculeViewsClick;
 
-        this.miSticks.setText("Стержни");
+        this.miSticks.setText(res_i18n.getString("CL_Sticks"));
         //this.miSticks.Click += this.miMoleculeViewsClick;
 
-        this.miFunctions.setText("Функции");
+        this.miFunctions.setText(res_i18n.getString("CL_Services"));
         this.miFunctions.add(this.miMoleculeProperties);
 
-        this.miMoleculeProperties.setText("Свойства молекулы");
+        this.miMoleculeProperties.setText(res_i18n.getString("CL_FileProperties"));
     }
 
     @Override

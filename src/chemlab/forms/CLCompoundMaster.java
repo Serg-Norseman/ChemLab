@@ -1,3 +1,20 @@
+/*
+ *  "ChemLab", Desktop helper application for chemists.
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package chemlab.forms;
 
 import bslib.common.AuxUtils;
@@ -101,12 +118,12 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.tblElements.setSize(673, 256);
         this.tblElements.addActionListener(this);
         this.tblElements.addColumn(res_i18n.getString("CL_ELEMENT"), 60);
-        this.tblElements.addColumn(res_i18n.getString("CL_INDEX"), 60);
+        this.tblElements.addColumn(res_i18n.getString("CL_Index"), 60);
         this.tblElements.addColumn(res_i18n.getString("CL_ATOMIC_MASS"), 79);
         this.tblElements.addColumn(res_i18n.getString("CL_ENEGATIVITY"), 125);
         this.tblElements.addColumn(res_i18n.getString("CL_OXIDATION_NUMBER"), 119);
         this.tblElements.addColumn(res_i18n.getString("CL_VALENCY"), 80);
-        this.tblElements.addColumn(res_i18n.getString("CL_MASS_SHARE"), 74);
+        this.tblElements.addColumn(res_i18n.getString("CL_MassShare"), 74);
         this.tblElements.addColumn(res_i18n.getString("CL_COMPONENT"), 74);
         this.tblElements.setToolTipText(res_i18n.getString("CL_DETAILS_DBLCLICK"));
 
@@ -160,17 +177,6 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
             };
             
             this.tblElements.addRow(rowData);
-            
-            /*ListViewItem item = this.ListView1.Items.Add(elem.Symbol);
-
-            item.SubItems.Add(CLData.formatFloat(elem.Index, 5));
-            item.SubItems.Add(CLData.formatFloat(elem.AtomicMass, 5));
-            item.SubItems.Add(CLData.formatFloat(elem.ENegativity, 2));
-
-            item.SubItems.Add(CLData.Degree[elem.DegreeID.getValue()].ID);
-            item.SubItems.Add(CLData.Valency[elem.ValencyID.getValue()].ID);
-            item.SubItems.Add(CLData.formatFloat(elem.MassShare, 2) + " %");
-            item.SubItems.Add("(" + AuxUtils.FloatToStr(compound.Factor) + ")" + compound.Formula);*/
         }
     }
 

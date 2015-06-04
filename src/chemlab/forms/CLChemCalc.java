@@ -21,7 +21,7 @@ import bslib.common.FramesHelper;
 import bslib.components.ComboItem;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.Substance;
-import chemlab.core.controls.MeasureBox;
+import chemlab.core.measure.MeasureBox;
 import chemlab.core.measure.ChemUnits;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;

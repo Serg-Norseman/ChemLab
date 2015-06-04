@@ -1,3 +1,20 @@
+/*
+ *  "ChemLab", Desktop helper application for chemists.
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package chemlab.forms;
 
 import bslib.common.AuxUtils;
@@ -52,7 +69,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
     private JButton tbPrint;
     private JButton tbClear;
     private JMenuItem miClose;
-    private JMenuItem miFunctions;
+    private JMenuItem miServices;
     private JMenuItem miFileProperties;
     private JFileChooser OpenDialog;
     private JFileChooser SaveDialog;
@@ -71,7 +88,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
 
         this.fCompoundMaster = new CompoundSolver();
 
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Файлы экспериментов", "edf");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(res_i18n.getString("CL_ExperimentFiles"), "edf");
 
         this.OpenDialog.setFileFilter(filter);
         this.OpenDialog.setCurrentDirectory(new File(AuxUtils.getAppPath()));
@@ -79,7 +96,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
         this.SaveDialog.setFileFilter(filter);
         this.SaveDialog.setCurrentDirectory(new File(AuxUtils.getAppPath()));
 
-        this.fFileName = CommonUtils.UNTITLED_FILE;
+        this.fFileName = res_i18n.getString("CL_UntitledFile");
     }
 
     private void initializeComponents()
@@ -102,7 +119,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
         this.tbPrint = new JButton();
         this.tbClear = new JButton();
         this.miClose = new JMenuItem();
-        this.miFunctions = new JMenu();
+        this.miServices = new JMenu();
         this.miFileProperties = new JMenuItem();
         this.OpenDialog = new JFileChooser();
         this.SaveDialog = new JFileChooser();
@@ -114,7 +131,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setFont(CommonUtils.DEFAULT_UI_FONT);
         this.setJMenuBar(this.MainMenu);
-        this.setTitle("Мастер экспериментов");
+        this.setTitle(res_i18n.getString("CL_EXPERIMENT_MASTER"));
         //this.Closing += this.Form_Closing;
 
         this.ToolBarCommon.setLocation(11, 2);
@@ -130,24 +147,24 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
         this.ToolBarCommon.addSeparator();
         this.ToolBarCommon.add(this.tbClear);
 
-        this.tbCreate.setText("Создать");
+        this.tbCreate.setText(res_i18n.getString("CL_CreateNew"));
         //tToolButton.ImageIndex = 0;
         this.tbCreate.addActionListener(this);
         this.tbCreate.setActionCommand("ACTION_CREATE");
 
-        this.tbLoad.setText("Открыть...");
+        this.tbLoad.setText(res_i18n.getString("CL_Load"));
         //tToolButton2.ImageIndex = 1;
         //tToolButton2.Click += this.miLoadClick;
 
-        this.tbSave.setText("Сохранить");
+        this.tbSave.setText(res_i18n.getString("CL_Save"));
         //tToolButton3.ImageIndex = 2;
         //tToolButton3.Click += this.miSaveClick;
 
-        this.tbPrint.setText("Печать...");
+        this.tbPrint.setText(res_i18n.getString("CL_Print"));
         //tToolButton4.ImageIndex = 5;
         this.tbPrint.setEnabled(false);
 
-        this.tbClear.setText("Удалить");
+        this.tbClear.setText(res_i18n.getString("CL_Delete"));
         //tbClear.ImageIndex = 13;
         this.tbClear.setEnabled(false);
         //tbClear.Click += this.miDeleteClick;
@@ -155,9 +172,9 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
         this.MainMenu.add(miFile);
         this.MainMenu.add(miEdit);
         this.MainMenu.add(miView);
-        this.MainMenu.add(miFunctions);
+        this.MainMenu.add(miServices);
 
-        this.miFile.setText("Файл");
+        this.miFile.setText(res_i18n.getString("CL_File"));
 
         this.miFile.add(miCreate);
         this.miFile.add(miLoad);
@@ -169,49 +186,49 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
         this.miFile.addSeparator();
         this.miFile.add(miExit);
 
-        this.miCreate.setText("Создать");
+        this.miCreate.setText(res_i18n.getString("CL_CreateNew"));
         this.miCreate.addActionListener(this);
         this.miCreate.setActionCommand("ACTION_CREATE");
 
-        this.miLoad.setText("Открыть...");
+        this.miLoad.setText(res_i18n.getString("CL_Load"));
         this.miLoad.addActionListener(this);
         this.miLoad.setActionCommand("ACTION_LOAD");
 
-        this.miSave.setText("Сохранить");
+        this.miSave.setText(res_i18n.getString("CL_Save"));
         this.miSave.addActionListener(this);
         this.miSave.setActionCommand("ACTION_SAVE");
 
-        this.miSaveAs.setText("Сохранить как...");
+        this.miSaveAs.setText(res_i18n.getString("CL_SaveAs"));
         this.miSaveAs.addActionListener(this);
         this.miSaveAs.setActionCommand("ACTION_SAVEAS");
 
-        this.miClose.setText("Закрыть");
+        this.miClose.setText(res_i18n.getString("CL_Close"));
         this.miClose.addActionListener(this);
         this.miClose.setActionCommand("ACTION_CLOSE");
 
-        this.miExit.setText("Выход");
+        this.miExit.setText(res_i18n.getString("CL_Exit"));
         this.miExit.addActionListener(this);
         this.miExit.setActionCommand("ACTION_EXIT");
 
-        this.miEdit.setText("Правка");
+        this.miEdit.setText(res_i18n.getString("CL_Edit"));
         this.miEdit.add(this.miDelete);
         this.miEdit.add(this.miSelectAll);
 
-        this.miDelete.setText("Удалить");
+        this.miDelete.setText(res_i18n.getString("CL_Delete"));
         this.miDelete.setEnabled(false);
         this.miDelete.addActionListener(this);
         this.miDelete.setActionCommand("ACTION_DELETE");
 
-        this.miSelectAll.setText("Выделить все");
+        this.miSelectAll.setText(res_i18n.getString("CL_SelectAll"));
         this.miSelectAll.setEnabled(false);
         this.miSelectAll.addActionListener(this);
         this.miSelectAll.setActionCommand("ACTION_SELECT_ALL");
 
-        this.miView.setText("Вид");
+        this.miView.setText(res_i18n.getString("CL_View"));
 
-        this.miFunctions.setText("Функции");
+        this.miServices.setText(res_i18n.getString("CL_Services"));
 
-        this.miFileProperties.setText("Свойства файла");
+        this.miFileProperties.setText(res_i18n.getString("CL_FileProperties"));
         this.miFileProperties.addActionListener(this);
         this.miFileProperties.setActionCommand("mi_FileProperties");
 
@@ -264,7 +281,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
 
     public void miSaveClick(Object sender)
     {
-        if (StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE)) {
+        if (StringHelper.equals(this.fFileName, res_i18n.getString("CL_UntitledFile"))) {
             this.miSaveAsClick(this);
         } else {
             this.fBench.saveToFile(this.fFileName);
@@ -283,7 +300,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
     public void miCloseClick(Object sender)
     {
         if (this.fBench.Modified) {
-            int res = JOptionPane.showConfirmDialog(null, "Файл \"" + this.fFileName + "\" был изменен. Сохранить?", "", JOptionPane.YES_NO_CANCEL_OPTION);
+            int res = JOptionPane.showConfirmDialog(null, String.format(res_i18n.getString("CL_ChangedFileSaveQuery"), this.fFileName), "ChemLab", JOptionPane.YES_NO_CANCEL_OPTION);
             if (res == JOptionPane.YES_OPTION) {
                 this.SaveContents();
             }
@@ -292,8 +309,8 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
 
     private void SaveContents()
     {
-        if (StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE)) {
-            if ((!StringHelper.equals(this.fFileName, "")) && (!StringHelper.equals(this.fFileName, CommonUtils.UNTITLED_FILE))) {
+        if (StringHelper.equals(this.fFileName, res_i18n.getString("CL_UntitledFile"))) {
+            if ((!StringHelper.equals(this.fFileName, "")) && (!StringHelper.equals(this.fFileName, res_i18n.getString("CL_UntitledFile")))) {
                 String fileName = (new java.io.File(this.fFileName)).getName();
                 //this.SaveDialog.FileName = fileName;
                 //this.SaveDialog.InitialDirectory = (new java.io.File(this.FFileName)).getParent();
@@ -323,7 +340,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
 
         switch (actionPerformed) {
             case "ACTION_CREATE":
-                this.fFileName = CommonUtils.UNTITLED_FILE;
+                this.fFileName = res_i18n.getString("CL_UntitledFile");
                 this.fBench.clear();
                 break;
 

@@ -5,19 +5,6 @@ import bslib.common.RefObject;
 
 public class ChemUtils
 {
-    public static final String sECompoundUnknown = "Соединение \"%s\" неизвестно.";
-    public static final String sEFormatInvalid = "Формат данных неверен";
-    public static final String rs_EVCalcImpossible = "Невозможно рассчитать валентности.";
-    public static final String rs_EODCalcImpossible = "Невозможно рассчитать степени окисления";
-    public static final String rs_EMMCalcImpossible = "Невозможно рассчитать молекулярную массу";
-
-    public static final String rs_AllComponents = "Все компоненты";
-    public static final String rs_SubstReagent = "реагент";
-    public static final String rs_SubstProduct = "продукт";
-    public static final String rs_MolsInc = "Приращение числа молей";
-    public static final String rs_BCFirstApproximation = "K(реакц., первое прибл.)";
-    public static final String rs_BCSecondApproximation = "K(реакц., второе прибл.)";
-
     public static double extractNumber(RefObject<String> str, int pos)
     {
         double result;

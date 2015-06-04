@@ -18,7 +18,6 @@
 package chemlab.forms;
 
 import bslib.common.AuxUtils;
-import chemlab.core.chemical.ChemUtils;
 import chemlab.core.chemical.Substance;
 import chemlab.core.controls.experiment.LabDevice;
 import chemlab.sandbox.ReactionsEnv;
@@ -32,7 +31,6 @@ import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -150,10 +148,10 @@ public class CLDeviceProps extends JDialog implements ActionListener
                 String substType = "";
                 switch (substance.Type) {
                     case Reactant:
-                        substType = ChemUtils.rs_SubstReagent;
+                        substType = "реагент";
                         break;
                     case Product:
-                        substType = ChemUtils.rs_SubstProduct;
+                        substType = "продукт";
                         break;
                 }
 
