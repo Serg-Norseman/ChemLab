@@ -113,7 +113,7 @@ public final class CLMainWindow extends JFrame implements ActionListener
         //this.IsMdiContainer = true;
         this.setTitle(res_i18n.getString("CL_APPNAME"));
         //this.WindowState = FormWindowState.Maximized;
-        this.setIconImage(ImageHelper.loadBitmap("ui/chemlab.gif", true));
+        this.setIconImage(ImageHelper.loadBitmap("ui/chemlab.png", true));
 
         this.StatusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
         this.StatusBar.setFont(this.getFont());
@@ -133,26 +133,26 @@ public final class CLMainWindow extends JFrame implements ActionListener
         this.miBookElement.addActionListener(this);
         this.miBookElement.setActionCommand("cmd_PTable");
         this.miBookElement.setFont(this.getFont());
-        this.miBookElement.setIcon(ImageHelper.loadIcon("ui/rb_ptable.gif"));
+        this.miBookElement.setIcon(ImageHelper.loadIcon("ui/rb_ptable.png"));
 
         this.miBookValue.setText(res_i18n.getString("CL_VALUES_BOOK"));
         this.miBookValue.addActionListener(this);
         this.miBookValue.setActionCommand("cmd_UnitsTable");
         this.miBookValue.setFont(this.getFont());
-        this.miBookValue.setIcon(ImageHelper.loadIcon("ui/rb_values.gif"));
+        this.miBookValue.setIcon(ImageHelper.loadIcon("ui/rb_values.png"));
 
         this.miBookCompounds.setText(res_i18n.getString("CL_COMPOUNDS_BOOK"));
         this.miBookCompounds.addActionListener(this);
         this.miBookCompounds.setActionCommand("");
         this.miBookCompounds.setFont(this.getFont());
-        this.miBookCompounds.setIcon(ImageHelper.loadIcon("ui/rb_compounds.gif"));
+        this.miBookCompounds.setIcon(ImageHelper.loadIcon("ui/rb_compounds.png"));
         this.miBookCompounds.setEnabled(false);
 
         this.miBookReactions.setText(res_i18n.getString("CL_REACTIONS_BOOK"));
         this.miBookReactions.addActionListener(this);
         this.miBookReactions.setActionCommand("");
         this.miBookReactions.setFont(this.getFont());
-        this.miBookReactions.setIcon(ImageHelper.loadIcon("ui/rb_reactions.gif"));
+        this.miBookReactions.setIcon(ImageHelper.loadIcon("ui/rb_reactions.png"));
         this.miBookReactions.setEnabled(false);
         
         this.miService.setText(res_i18n.getString("CL_SERVICE"));
@@ -162,31 +162,31 @@ public final class CLMainWindow extends JFrame implements ActionListener
         this.miUnitMaster.addActionListener(this);
         this.miUnitMaster.setActionCommand("cmd_UnitsConverter");
         this.miUnitMaster.setFont(this.getFont());
-        this.miUnitMaster.setIcon(ImageHelper.loadIcon("ui/measure.gif"));
+        this.miUnitMaster.setIcon(ImageHelper.loadIcon("ui/measure.png"));
 
         this.miCompoundMaster.setText(res_i18n.getString("CL_COMPOUND_MASTER"));
         this.miCompoundMaster.addActionListener(this);
         this.miCompoundMaster.setActionCommand("cmd_CompoundMaster");
         this.miCompoundMaster.setFont(this.getFont());
-        this.miCompoundMaster.setIcon(ImageHelper.loadIcon("ui/compound.gif"));
+        this.miCompoundMaster.setIcon(ImageHelper.loadIcon("ui/compound.png"));
 
         this.miReactionMaster.setText(res_i18n.getString("CL_REACTION_MASTER"));
         this.miReactionMaster.addActionListener(this);
         this.miReactionMaster.setActionCommand("cmd_ReactionMaster");
         this.miReactionMaster.setFont(this.getFont());
-        this.miReactionMaster.setIcon(ImageHelper.loadIcon("ui/reaction.gif"));
+        this.miReactionMaster.setIcon(ImageHelper.loadIcon("ui/reaction.png"));
 
         this.miMoleculeMaster.setText(res_i18n.getString("CL_MOLECULE_VIEWER"));
         this.miMoleculeMaster.addActionListener(this);
         this.miMoleculeMaster.setActionCommand("cmd_MoleculeMaster");
         this.miMoleculeMaster.setFont(this.getFont());
-        this.miMoleculeMaster.setIcon(ImageHelper.loadIcon("ui/molecule.gif"));
+        this.miMoleculeMaster.setIcon(ImageHelper.loadIcon("ui/molecule.png"));
 
         this.miExperimentMaster.setText(res_i18n.getString("CL_EXPERIMENT_MASTER"));
         this.miExperimentMaster.addActionListener(this);
         this.miExperimentMaster.setActionCommand("cmd_ExperimentMaster");
         this.miExperimentMaster.setFont(this.getFont());
-        this.miExperimentMaster.setIcon(ImageHelper.loadIcon("ui/experiment.gif"));
+        this.miExperimentMaster.setIcon(ImageHelper.loadIcon("ui/experiment.png"));
 
         this.miCalcMaster.setText(res_i18n.getString("CL_CALCS"));
         this.miCalcMaster.addActionListener(this);
@@ -199,13 +199,13 @@ public final class CLMainWindow extends JFrame implements ActionListener
         this.miContents.setText(res_i18n.getString("CL_HELP_CONTENTS"));
         this.miContents.setEnabled(false);
         this.miContents.setFont(this.getFont());
-        this.miContents.setIcon(ImageHelper.loadIcon("ui/help.gif"));
+        this.miContents.setIcon(ImageHelper.loadIcon("ui/help.png"));
 
         this.miAbout.setText(res_i18n.getString("CL_ABOUT"));
         this.miAbout.addActionListener(this);
         this.miAbout.setActionCommand("cmd_About");
         this.miAbout.setFont(this.getFont());
-        this.miAbout.setIcon(ImageHelper.loadIcon("ui/about.gif"));
+        this.miAbout.setIcon(ImageHelper.loadIcon("ui/about.png"));
 
         /*this.miExit.setText("Выход");
         this.miExit.addActionListener(this);

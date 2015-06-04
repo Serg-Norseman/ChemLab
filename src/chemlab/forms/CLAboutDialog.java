@@ -80,7 +80,7 @@ public final class CLAboutDialog extends JDialog
 
         this.Image1.setLocation(8, 8);
         this.Image1.setSize(214, 320);
-        this.Image1.setImage(ImageHelper.loadImage("CLLogo.png"));
+        this.Image1.setImage(ImageHelper.loadImage("ui/logo.png"));
         this.Image1.setBorder(BorderFactory.createEtchedBorder());
 
         this.LabelCopyright.setText("Copyright © 1995-2001, 2015 by Serg V. Zhdanovskih");

@@ -767,7 +767,7 @@ public final class CLElementsBook extends JFrame implements ActionListener
         this.tbDecayView.addActionListener(this);
         this.tbDecayView.setActionCommand("btn_DecayView");
         this.tbDecayView.setToolTipText("Диаграмма радиоактивного распада");
-        this.tbDecayView.setIcon(ImageHelper.loadIcon("ui/decay.gif"));
+        this.tbDecayView.setIcon(ImageHelper.loadIcon("ui/decay.png"));
 
         this.PageControl.setLocation(0, 0);
         this.PageControl.setSize(765, 450);
