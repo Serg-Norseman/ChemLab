@@ -18,8 +18,9 @@
 package chemlab.core.controls.experiment.misc;
 
 import bslib.common.ImageHelper;
-import chemlab.core.chemical.CLData;
 import chemlab.core.controls.experiment.DeviceId;
+import chemlab.core.controls.experiment.DeviceType;
+import chemlab.core.controls.experiment.LabDevice;
 import chemlab.forms.CommonUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -51,6 +52,10 @@ public final class DevicesList extends JPanel
     private final Map<String, ImageIcon> fImageMap;
     private final JList fList;
 
+    static {
+        LabDevice.loadNames();
+    }
+    
     public DevicesList()
     {
         super();
@@ -64,7 +69,12 @@ public final class DevicesList extends JPanel
             String id = "icon" + tempVar.substring(0, 0) + tempVar.substring(0 + 3);
             ImageIcon bmp = ImageHelper.loadIcon("devices/" + id + ".bmp");
 
-            nameList[idx] = CLData.Devices.get(dev.getValue()).Name;
+            String devName = dev.Name;
+            if (dev.Type == DeviceType.Container && dev.RealVolume > 0) {
+                devName += " (" + String.valueOf(dev.RealVolume) + " ml)";
+            }
+            
+            nameList[idx] = devName;
             this.fImageMap.put(nameList[idx], bmp);
             idx++;
         }

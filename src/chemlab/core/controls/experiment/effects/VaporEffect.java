@@ -23,6 +23,7 @@ import java.awt.Graphics2D;
 /**
  *
  * @author Serg V. Zhdanovskih
+ * @since 0.6.0
  */
 public class VaporEffect implements IDeviceEffect
 {

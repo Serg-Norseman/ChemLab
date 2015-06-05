@@ -22,6 +22,7 @@ import java.util.EventListener;
 /**
  *
  * @author Serg V. Zhdanovskih
+ * @since 0.6.0
  */
 public interface ITableListener extends EventListener
 {

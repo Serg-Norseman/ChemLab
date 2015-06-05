@@ -41,6 +41,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -53,6 +54,8 @@ import javax.swing.Timer;
  */
 public class ExperimentBench extends EditorControl implements ActionListener
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private static final boolean DEBUG = true;
     
     private static final int TIMER_DELAY = 50; // milliseconds
@@ -103,19 +106,19 @@ public class ExperimentBench extends EditorControl implements ActionListener
 
         this.fDeviceMenu = new JPopupMenu(null);
 
-        this.miActivationSwitch = new JMenuItem("Включить");
+        this.miActivationSwitch = new JMenuItem(res_i18n.getString("CL_DevSwitch_On"));
         this.miActivationSwitch.addActionListener(this);
         this.miActivationSwitch.setActionCommand("mi_DeviceSwitch");
 
-        this.miClear = new JMenuItem("Очистить");
+        this.miClear = new JMenuItem(res_i18n.getString("CL_Clear"));
         this.miClear.addActionListener(this);
         this.miClear.setActionCommand("mi_DeviceClear");
 
-        this.miDelete = new JMenuItem("Удалить");
+        this.miDelete = new JMenuItem(res_i18n.getString("CL_Delete"));
         this.miDelete.addActionListener(this);
         this.miDelete.setActionCommand("mi_DeviceDelete");
 
-        this.miProperties = new JMenuItem("Свойства");
+        this.miProperties = new JMenuItem(res_i18n.getString("CL_Properties"));
         this.miProperties.addActionListener(this);
         this.miProperties.setActionCommand("mi_DeviceProperties");
 
@@ -369,9 +372,9 @@ public class ExperimentBench extends EditorControl implements ActionListener
 
                 boolean active = this.fMenuDev.getActive();
                 if (!active) {
-                    this.miActivationSwitch.setText("Включить");
+                    this.miActivationSwitch.setText(res_i18n.getString("CL_DevSwitch_On"));
                 } else {
-                    this.miActivationSwitch.setText("Выключить");
+                    this.miActivationSwitch.setText(res_i18n.getString("CL_DevSwitch_Off"));
                 }
 
                 this.miActivationSwitch.setEnabled(this.fMenuDev.isActivable());
@@ -455,10 +458,10 @@ public class ExperimentBench extends EditorControl implements ActionListener
             if (dev != null) {
                 String realVol = String.valueOf(dev.getRealVolume());
                 String fillVol = String.valueOf(dev.getFillVolume());
-                hint = String.format("<html>Вместимость: %s мл<br>Объем: %s мл<br>Масса: %s<br>Давление: %s<br>Температура: %s<br>pH: %s", 
-                        new Object[]{realVol, fillVol, String.format("%5.5f г", dev.getSubstancesMass()), String.format("%5.5f кПа", dev.getPressure()), String.format("%5.5f °K", dev.getTemperature()), String.format("%5.5f", dev.getPH())});
-                hint += "<br>Соединения: " + this.getConnectionsString(dev);
-                hint += "</html>";
+                hint = String.format(res_i18n.getString("CL_DevHint"), 
+                        new Object[]{realVol, fillVol, String.format("%5.5f г", 
+                                dev.getSubstancesMass()), dev.getPressure().toString(), dev.getTemperature().toString(), 
+                                String.format("%5.5f", dev.getPH()), this.getConnectionsString(dev)});
             }
 
             if (StringHelper.isNullOrEmpty(hint)) {
@@ -540,6 +543,10 @@ public class ExperimentBench extends EditorControl implements ActionListener
                 result.append(", ");
             }
             result.append(other.getID().name());
+        }
+        
+        if (result.length() <= 0) {
+            result.append("-");
         }
         
         return result.toString();

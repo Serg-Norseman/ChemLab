@@ -22,6 +22,7 @@ import bslib.common.EnumSet;
 /**
  *
  * @author Serg V. Zhdanovskih
+ * @since 0.6.0
  */
 public class DecayModeSet extends EnumSet<DecayMode>
 {

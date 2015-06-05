@@ -20,7 +20,8 @@ package chemlab.vtable;
 /**
  *
  * @author Serg V. Zhdanovskih
- */
+  * @since 0.6.0
+*/
 public class TableEvent
 {
     

@@ -200,7 +200,7 @@ public class CLSubstanceInput extends JDialog
         panSolidContent.add(txtVolume);
         
         JLabel lblDensity = new JLabel();
-        lblDensity.setText(res_i18n.getString("CL_DENSITY"));
+        lblDensity.setText(res_i18n.getString("CL_Density"));
         panSolidContent.add(lblDensity);
         
         txtDensity = new MeasureBox("", ChemUnits.KG_M3);
@@ -251,7 +251,7 @@ public class CLSubstanceInput extends JDialog
         panLiquidContent.add(txtMP);
         
         JLabel lblLiqDensity = new JLabel();
-        lblLiqDensity.setText(res_i18n.getString("CL_DENSITY"));
+        lblLiqDensity.setText(res_i18n.getString("CL_Density"));
         panLiquidContent.add(lblLiqDensity);
         
         txtLiqDensity = new MeasureBox("", ChemUnits.KG_M3);
@@ -295,7 +295,7 @@ public class CLSubstanceInput extends JDialog
         panGasContent.add(txtGasVolume);
         
         JLabel lblGasTemperature = new JLabel();
-        lblGasTemperature.setText(res_i18n.getString("CL_TEMPERATURE"));
+        lblGasTemperature.setText(res_i18n.getString("CL_Temperature"));
         lblGasTemperature.setLocation(10, 60);
         lblGasTemperature.setSize(100, 25);
         panGasContent.add(lblGasTemperature);
@@ -305,7 +305,7 @@ public class CLSubstanceInput extends JDialog
         panGasContent.add(txtGasTemperature);
         
         JLabel lblGasDensity = new JLabel();
-        lblGasDensity.setText(res_i18n.getString("CL_DENSITY"));
+        lblGasDensity.setText(res_i18n.getString("CL_Density"));
         lblGasDensity.setLocation(10, 85);
         lblGasDensity.setSize(100, 25);
         panGasContent.add(lblGasDensity);

@@ -35,12 +35,17 @@ import chemlab.core.controls.experiment.matter.Liquid;
 import chemlab.core.controls.experiment.matter.Matter;
 import chemlab.core.controls.experiment.matter.Solid;
 import chemlab.core.controls.experiment.matter.Steam;
+import chemlab.core.measure.ChemUnits;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
+import javax.measure.Measure;
+import javax.measure.quantity.Pressure;
+import javax.measure.quantity.Temperature;
 
 /**
  *
@@ -49,6 +54,8 @@ import java.util.ArrayList;
  */
 public class LabDevice extends BaseObject
 {
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private static final int FRAME_CHANGE_TICKS = 5;
 
     private final ReactionSolver fReactionSolver;
@@ -324,7 +331,7 @@ public class LabDevice extends BaseObject
         return this.fID.RealVolume;
     }
 
-    public final double getTemperature()
+    public final Measure<Double, Temperature>  getTemperature()
     {
         /*if (this.fID.Type == DeviceType.Heater && this.fActive) {
             if (this.fID == DeviceId.dev_Bunsen_Burner) {
@@ -335,15 +342,17 @@ public class LabDevice extends BaseObject
             }
         }*/
         
+        double result = 0.0d;
+        
         if (this.isContainer()) {
             double temp = 0;
             for (Matter subst : this.fSubstances) {
                 temp += subst.getTemperature();
             }
-            return temp / this.fSubstances.size();
+            result = temp / this.fSubstances.size();
         }
         
-        return 0f;
+        return Measure.valueOf(result, ChemUnits.KELVIN);
     }
 
     public final void setTemperature(float value)
@@ -359,9 +368,9 @@ public class LabDevice extends BaseObject
         return 0.0f;
     }
 
-    public final float getPressure()
+    public final Measure<Double, Pressure> getPressure()
     {
-        return 101.325f;
+        return Measure.valueOf(101.325D, ChemUnits.PASCAL);
     }
 
     public final void setPressure(float value)
@@ -728,5 +737,39 @@ public class LabDevice extends BaseObject
                 }
             }
         }
+    }
+    
+    public static final DeviceId findDevice(String name)
+    {
+        for (DeviceId dev : DeviceId.values()) {
+            String devName = dev.Name;
+            if (dev.Type == DeviceType.Container && dev.RealVolume > 0) {
+                devName += " (" + String.valueOf(dev.RealVolume) + " ml)";
+            }
+            
+            if (devName.equals(name)) {
+                return dev;
+            }
+        }
+        
+        return null;
+    }
+    
+    public static final void loadNames()
+    {
+        DeviceId.dev_Beaker_100.Name = res_i18n.getString("CL_Dev_Beaker");
+        DeviceId.dev_Beaker_250.Name = res_i18n.getString("CL_Dev_Beaker");
+        DeviceId.dev_Beaker_600.Name = res_i18n.getString("CL_Dev_Beaker");
+        DeviceId.dev_Conical_Flask_100.Name = res_i18n.getString("CL_Dev_ConicalFlask");
+        DeviceId.dev_Conical_Flask_250.Name = res_i18n.getString("CL_Dev_ConicalFlask");
+        DeviceId.dev_Roundbottom_Flask_100.Name = res_i18n.getString("CL_Dev_RoundbottomFlask");
+        DeviceId.dev_TestTube_50.Name = res_i18n.getString("CL_Dev_TestTube");
+        DeviceId.dev_Bunsen_Burner.Name = res_i18n.getString("CL_Dev_BunsenBurner");
+        DeviceId.dev_Buret_10.Name = res_i18n.getString("CL_Dev_Buret");
+        DeviceId.dev_Buret_50.Name = res_i18n.getString("CL_Dev_Buret");
+        DeviceId.dev_Electronic_Balance_250.Name = res_i18n.getString("CL_Dev_ElectronicBalance");
+        DeviceId.dev_Graduated_Cylinder_10.Name = res_i18n.getString("CL_Dev_GraduatedCylinder");
+        DeviceId.dev_Graduated_Cylinder_100.Name = res_i18n.getString("CL_Dev_GraduatedCylinder");
+        DeviceId.dev_Heater.Name = res_i18n.getString("CL_Dev_Heater");
     }
 }

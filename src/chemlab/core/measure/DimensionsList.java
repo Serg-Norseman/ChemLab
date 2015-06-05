@@ -15,12 +15,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.chemical;
+package chemlab.core.measure;
 
-import chemlab.core.measure.ChemUnits;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
@@ -42,6 +42,8 @@ public class DimensionsList
         }
     }
     
+    private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
+
     private static final DimensionsList INSTANCE = new DimensionsList();
     private final List<DimRecord> fList;
 
@@ -49,16 +51,16 @@ public class DimensionsList
     {
         this.fList = new ArrayList<>();
 
-        add("Температура", SI.KELVIN);
-        add("Масса", SI.KILOGRAM);
-        add("Длина", SI.METRE);
-        add("Количество вещества", SI.MOLE);
-        add("Продолжительность", SI.SECOND);
-        add("Сила", SI.NEWTON);
-        add("Давление", SI.PASCAL);
-        add("Площадь", SI.SQUARE_METRE);
-        add("Объем", SI.CUBIC_METRE);
-        add("Плотность", ChemUnits.KG_M3);
+        add(res_i18n.getString("CL_Temperature"), SI.KELVIN);
+        add(res_i18n.getString("CL_Mass"), SI.KILOGRAM);
+        add(res_i18n.getString("CL_Length"), SI.METRE);
+        add(res_i18n.getString("CL_AmountOfSubstance"), SI.MOLE);
+        add(res_i18n.getString("CL_Duration"), SI.SECOND);
+        add(res_i18n.getString("CL_Force"), SI.NEWTON);
+        add(res_i18n.getString("CL_Pressure"), SI.PASCAL);
+        add(res_i18n.getString("CL_Square"), SI.SQUARE_METRE);
+        add(res_i18n.getString("CL_Volume"), SI.CUBIC_METRE);
+        add(res_i18n.getString("CL_Density"), ChemUnits.KG_M3);
     }
 
     public static DimensionsList getInstance()

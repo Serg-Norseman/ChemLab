@@ -20,6 +20,7 @@ package chemlab.core.controls.decay;
 /**
  *
  * @author Serg V. Zhdanovskih
+ * @since 0.2.0
  */
 public enum ShapeId
 {

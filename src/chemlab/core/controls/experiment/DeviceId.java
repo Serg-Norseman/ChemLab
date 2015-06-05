@@ -37,7 +37,7 @@ public enum DeviceId
     dev_Bunsen_Burner(DeviceType.Heater, 0, 0, 5, new DeviceClingSet(DeviceCling.ContainerAbove)),
     dev_Buret_10(DeviceType.Container, 10, 20, 1, new DeviceClingSet(DeviceCling.ContainerBelow, DeviceCling.ContainerAbove)),
     dev_Buret_50(DeviceType.Container, 50, 50, 1, new DeviceClingSet(DeviceCling.ContainerBelow, DeviceCling.ContainerAbove)),
-    dev_Electronic_Balance_250(DeviceType.Meter, 250, 0, 1, new DeviceClingSet(DeviceCling.ContainerAbove)),
+    dev_Electronic_Balance_250(DeviceType.Meter, 0, 0, 1, new DeviceClingSet(DeviceCling.ContainerAbove)),
     dev_Graduated_Cylinder_10(DeviceType.Container, 10, 20, 1, new DeviceClingSet(DeviceCling.ContainerAbove)),
     dev_Graduated_Cylinder_100(DeviceType.Container, 100, 50, 1, new DeviceClingSet(DeviceCling.ContainerAbove)),
     dev_Heater(DeviceType.Heater, 0, 0, 1, new DeviceClingSet(DeviceCling.ContainerAbove));
@@ -47,6 +47,8 @@ public enum DeviceId
     public final short RealMass;
     public final int Frames;
     public final DeviceClingSet Cling;
+    
+    public String Name;
     
     private DeviceId(DeviceType type, int realVolume, int realMass, int frames, DeviceClingSet cling)
     {

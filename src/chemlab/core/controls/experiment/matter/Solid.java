@@ -22,6 +22,7 @@ import chemlab.core.chemical.SubstanceState;
 /**
  *
  * @author Serg V. Zhdanovskih
+ * @since 0.6.0
  */
 public final class Solid extends Matter
 {

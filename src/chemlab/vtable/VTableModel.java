@@ -27,7 +27,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public abstract class VTableModel extends AbstractTableModel
 {
-    private class VTColumn
+    private static class VTColumn
     {
         public String Name;
         public Class DataClass;

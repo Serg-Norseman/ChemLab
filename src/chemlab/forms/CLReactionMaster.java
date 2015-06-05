@@ -108,7 +108,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.setResizable(false);
         this.setTitle(res_i18n.getString("CL_REACTION_MASTER"));
 
-        Label1.setText(res_i18n.getString("CL_EQUATION"));
+        Label1.setText(res_i18n.getString("CL_Equation"));
         Label1.setLocation(8, 8);
         Label1.setSize(150, 15);
 
@@ -140,7 +140,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             }
         });
 
-        Label2.setText(res_i18n.getString("CL_TEMPERATURE"));
+        Label2.setText(res_i18n.getString("CL_Temperature"));
         Label2.setLocation(597, 8);
         Label2.setSize(94, 15);
 
@@ -150,7 +150,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         cbTemperature.setSize(90, 20);
         cbTemperature.setEditable(true);
 
-        this.btnAnalysis.setText(res_i18n.getString("CL_ANALYSIS"));
+        this.btnAnalysis.setText(res_i18n.getString("CL_Analysis"));
         this.btnAnalysis.setLocation(698, 21);
         this.btnAnalysis.setSize(94, 25);
         this.btnAnalysis.addActionListener(this);
@@ -164,10 +164,10 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.PageControl.addTab(res_i18n.getString("CL_SUBSTANCES"), this.panSubstances);
 
         tblSubstances.addActionListener(this);
-        tblSubstances.addColumn(res_i18n.getString("CL_FACTOR"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_Factor"), 88);
         tblSubstances.addColumn(res_i18n.getString("CL_COMPOUND"), 88);
-        tblSubstances.addColumn(res_i18n.getString("CL_MOLAR_MASS"), 88);
-        tblSubstances.addColumn(res_i18n.getString("CL_TYPE"), 57);
+        tblSubstances.addColumn(res_i18n.getString("CL_MolarMass"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_Type"), 57);
         tblSubstances.addColumn("Cp°", 59);
         tblSubstances.addColumn("S°", 59);
         tblSubstances.addColumn("dH°", 59);
@@ -175,11 +175,11 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
         this.panProperties.setLayout(new BorderLayout());
         this.panProperties.add(this.tblProperties, BorderLayout.CENTER);
-        this.PageControl.addTab(res_i18n.getString("CL_PROPERTIES"), this.panProperties);
+        this.PageControl.addTab(res_i18n.getString("CL_Properties"), this.panProperties);
 
         tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
-        tblProperties.addColumn(res_i18n.getString("CL_VALUE"), 139);
-        tblProperties.addColumn(res_i18n.getString("CL_UNIT"), 92);
+        tblProperties.addColumn(res_i18n.getString("CL_Value"), 139);
+        tblProperties.addColumn(res_i18n.getString("CL_Unit"), 92);
 
         JPanel panStoicToolbar = new JPanel();
         panStoicToolbar.setLayout(new BoxLayout(panStoicToolbar, BoxLayout.LINE_AXIS));
@@ -192,7 +192,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         btnSetOutput.setActionCommand("SET_OUTPUT");
         btnSetOutput.addActionListener(this);
 
-        JButton btnSolve = new JButton(res_i18n.getString("CL_SOLVE"));
+        JButton btnSolve = new JButton(res_i18n.getString("CL_Solve"));
         btnSolve.setActionCommand("ST_SOLVE");
         btnSolve.addActionListener(this);
         
@@ -204,9 +204,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         //tblStoichiometry.setTableModel(model);
         //tblStoichiometry.setEditable(true);
         tblStoichiometry.addColumn(res_i18n.getString("CL_F_COMPOUND"), 88);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_MOLAR_MASS"), 88);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_TYPE"), 57);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_STATE"), 57);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_MolarMass"), 88);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_Type"), 57);
+        tblStoichiometry.addColumn(res_i18n.getString("CL_State"), 57);
         tblStoichiometry.addColumn(res_i18n.getString("CL_IO"), 57);
         tblStoichiometry.addColumn(res_i18n.getString("CL_DATA"), 57);
         tblStoichiometry.addColumn(res_i18n.getString("CL_RESULT"), 57);
@@ -239,7 +239,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         miSetOutput.setActionCommand("SET_OUTPUT");
         miSetOutput.addActionListener(this);
 
-        JMenuItem miSolve = new JMenuItem(res_i18n.getString("CL_SOLVE"));
+        JMenuItem miSolve = new JMenuItem(res_i18n.getString("CL_Solve"));
         miSolve.setActionCommand("ST_SOLVE");
         miSolve.addActionListener(this);
         
@@ -275,7 +275,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                         this.fThermodynamicSolver.setTemperature((float) AuxUtils.ParseFloat(temp, 0));
                     }
                 } catch (ParseException ex) {
-                    throw new Exception(res_i18n.getString("CL_TEMPERATURE_FORMAT_INVALID"));
+                    throw new Exception(res_i18n.getString("CL_TemperatureFormat_Invalid"));
                 }
                 this.fThermodynamicSolver.calculate();
                 

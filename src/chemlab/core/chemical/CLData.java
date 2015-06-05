@@ -1,21 +1,33 @@
+/*
+ *  "ChemLab", Desktop helper application for chemists.
+ *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package chemlab.core.chemical;
 
-import bslib.common.AuxUtils;
-import bslib.common.StringHelper;
-import chemlab.core.controls.experiment.DeviceRecord;
 import chemlab.refbooks.AllotropeRecord;
 import chemlab.refbooks.CompoundsBook;
 import chemlab.refbooks.DecayBook;
 import chemlab.refbooks.ElementsBook;
-import chemlab.refbooks.IElementLoader;
 import chemlab.refbooks.NuclidesBook;
-import chemlab.refbooks.RefBook;
-import chemlab.refbooks.UnitRecord;
-import chemlab.refbooks.ValueRecord;
-import java.text.ParseException;
-import java.util.ArrayList;
-import org.w3c.dom.Element;
 
+/**
+ *
+ * @author Serg V. Zhdanovskih
+ * @since 0.1.0
+ */
 public class CLData
 {
     public static final String DecimNumbers = "0123456789.,";
@@ -37,43 +49,11 @@ public class CLData
 
     public static AllotropeRecord[] dbAllotropes;
 
-    public static ArrayList<ValueRecord> ValuesTable;
-    public static ArrayList<UnitRecord> UnitsTable;
-    public static ArrayList<DeviceRecord> Devices;
-    
     public static final ElementsBook ElementsBook;
     public static final NuclidesBook NuclidesBook;
     public static final DecayBook DecayBook;
     public static final CompoundsBook CompoundsBook;
 
-
-    public static DeviceRecord findDevice(String name)
-    {
-        for (DeviceRecord devRec : Devices) {
-            if (StringHelper.equals(name, devRec.Name)) {
-                return devRec;
-            }
-        }
-        return null;
-    }
-
-    public static int getUnitIDByName(String name)
-    {
-        for (int i = 0; i < UnitsTable.size(); i++) {
-            UnitRecord unitRec = UnitsTable.get(i);
-            if (StringHelper.equals(unitRec.Name, name)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public static double convertValue(double aValue, int aFromUnit, int aToUnit)
-    {
-        double inf = UnitsTable.get(aFromUnit).Factor;
-        double outf = UnitsTable.get(aToUnit).Factor;
-        return (aValue * inf / outf);
-    }
 
     static {
         CLData.Environment = new String[]{"Кислая", "Нейтральная", "Основная"};
@@ -104,14 +84,6 @@ public class CLData
 
         dbAllotropes = new AllotropeRecord[128];
 
-        ValuesTable = new ArrayList<>();
-        UnitsTable = new ArrayList<>();
-        Devices = new ArrayList<>();
-
-        loadXML_Values("");
-        loadXML_Units("");
-        loadXML_Devices("");
-        
         ElementsBook = new ElementsBook();
         NuclidesBook = new NuclidesBook();
         DecayBook = new DecayBook();
@@ -122,91 +94,6 @@ public class CLData
         importExternalData();
     }
 
-    public static void loadXML_Values(String fileName)
-    {
-        RefBook.loadResource("/resources/data/ValuesTable.xml", "values", "value", new IElementLoader<ValueRecord>()
-        {
-            @Override
-            public void processRoot(Element root)
-            {                
-            }
-            
-            @Override
-            public int load(Element el) throws ParseException
-            {
-                String vId = el.getAttribute("ID");
-                String vSign = el.getAttribute("Sign");
-                String vName = el.getAttribute("Name");
-                String vUnitId = el.getAttribute("UnitID");
-                String vValue = el.getAttribute("Value");
-
-                ValueRecord valRec = new ValueRecord();
-                valRec.Id = ValueId.valueOf(vId);
-                valRec.Sign = vSign;
-                valRec.Name = vName;
-                valRec.UnitId = AuxUtils.ParseInt(vUnitId, 0);
-                valRec.Value = AuxUtils.ParseFloat(vValue, 0);
-
-                ValuesTable.add(valRec);
-
-                return 0;
-            }
-        });
-    }
-
-    public static void loadXML_Units(String fileName)
-    {
-        RefBook.loadResource("/resources/data/UnitsTable.xml", "units", "unit", new IElementLoader<UnitRecord>()
-        {
-            @Override
-            public void processRoot(Element root)
-            {                
-            }
-            
-            @Override
-            public int load(Element el) throws ParseException
-            {
-                String vId = el.getAttribute("ValueID");
-                String vSign = el.getAttribute("Sign");
-                String vName = el.getAttribute("Name");
-                String vFactor = el.getAttribute("Factor");
-
-                UnitRecord unitRec = new UnitRecord();
-                unitRec.ValId = ValueId.valueOf(vId);
-                unitRec.Sign = vSign;
-                unitRec.Name = vName;
-                unitRec.Factor = AuxUtils.ParseFloat(vFactor, 0);
-
-                UnitsTable.add(unitRec);
-
-                return 0;
-            }
-        });
-    }
-
-    public static void loadXML_Devices(String fileName)
-    {
-        RefBook.loadResource("/resources/data/DevicesTable.xml", "devices", "device", new IElementLoader<DeviceRecord>()
-        {
-            @Override
-            public void processRoot(Element root)
-            {                
-            }
-            
-            @Override
-            public int load(Element el)
-            {
-                DeviceRecord decRec = new DeviceRecord();
-
-                decRec.Name = el.getAttribute("Name");
-
-                Devices.add(decRec);
-
-                return 0;
-            }
-        });
-    }
-    
     private static void importExternalData()
     {
         // to future

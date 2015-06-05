@@ -18,7 +18,7 @@
 package chemlab.forms;
 
 import bslib.components.ComboItem;
-import chemlab.core.chemical.DimensionsList;
+import chemlab.core.measure.DimensionsList;
 import chemlab.core.measure.MeasureBox;
 import chemlab.core.measure.ChemUnits;
 import java.awt.Dimension;

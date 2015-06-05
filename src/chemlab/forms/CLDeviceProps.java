@@ -78,7 +78,7 @@ public class CLDeviceProps extends JDialog implements ActionListener
 
         this.panProperties.setLayout(new BorderLayout());
         this.panProperties.add(this.tblProperties, BorderLayout.CENTER);
-        this.PageControl.addTab(res_i18n.getString("CL_PROPERTIES"), this.panProperties);
+        this.PageControl.addTab(res_i18n.getString("CL_Properties"), this.panProperties);
 
         this.panReactions.setLayout(new BorderLayout());
         this.PageControl.addTab(res_i18n.getString("CL_REACTIONS"), this.panReactions);
@@ -98,10 +98,10 @@ public class CLDeviceProps extends JDialog implements ActionListener
         Dimension tblDim = new Dimension(580, 280);
         
         tblSubstances.setPreferredSize(tblDim);
-        tblSubstances.addColumn(res_i18n.getString("CL_FACTOR"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_Factor"), 88);
         tblSubstances.addColumn(res_i18n.getString("CL_COMPOUND"), 88);
-        tblSubstances.addColumn(res_i18n.getString("CL_MOLAR_MASS"), 88);
-        tblSubstances.addColumn(res_i18n.getString("CL_TYPE"), 57);
+        tblSubstances.addColumn(res_i18n.getString("CL_MolarMass"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_Type"), 57);
         tblSubstances.addColumn("Cp°", 59);
         tblSubstances.addColumn("S°", 59);
         tblSubstances.addColumn("dH°", 59);
@@ -110,8 +110,8 @@ public class CLDeviceProps extends JDialog implements ActionListener
 
         tblProperties.setPreferredSize(tblDim);
         tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
-        tblProperties.addColumn(res_i18n.getString("CL_VALUE"), 139);
-        tblProperties.addColumn(res_i18n.getString("CL_UNIT"), 92);
+        tblProperties.addColumn(res_i18n.getString("CL_Value"), 139);
+        tblProperties.addColumn(res_i18n.getString("CL_Unit"), 92);
 
 
         JPanel panReactsToolbar = new JPanel();
@@ -127,7 +127,7 @@ public class CLDeviceProps extends JDialog implements ActionListener
         this.panReactions.add(this.tblReactions, BorderLayout.CENTER);
 
         tblReactions.setPreferredSize(tblDim);
-        tblReactions.addColumn(res_i18n.getString("CL_EQUATION"), 400);
+        tblReactions.addColumn(res_i18n.getString("CL_Equation"), 400);
 
         this.pack();
         this.setLocationRelativeTo(owner);

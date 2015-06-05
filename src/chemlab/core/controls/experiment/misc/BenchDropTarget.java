@@ -17,10 +17,9 @@
  */
 package chemlab.core.controls.experiment.misc;
 
-import chemlab.core.chemical.CLData;
 import chemlab.core.controls.experiment.DeviceId;
-import chemlab.core.controls.experiment.DeviceRecord;
 import chemlab.core.controls.experiment.ExperimentBench;
+import chemlab.core.controls.experiment.LabDevice;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -112,11 +111,9 @@ public final class BenchDropTarget implements DropTargetListener
         Object data = transferable.getTransferData(targetFlavor);
         if (data instanceof String) {
             ExperimentBench master = (ExperimentBench) this.pane;
-            DeviceRecord dev = CLData.findDevice((String) data);
-            int idx = CLData.Devices.indexOf(dev);
-            DeviceId devId = DeviceId.forValue(idx);
 
-            if (dev != null) {
+            DeviceId devId = LabDevice.findDevice((String) data);
+            if (devId != null) {
                 master.addDevice((int) location.getX(), (int) location.getY(), devId);
             }
 

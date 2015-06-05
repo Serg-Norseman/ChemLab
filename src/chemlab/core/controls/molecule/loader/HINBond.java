@@ -20,6 +20,7 @@ package chemlab.core.controls.molecule.loader;
 import chemlab.core.chemical.BondKind;
 
 /**
+ * 
  * @author Serg V. Zhdanovskih
  * @since 0.4.0
  */

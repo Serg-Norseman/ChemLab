@@ -17,12 +17,9 @@
  */
 package chemlab.forms;
 
-import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
-import chemlab.core.chemical.CLData;
-import chemlab.core.chemical.ValueId;
-import chemlab.refbooks.UnitRecord;
-import chemlab.refbooks.ValueRecord;
+import chemlab.core.measure.ChemUnits;
+import chemlab.core.measure.DimensionsList;
 import chemlab.vtable.VTableModel;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
@@ -30,7 +27,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javax.measure.unit.Unit;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -67,7 +66,7 @@ public final class CLValuesBook extends JFrame implements ActionListener
         FramesHelper.setClientSize(this, 800, 600);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setFont(CommonUtils.DEFAULT_UI_FONT);
-        this.setTitle("Справочник величин");
+        this.setTitle(res_i18n.getString("CL_VALUES_BOOK"));
 
         this.ListValues.setTableModel(new ValuesModel());
         this.ListValues.addActionListener(this);
@@ -77,19 +76,19 @@ public final class CLValuesBook extends JFrame implements ActionListener
         this.ListUnits.setTableModel(new UnitsModel());
         //this.ListUnits.setEditable(false);
 
-        this.gbValues.setBorder(BorderFactory.createTitledBorder("Величины"));
+        this.gbValues.setBorder(BorderFactory.createTitledBorder(res_i18n.getString("CL_DIMENSIONS")));
         this.gbValues.setMinimumSize(new Dimension(600, 100));
         this.gbValues.setLayout(new BorderLayout());
         this.gbValues.add(this.ListValues, BorderLayout.CENTER);
 
-        this.gbUnits.setBorder(BorderFactory.createTitledBorder("Единицы измерения"));
+        this.gbUnits.setBorder(BorderFactory.createTitledBorder(res_i18n.getString("CL_UNITS")));
         this.gbUnits.setMinimumSize(new Dimension(600, 100));
         this.gbUnits.setLayout(new BorderLayout());
         this.gbUnits.add(this.ListUnits, BorderLayout.CENTER);
 
-        splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, gbValues, gbUnits);
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, gbValues, gbUnits);
         splitPane.setOneTouchExpandable(true);
-        splitPane.setDividerLocation(150);
+        splitPane.setDividerLocation(400);
         splitPane.setResizeWeight(1.0);
 
         this.add(this.splitPane, BorderLayout.CENTER);
@@ -106,16 +105,16 @@ public final class CLValuesBook extends JFrame implements ActionListener
                 if (source == this.ListValues) {
                     int rowIndex = this.ListValues.getSelectedRow();
 
-                    ValueRecord valRec = CLData.ValuesTable.get(rowIndex);
+                    DimensionsList.DimRecord valRec = DimensionsList.getInstance().getList().get(rowIndex);
                     UnitsModel unModel = (UnitsModel) this.ListUnits.getTableModel();
-                    unModel.setValueId(valRec.Id);
+                    unModel.setValueId(valRec.BaseUnit);
                     this.ListUnits.packColumns(10);
                 }
                 break;
         }
     }
 
-    private class ValuesModel extends VTableModel
+    private static class ValuesModel extends VTableModel
     {
         public ValuesModel()
         {
@@ -125,46 +124,46 @@ public final class CLValuesBook extends JFrame implements ActionListener
         @Override
         protected void initColumns()
         {
-            this.addColumn("Обозначение", String.class);
-            this.addColumn("Название", String.class);
-            this.addColumn("Значение", String.class);
-            this.addColumn("Единица измерения", String.class);
+            this.addColumn(res_i18n.getString("CL_Sign"), String.class);
+            this.addColumn(res_i18n.getString("CL_Name"), String.class);
+            this.addColumn(res_i18n.getString("CL_Value"), String.class);
+            this.addColumn(res_i18n.getString("CL_Unit"), String.class);
         }
 
         @Override
         public int getRowCount()
         {
-            return CLData.ValuesTable.size();
+            return DimensionsList.getInstance().getList().size();
         }
 
         @Override
         public Object getValueAt(int row, int col)
         {
-            ValueRecord valRec = CLData.ValuesTable.get(row);
+            DimensionsList.DimRecord valRec = DimensionsList.getInstance().getList().get(row);
 
             Object val = null;
             switch (col) {
                 case 0:
-                    val = valRec.Sign;
+                    val = "";
                     break;
                 case 1:
                     val = valRec.Name;
                     break;
                 case 2:
-                    val = AuxUtils.FloatToStr(valRec.Value);
+                    val = "";
                     break;
                 case 3:
-                    val = CLData.UnitsTable.get(valRec.UnitId).Name;
+                    val = valRec.BaseUnit.toString();
                     break;
             }
             return val;
         }
     }
 
-    private class UnitsModel extends VTableModel
+    private static class UnitsModel extends VTableModel
     {
-        private ValueId fValueId;
-        private final ArrayList<UnitRecord> fList;
+        private Unit<?> fValueId;
+        private final ArrayList<Unit<?>> fList;
         
         public UnitsModel()
         {
@@ -172,14 +171,15 @@ public final class CLValuesBook extends JFrame implements ActionListener
             this.fList = new ArrayList<>();
         }
 
-        public final void setValueId(ValueId valueId)
+        public final void setValueId(Unit<?> valueId)
         {
             this.fValueId = valueId;
 
             this.fList.clear();
-            for (UnitRecord unRec : CLData.UnitsTable) {
-                if (unRec.ValId == this.fValueId) {
-                    this.fList.add(unRec);
+            List<Unit<?>> units = ChemUnits.getInstance().getUnits();
+            for (Unit<?> un : units) {
+                if (un.isCompatible(valueId)) {
+                    this.fList.add(un);
                 }
             }
             
@@ -189,10 +189,10 @@ public final class CLValuesBook extends JFrame implements ActionListener
         @Override
         protected void initColumns()
         {
-            this.addColumn("Обозначение", String.class);
-            this.addColumn("Название", String.class);
-            this.addColumn("Коэффициент", String.class);
-            this.addColumn("Система", String.class);
+            this.addColumn(res_i18n.getString("CL_Sign"), String.class);
+            this.addColumn(res_i18n.getString("CL_Name"), String.class);
+            this.addColumn(res_i18n.getString("CL_Factor"), String.class);
+            this.addColumn(res_i18n.getString("CL_System"), String.class);
         }
 
         @Override
@@ -204,18 +204,18 @@ public final class CLValuesBook extends JFrame implements ActionListener
         @Override
         public Object getValueAt(int row, int col)
         {
-            UnitRecord unRec = this.fList.get(row);
+            Unit<?> unRec = this.fList.get(row);
 
             Object val = null;
             switch (col) {
                 case 0:
-                    val = unRec.Sign;
+                    val = unRec.toString();
                     break;
                 case 1:
-                    val = unRec.Name;
+                    val = "";
                     break;
                 case 2:
-                    val = AuxUtils.FloatToStr(unRec.Factor);
+                    val = "";
                     break;
                 case 3:
                     val = "";

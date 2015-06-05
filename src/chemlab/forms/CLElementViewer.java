@@ -44,7 +44,7 @@ public final class CLElementViewer extends JDialog
 
         this.tblElementProps = new VirtualTable();
         this.tblElementProps.addColumn(res_i18n.getString("CL_Property"), 185);
-        this.tblElementProps.addColumn(res_i18n.getString("CL_VALUE"), 323);
+        this.tblElementProps.addColumn(res_i18n.getString("CL_Value"), 323);
 
         this.setTitle(String.format(res_i18n.getString("CL_EV_TITLE"), eSymbol));
         this.setLayout(new BorderLayout());
@@ -60,10 +60,10 @@ public final class CLElementViewer extends JDialog
         this.addProperty(res_i18n.getString("CL_Symbol"), elem.FSymbol);
         this.addProperty(res_i18n.getString("CL_Name"), elem.FRus_Name);
         this.addProperty(res_i18n.getString("CL_Class"), CLData.ElementClasses[elem.FClass.getValue()]);
-        this.addProperty(res_i18n.getString("CL_ATOMIC_MASS"), AuxUtils.FloatToStr(elem.FAtomic_Mass));
-        this.addProperty(res_i18n.getString("CL_ATOMIC_RADIUS"), AuxUtils.FloatToStr(elem.FAtomic_Radius));
-        this.addProperty(res_i18n.getString("CL_ATOMIC_VOLUME"), AuxUtils.FloatToStr(elem.FAtomic_Volume));
-        this.addProperty(res_i18n.getString("CL_COVALENT_RADIUS"), AuxUtils.FloatToStr(elem.FCovalent_Radius));
+        this.addProperty(res_i18n.getString("CL_AtomicMass"), AuxUtils.FloatToStr(elem.FAtomic_Mass));
+        this.addProperty(res_i18n.getString("CL_AtomicRadius"), AuxUtils.FloatToStr(elem.FAtomic_Radius));
+        this.addProperty(res_i18n.getString("CL_AtomicVolume"), AuxUtils.FloatToStr(elem.FAtomic_Volume));
+        this.addProperty(res_i18n.getString("CL_CovalentRadius"), AuxUtils.FloatToStr(elem.FCovalent_Radius));
         this.addProperty(res_i18n.getString("CL_ENEGATIVITY"), AuxUtils.FloatToStr(elem.FElectronegativity));
         this.addProperty(res_i18n.getString("CL_OXIDATION_DEGREES"), elem.FOxidation_Degree.getDegreeStr());
         this.addProperty(res_i18n.getString("CL_VALENCIES"), elem.FValency.getValencyStr());
@@ -72,7 +72,7 @@ public final class CLElementViewer extends JDialog
         this.addProperty(res_i18n.getString("CL_VDW_RADIUS"), AuxUtils.FloatToStr(elem.FVDW_Radius));
         this.addProperty(res_i18n.getString("CL_BOILING_POINT"), AuxUtils.FloatToStr(elem.FBoiling_Point));
         this.addProperty(res_i18n.getString("CL_MELTING_POINT"), AuxUtils.FloatToStr(elem.FMelting_Point));
-        this.addProperty(res_i18n.getString("CL_DENSITY"), AuxUtils.FloatToStr(elem.FDensity));
+        this.addProperty(res_i18n.getString("CL_Density"), AuxUtils.FloatToStr(elem.FDensity));
         this.addProperty(res_i18n.getString("CL_VAPORIZATION_HEAT"), AuxUtils.FloatToStr(elem.FVaporization_Heat));
         this.addProperty(res_i18n.getString("CL_FUSION_HEAT"), AuxUtils.FloatToStr(elem.FFusion_Heat));
         this.addProperty(res_i18n.getString("CL_ELECTRIC_CONDUCTIVITY"), AuxUtils.FloatToStr(elem.FElectric_Conductivity));

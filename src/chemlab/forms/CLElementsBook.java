@@ -479,10 +479,10 @@ public final class CLElementsBook extends JFrame implements ActionListener
         this.addColumn(res_i18n.getString("CL_OriginalName"));
         this.addColumn(res_i18n.getString("CL_Class"));
         this.addColumn("Характер");
-        this.addColumn(res_i18n.getString("CL_ATOMIC_MASS"));
-        this.addColumn(res_i18n.getString("CL_ATOMIC_RADIUS"));
-        this.addColumn(res_i18n.getString("CL_ATOMIC_VOLUME"));
-        this.addColumn(res_i18n.getString("CL_COVALENT_RADIUS"));
+        this.addColumn(res_i18n.getString("CL_AtomicMass"));
+        this.addColumn(res_i18n.getString("CL_AtomicRadius"));
+        this.addColumn(res_i18n.getString("CL_AtomicVolume"));
+        this.addColumn(res_i18n.getString("CL_CovalentRadius"));
         this.addColumn(res_i18n.getString("CL_ENEGATIVITY"));
         this.addColumn(res_i18n.getString("CL_OXIDATION_DEGREES"));
         this.addColumn(res_i18n.getString("CL_VALENCIES"));
@@ -501,7 +501,7 @@ public final class CLElementsBook extends JFrame implements ActionListener
         this.addColumn(res_i18n.getString("CL_VDW_RADIUS"));
         this.addColumn(res_i18n.getString("CL_BOILING_POINT"));
         this.addColumn(res_i18n.getString("CL_MELTING_POINT"));
-        this.addColumn(res_i18n.getString("CL_DENSITY"));
+        this.addColumn(res_i18n.getString("CL_Density"));
         this.addColumn(res_i18n.getString("CL_VAPORIZATION_HEAT"));
         this.addColumn(res_i18n.getString("CL_FUSION_HEAT"));
         this.addColumn(res_i18n.getString("CL_ELECTRIC_CONDUCTIVITY"));

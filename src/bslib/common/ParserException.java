@@ -1,6 +1,6 @@
 /*
- *  "ChemLab", Desktop helper application for chemists.
- *  Copyright (C) 1996-1998, 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
+ *  "BSLib", Brainstorm Library.
+ *  Copyright (C) 2015 by Serg V. Zhdanovskih (aka Alchemist, aka Norseman).
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,18 +15,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package chemlab.core.controls.experiment;
+package bslib.common;
 
 /**
  *
  * @author Serg V. Zhdanovskih
- * @since 0.5.0
  */
-public final class DeviceRecord
+public class ParserException extends RuntimeException
 {
-    public String Name;
-    
-    public DeviceRecord()
+    public ParserException()
     {
+    }
+
+    public ParserException(String message)
+    {
+        super(message);
     }
 }

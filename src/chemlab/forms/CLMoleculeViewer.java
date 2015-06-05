@@ -74,7 +74,6 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
     private JMenuItem miAtomType;
     private JMenuItem miCharge;
     private JMenuItem miMass;
-    private JMenuItem miChirality;
     private JMenu miAtomView;
     private JButton tbSpaceMoveMode;
     private JComboBox cbMolecules;
@@ -329,7 +328,6 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.miAtomType.setSelected(opts.contains(ViewOption.mvoAtomType));
         this.miCharge.setSelected(opts.contains(ViewOption.mvoAtomCharge));
         this.miMass.setSelected(opts.contains(ViewOption.mvoAtomMass));
-        this.miChirality.setSelected(opts.contains(ViewOption.mvoAtomChirality));
         this.miBalls.setSelected(opts.contains(ViewOption.mvoBalls));
         this.miSticks.setSelected(opts.contains(ViewOption.mvoSticks));
     }
@@ -363,7 +361,6 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.miAtomType = new JMenuItem();
         this.miCharge = new JMenuItem();
         this.miMass = new JMenuItem();
-        this.miChirality = new JMenuItem();
         this.miAtomView = new JMenu();
         this.tbSpaceMoveMode = new JButton();
         this.cbMolecules = new JComboBox();
@@ -386,7 +383,6 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.ToolBarCommon.setLocation(11, 2);
         this.ToolBarCommon.setSize(142, 22);
         //this.ToolBarCommon.Images = this.ImageList;
-        //this.ToolBarCommon.ButtonClick += this.ToolButtonClick;
         this.add(this.ToolBarCommon, BorderLayout.NORTH);
 
         this.tbLoad.setText(res_i18n.getString("CL_Load"));
@@ -472,7 +468,7 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.ToolBarCommon.addSeparator();
         this.ToolBarCommon.add(this.tbAutoRotate);
         this.ToolBarCommon.addSeparator();
-        this.ToolBarCommon.add(this.tbRenameMolecule); // cbMolecules,
+        this.ToolBarCommon.add(this.tbRenameMolecule);
 
         this.MainMenu.add(this.miFile);
         this.MainMenu.add(this.miEdit);
@@ -518,7 +514,6 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.miAtomView.add(this.miCharge);
         this.miAtomView.add(this.miAtomType);
         this.miAtomView.add(this.miMass);
-        this.miAtomView.add(this.miChirality);
 
         this.miSign.setText(res_i18n.getString("CL_Symbol"));
         this.miSign.setSelected(true);
@@ -530,19 +525,15 @@ public final class CLMoleculeViewer extends JFrame implements ActionListener
         this.miNumber.setText(res_i18n.getString("CL_Number"));
         //this.miNumber.Click += this.miAtomViewsClick;
 
-        this.miCharge.setText(res_i18n.getString("CL_CHARGE"));
+        this.miCharge.setText(res_i18n.getString("CL_Charge"));
         //this.miCharge.Click += this.miAtomViewsClick;
 
-        this.miAtomType.setText(res_i18n.getString("CL_TYPE"));
+        this.miAtomType.setText(res_i18n.getString("CL_Type"));
         this.miAtomType.setEnabled(false);
         //this.miAtomType.Click += this.miAtomViewsClick;
 
         this.miMass.setText(res_i18n.getString("CL_Mass"));
         //this.miMass.Click += this.miAtomViewsClick;
-
-        this.miChirality.setText("Хиральность");
-        this.miChirality.setEnabled(false);
-        //this.miChirality.Click += this.miAtomViewsClick;
 
         this.miMoleculeView.setText(res_i18n.getString("CL_ViewMolecule"));
         this.miMoleculeView.add(this.miBalls);

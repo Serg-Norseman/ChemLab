@@ -84,7 +84,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.setResizable(false);
         this.setTitle(res_i18n.getString("CL_COMPOUND_MASTER"));
 
-        this.Label1.setText(res_i18n.getString("CL_FORMULA"));
+        this.Label1.setText(res_i18n.getString("CL_Formula"));
         this.Label1.setLocation(8, 8);
         this.Label1.setSize(76, 15);
 
@@ -92,7 +92,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.eFormula.setLocation(8, 23);
         this.eFormula.setSize(543, 20);
 
-        this.Label4.setText(res_i18n.getString("CL_CHARGE"));
+        this.Label4.setText(res_i18n.getString("CL_Charge"));
         this.Label4.setLocation(558, 8);
         this.Label4.setSize(40, 15);
         this.Label4.setToolTipText(res_i18n.getString("CL_CM_CHARGE_DEST"));
@@ -101,7 +101,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.seCharge.setLocation(558, 23);
         this.seCharge.setSize(45, 20);
 
-        this.btnAnalysis.setText(res_i18n.getString("CL_ANALYSIS"));
+        this.btnAnalysis.setText(res_i18n.getString("CL_Analysis"));
         this.btnAnalysis.setLocation(609, 21);
         this.btnAnalysis.setSize(85, 25);
         this.btnAnalysis.addActionListener(this);
@@ -119,10 +119,10 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.tblElements.addActionListener(this);
         this.tblElements.addColumn(res_i18n.getString("CL_ELEMENT"), 60);
         this.tblElements.addColumn(res_i18n.getString("CL_Index"), 60);
-        this.tblElements.addColumn(res_i18n.getString("CL_ATOMIC_MASS"), 79);
+        this.tblElements.addColumn(res_i18n.getString("CL_AtomicMass"), 79);
         this.tblElements.addColumn(res_i18n.getString("CL_ENEGATIVITY"), 125);
         this.tblElements.addColumn(res_i18n.getString("CL_OXIDATION_NUMBER"), 119);
-        this.tblElements.addColumn(res_i18n.getString("CL_VALENCY"), 80);
+        this.tblElements.addColumn(res_i18n.getString("CL_Valency"), 80);
         this.tblElements.addColumn(res_i18n.getString("CL_MassShare"), 74);
         this.tblElements.addColumn(res_i18n.getString("CL_COMPONENT"), 74);
         this.tblElements.setToolTipText(res_i18n.getString("CL_DETAILS_DBLCLICK"));
@@ -130,9 +130,9 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
         this.tsProperties.setLayout(null);
         this.tsProperties.add(this.Label3);
         this.tsProperties.add(this.eMolecularMass);
-        this.PageControl.addTab(res_i18n.getString("CL_PROPERTIES"), this.tsProperties);
+        this.PageControl.addTab(res_i18n.getString("CL_Properties"), this.tsProperties);
 
-        this.Label3.setText(res_i18n.getString("CL_MOLAR_MASS"));
+        this.Label3.setText(res_i18n.getString("CL_MolarMass"));
         this.Label3.setLocation(8, 15);
         this.Label3.setSize(160, 15);
 

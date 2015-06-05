@@ -28,6 +28,7 @@ import javax.measure.Measure;
 /**
  *
  * @author Serg V. Zhdanovskih
+ * @since 0.6.0
  */
 public class BunsenBurner extends LabDevice
 {

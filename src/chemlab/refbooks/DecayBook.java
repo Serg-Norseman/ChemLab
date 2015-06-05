@@ -24,6 +24,7 @@ import org.w3c.dom.Element;
 /**
  *
  * @author Serg V. Zhdanovskih
+ * @since 0.2.0
  */
 public class DecayBook extends RefBook
 {
