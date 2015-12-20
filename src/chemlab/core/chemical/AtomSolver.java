@@ -20,6 +20,7 @@ package chemlab.core.chemical;
 import bslib.common.AuxUtils;
 import bslib.common.BaseObject;
 import bslib.common.StringHelper;
+import java.util.Arrays;
 
 /**
  *
@@ -32,20 +33,14 @@ public class AtomSolver extends BaseObject
 
     public AtomSolver()
     {
-        this.clear();
     }
 
     private void clear()
     {
-        int s = 0;
-        do {
-            int o = 0;
-            do {
-                this.fStructure[s][o] = 0;
-                o++;
-            } while (o != 5);
-            s++;
-        } while (s != 8);
+        for (int s = 0, sLast = ShellId.s_Last.getValue(); s <= sLast; s++)
+        {
+            Arrays.fill(this.fStructure[s], (byte)0);
+        }
     }
 
     public final byte getElectronCount(ShellId shell, OrbitalId orbital)
@@ -67,19 +62,17 @@ public class AtomSolver extends BaseObject
     {
         String result = "";
 
-        int s = 0;
-        do {
-            int o = 0;
-            do {
-                if (this.fStructure[s][o] != 0) {
-                    int value = (int) this.fStructure[s][o];
-                    String text = String.valueOf(value);
+        for (int s = 0, sLast = ShellId.s_Last.getValue(); s <= sLast; s++)
+        {
+            for (int o = 0, oLast = OrbitalId.o_Last.getValue(); o <= oLast; o++)
+            {
+                byte val = this.fStructure[s][o];
+                if (val != 0) {
+                    String text = String.valueOf(val);
                     result = StringHelper.concat(result, String.valueOf(s + 1), String.valueOf(o).substring(2, 3), text, " ");
                 }
-                o++;
-            } while (o != 5);
-            s++;
-        } while (s != 8);
+            }
+        }
 
         return result;
     }
