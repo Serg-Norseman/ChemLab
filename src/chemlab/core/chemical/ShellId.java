@@ -33,6 +33,9 @@ public enum ShellId
     s_Q('Q', 32),
     s_R('R', 32);
 
+    public static ShellId s_First = s_K;
+    public static ShellId s_Last = s_R;
+
     public final char Sym;
     public final int Capacity;
 

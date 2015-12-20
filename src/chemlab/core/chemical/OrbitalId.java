@@ -17,6 +17,9 @@
  */
 package chemlab.core.chemical;
 
+import static chemlab.core.chemical.ShellId.s_K;
+import static chemlab.core.chemical.ShellId.s_R;
+
 /**
  *
  * @author Serg V. Zhdanovskih
@@ -29,6 +32,9 @@ public enum OrbitalId
     o_d('d', 10),
     o_f('f', 14),
     o_g('g', 18);
+
+    public static OrbitalId o_First = o_s;
+    public static OrbitalId o_Last = o_g;
 
     public final char Sym;
     public final int Capacity;
