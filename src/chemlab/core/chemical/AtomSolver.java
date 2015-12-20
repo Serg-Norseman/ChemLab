@@ -32,19 +32,40 @@ public class AtomSolver extends BaseObject
 
     public AtomSolver()
     {
-        this.clear();
+        /*
+         * http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.12.5
+         * Begin of quote:
+         * Each class variable, instance variable, or array component is initialized with a default value when it is created:
+         * ...
+         * For type int, the default value is zero, that is, 0. 
+         * ...
+         * End of quote.
+         * Therefore I believe you must not to call `clear` method here, in your default ctor.
+         */
+        //this.clear();
     }
 
     private void clear()
     {
         int s = 0;
         do {
+            /*
+             * Using `java.util.Arrays.fill` makes your intentions more clear.
+             *
+             * Since I doesn't have Java compiler I wonder is it possible to do something like this:
+             * `java.util.Arrays.fill(fStructure, 8 * 5)`?
+             */
+            java.util.Arrays.fill(fStructure[s], 0);
+/*
             int o = 0;
             do {
                 this.fStructure[s][o] = 0;
                 o++;
             } while (o != 5);
+*/
             s++;
+        // Is it possible to change EXPLICITLY specified below '8' constexpr with call to `fStructure.length`?
+        // I can't check it w/o access to the compiler.
         } while (s != 8);
     }
 
@@ -72,13 +93,21 @@ public class AtomSolver extends BaseObject
             int o = 0;
             do {
                 if (this.fStructure[s][o] != 0) {
+                    /*
+                     * I believe Java hasn't `String::valueOf(byte value)` member and that's why you have to do the
+                     * following explicit conversion ot `int`?
+                     * And I believe Java can't do that itself in something like:
+                     * `String.valueOf(fStructure[s][o])` -- `byte` can't be converted to `int` implicitly, can it?
+                     */
                     int value = (int) this.fStructure[s][o];
                     String text = String.valueOf(value);
                     result = StringHelper.concat(result, String.valueOf(s + 1), String.valueOf(o).substring(2, 3), text, " ");
                 }
                 o++;
+                // What about to change '5' with `fStructure[s].length`?
             } while (o != 5);
             s++;
+            // And '8' with `fStructure.length`?
         } while (s != 8);
 
         return result;
