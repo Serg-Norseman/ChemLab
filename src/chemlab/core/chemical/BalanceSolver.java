@@ -46,15 +46,14 @@ public final class BalanceSolver extends BaseObject
 
     public final int addElement(int elementId)
     {
-        for (int i = 1; i <= this.fElementsCount; i++) {
-            if (this.fData[i - 1][0] == elementId) {
+        for (int i = 0; i < this.fElementsCount; i++) {
+            if (this.fData[i][0] == elementId) {
                 return i;
             }
         }
 
-        this.fElementsCount++;
-        this.fData[this.fElementsCount - 1][0] = elementId;
-        return this.fElementsCount;
+        this.fData[this.fElementsCount][0] = elementId;
+        return ++this.fElementsCount;
     }
 
     public final int getFactor(int reagentIndex)
@@ -76,17 +75,26 @@ public final class BalanceSolver extends BaseObject
         return 1 - 2 * (L % 2);
     }
 
-    private static int swap(int[] permutation, int k, int m, int teken)
+    /*
+     * `private static int swap(int[] permutation, int k, int m, int teken)`
+     * 'teken' ain't used in the swap operation; I believe it must be removed from the argument list. I mean 'teken' is
+     * independent of swap op itself, it is some kind of invariant from point of view of the "swap".
+     */
+    private static void swap(int[] permutation, int k, int m)
     {
         int tmp = permutation[m];
         permutation[m] = permutation[k];
         permutation[k] = tmp;
-        return -teken;
     }
 
     private static int dijkstra(int[] permutation, int teken)
     {
         int N = (permutation != null) ? permutation.length : 0;
+        /*
+         * `N` can be zero here. If so you _can_ get an "access violation" if you would write that in native C++:
+         * `int i = N - 1;`
+         * `... permutation[i - 1] ...` == `... permutation[-2] ...` -- how do Java handle this?
+         */
         int i = N - 1;
         while (permutation[i - 1] >= permutation[i]) {
             i--;
@@ -95,12 +103,14 @@ public final class BalanceSolver extends BaseObject
         while (permutation[j - 1] <= permutation[i - 1]) {
             j--;
         }
-        teken = swap(permutation, i - 1, j - 1, teken);
+        teken *= -1;  // is `teken = -teken` better?
+        swap(permutation, i - 1, j - 1);
         i++;
         j = N;
         if (i < j) {
             do {
-                teken = swap(permutation, i - 1, j - 1, teken);
+                teken *= -1
+                swap(permutation, i - 1, j - 1);
                 i++;
                 j--;
             } while (i < j);
