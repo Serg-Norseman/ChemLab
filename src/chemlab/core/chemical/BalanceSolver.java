@@ -89,13 +89,23 @@ public final class BalanceSolver extends BaseObject
 
     private static int dijkstra(int[] permutation, int teken)
     {
-        int N = (permutation != null) ? permutation.length : 0;
         /*
-         * `N` can be zero here. If so you _can_ get an "access violation" if you would write that in native C++:
-         * `int i = N - 1;`
-         * `... permutation[i - 1] ...` == `... permutation[-2] ...` -- how do Java handle this?
+         * The only place where `dijkstra` is called is `subdeterminant` method. `permutation` argument there can't
+         * be zero. Therefore I believe the following `?:` operator is unnecessary.
+         * Moreover, see the comment below...
          */
-        int i = N - 1;
+//        int N = (permutation != null) ? permutation.length : 0;
+        /*
+         * `N` can be zero here. If so you _can_ get an "access violation" if you would write the following code
+         * in native C++:
+         *
+         * `int i = N - 1;`  // `N` is zero!
+         * `... permutation[i - 1] ...` IT IS `... permutation[-2] ...` -- how do Java handle this?
+         *
+         * May be it would be better to check length of `permutation`? Something like `assert(1 < permutation.length);`
+         */
+//        int i = N - 1;
+        int i = permutation.length - 1;
         while (permutation[i - 1] >= permutation[i]) {
             i--;
         }
@@ -127,14 +137,12 @@ public final class BalanceSolver extends BaseObject
 
         int[][] invert = new int[this.fDimension + 1][this.fDimension + 1];
 
+        det.argValue = 0;
         for (int i = 1; i <= this.fDimension; i++) {
             for (int j = 1; j <= this.fDimension; j++) {
                 invert[i][j] = subdeterminant(j, i, this.fDimension, mtx);
             }
-        }
-
-        det.argValue = 0;
-        for (int i = 1; i <= this.fDimension; i++) {
+            // Now, here, the first row in `invert` matrix is initialized (invert[1][{any}]).
             det.argValue += mtx[i][1] * invert[1][i];
         }
 
@@ -143,15 +151,13 @@ public final class BalanceSolver extends BaseObject
 
     private int[] multiply(int[][] een, int[] twee)
     {
-        int dim = this.fDimension;
-        int[] uit = new int[dim + 1];
+        int[] uit = new int[this.fDimension + 1];
 
-        for (int i = 1; i <= dim; i++) {
-            int h = 0;
-            for (int j = 1; j <= dim; j++) {
-                h += een[i][j] * twee[j];
+        for (int i = 1; i <= this.fDimension; i++) {
+            uit[i] = 0;
+            for (int j = 1; j <= this.fDimension; j++) {
+                uit[i] += een[i][j] * twee[j];
             }
-            uit[i] = h;
         }
 
         return uit;
@@ -159,12 +165,25 @@ public final class BalanceSolver extends BaseObject
 
     private void simplify(int[] b)
     {
+        // I would replace the following line with `if (0 > b[b.length - 1])` -- it's more obvious.
+        // There are too many bindings to the `fReagentsCount` all over the code.
         if (b[this.fReagentsCount] < 0) {
+            // `for (int i = 1; i < b.length; i++)` or `for ({type} value: {container})`
             for (int i = 1; i <= this.fReagentsCount; i++) {
                 b[i] = -b[i];
             }
         }
-
+        /*
+         * You've inverted elements in `b` array above ^... because implementation of `ExtMath.gcd` has a bug?
+         *  `ExtMath.gcd` fails on negative integers:
+         * (a) `ExtMath.gcd(10, -4)` returns -10,
+         * (b) `ExtMath.gcd(-10, 4)` returns 4.
+         * While both calls must return 2.
+         *
+         * If we'll fix it and allow negative integers in `ExtMath.gcd`, we can improve performance
+         * in many places I believe. But it looks like this will require updating of all algorithms here.
+         * I mean, why `b` has negative integers? What it means?..
+         */
         int min = ExtMath.gcd(b[this.fReagentsCount], b[this.fReagentsCount - 1]);
 
         for (int i = 1; i <= this.fReagentsCount - 2; i++) {
@@ -181,13 +200,12 @@ public final class BalanceSolver extends BaseObject
 
     private static int subdeterminant(int ii, int jj, int ndm, int[][] mtx)
     {
-        boolean fout = ndm < 1 || ndm > 8;
-        if (fout) {
+        if ((ndm < 1) || (ndm > 8)) {
             throw new RuntimeException("subdet: input invalid");
         }
 
         int[] rij = new int[ndm - 1];
-        for (int k = 0; k <= ndm - 2; k++) {
+        for (int k = 0; k < rij.length; k++) {
             rij[k] = k + 1;
         }
 
@@ -221,23 +239,21 @@ public final class BalanceSolver extends BaseObject
         int[] b = new int[this.fReagentsCount];
 
         for (int i = 1; i < this.fReagentsCount; i++) {
+//            b[i] = 0; -- Java do this by itself.
             for (int j = 1; j < this.fReagentsCount; j++) {
-                A[i][j] = 0;
+//                A[i][j] = 0; -- Java guarantees `A` was initialized with 0s!
 
                 for (int k = 1; k <= this.fElementsCount; k++) {
                     A[i][j] += this.fData[k - 1][i] * this.fData[k - 1][j];
+                    if (1 == j)
+                    {
+                        b[i] -= this.fData[k - 1][i] * this.fData[k - 1][this.fReagentsCount];
+                    }
                 }
             }
         }
 
-        for (int i = 1; i < this.fReagentsCount; i++) {
-            b[i] = 0;
-
-            for (int k = 1; k <= this.fElementsCount; k++) {
-                b[i] -= this.fData[k - 1][i] * this.fData[k - 1][this.fReagentsCount];
-            }
-        }
-
+        // You're gonna cancel out the matrix `A` and vector `b`, aren't you?
         int G = 0;
         for (int i = 1; i < this.fReagentsCount; i++) {
             int min = 0;
@@ -247,10 +263,11 @@ public final class BalanceSolver extends BaseObject
             for (int j = 1; j < this.fReagentsCount; j++) {
                 if (A[i][j] != 0) {
                     een = Math.abs(A[i][j]);
+                    // `twee` IS ALWAYS greater than 0. The following if-condition can confuse.
+                    // Use `if (twee)` instead ("if `twee` ain't zero").
                     if (twee > 0) {
                         G = ExtMath.gcd(een, twee);
-                        boolean vgl = min == 0 || G < min;
-                        if (vgl) {
+                        if ((min == 0) || (G < min)) {
                             min = G;
                         }
                     }
@@ -259,10 +276,11 @@ public final class BalanceSolver extends BaseObject
             }
 
             een = Math.abs(b[i]);
+            // The same situation: `Math.abs` always returns something greater than 0.
+            // `if (een) {...}`
             if (een > 0) {
                 G = ExtMath.gcd(een, twee);
-                boolean vgl = min == 0 || G < min;
-                if (vgl) {
+                if ((min == 0) || (G < min)) {
                     min = G;
                 }
             }
@@ -286,18 +304,22 @@ public final class BalanceSolver extends BaseObject
 
         b = this.multiply(A, b);
 
+        // WOW! The following is array resizing in Java?
         int[] bTemp = new int[this.fReagentsCount + 1];
-        System.arraycopy(b, 0, bTemp, 0, this.fReagentsCount);
+        System.arraycopy(b, 0, bTemp, 0, b.length);
         b = bTemp;
-        b[this.fReagentsCount] = G;
+        b[b.length - 1] = G;
 
         this.simplify(b);
 
+        // What about using of `b.clone` method?
+        // `fFactors = b.clone();`
         this.fFactors = new int[this.fReagentsCount + 1];
         for (int i = 1; i <= this.fReagentsCount; i++) {
             this.fFactors[i] = b[i];
         }
 
+        // `result` is zero here...
         for (int i = 1; i <= this.fElementsCount; i++) {
             int r = 0;
             for (int j = 1; j <= this.fReagentsCount; j++) {
@@ -305,7 +327,8 @@ public final class BalanceSolver extends BaseObject
             }
             result += Math.abs(r);
         }
-
+        // ... you have been adding NON-NEGATIVE numbers (`result += Math.abs(r)`)...
+        // How `result` may become a negative number? Why do you check it below? Did you intent to check for 0?
         if (result > 0) {
             for (int i = 1; i <= this.fReagentsCount; i++) {
                 this.fFactors[i] = 1;
