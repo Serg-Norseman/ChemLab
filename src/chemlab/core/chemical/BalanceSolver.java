@@ -109,17 +109,17 @@ public final class BalanceSolver extends BaseObject
         while (permutation[i - 1] >= permutation[i]) {
             i--;
         }
-        int j = N;
+        int j = permutation.length;
         while (permutation[j - 1] <= permutation[i - 1]) {
             j--;
         }
         teken *= -1;  // is `teken = -teken` better?
         swap(permutation, i - 1, j - 1);
         i++;
-        j = N;
+        j = permutation.length;
         if (i < j) {
             do {
-                teken *= -1
+                teken *= -1;
                 swap(permutation, i - 1, j - 1);
                 i++;
                 j--;
@@ -183,6 +183,8 @@ public final class BalanceSolver extends BaseObject
          * If we'll fix it and allow negative integers in `ExtMath.gcd`, we can improve performance
          * in many places I believe. But it looks like this will require updating of all algorithms here.
          * I mean, why `b` has negative integers? What it means?..
+         *
+         * Can we use `ExtMath.gcd` overloaded for arrays here?
          */
         int min = ExtMath.gcd(b[this.fReagentsCount], b[this.fReagentsCount - 1]);
 
@@ -238,20 +240,25 @@ public final class BalanceSolver extends BaseObject
         int[][] A = new int[this.fReagentsCount][this.fReagentsCount];
         int[] b = new int[this.fReagentsCount];
 
-        for (int i = 1; i < this.fReagentsCount; i++) {
+        for (int i = 1; i < A.length; i++) {
 //            b[i] = 0; -- Java do this by itself.
-            for (int j = 1; j < this.fReagentsCount; j++) {
+            // 'Cos `A` is a square matrix I use `A.length` field for the both sizes.
+            for (int j = 1; j < A.length; j++) {
 //                A[i][j] = 0; -- Java guarantees `A` was initialized with 0s!
-
-                for (int k = 1; k <= this.fElementsCount; k++) {
-                    A[i][j] += this.fData[k - 1][i] * this.fData[k - 1][j];
+                for (int k = 0; k < this.fElementsCount; ++k) {
+                    A[i][j] += this.fData[k][i] * this.fData[k][j];
                     if (1 == j)
                     {
-                        b[i] -= this.fData[k - 1][i] * this.fData[k - 1][this.fReagentsCount];
+                        b[i] -= this.fData[k][i] * this.fData[k][this.fReagentsCount];
                     }
                 }
             }
         }
+
+        /*
+         * The first column and the first row in `A` matrix and the first element in `b` vector are all zeros.
+         * Can we remove them and change sizes of the object? This requires more deeply code analysis.
+         */
 
         // You're gonna cancel out the matrix `A` and vector `b`, aren't you?
         int G = 0;
@@ -260,26 +267,29 @@ public final class BalanceSolver extends BaseObject
             int twee = 0;
             int een;
 
+            /*
+             * The following `for` loop is modified GCD algorithm for vectors. You already have the implementation
+             * of `ExtMath.gcd` method overloaded for arrays. Can we use it? Does the "balance-by-least-squares"
+             * require the modified GCD?
+             */
             for (int j = 1; j < this.fReagentsCount; j++) {
-                if (A[i][j] != 0) {
-                    een = Math.abs(A[i][j]);
-                    // `twee` IS ALWAYS greater than 0. The following if-condition can confuse.
-                    // Use `if (twee)` instead ("if `twee` ain't zero").
-                    if (twee > 0) {
-                        G = ExtMath.gcd(een, twee);
+                if (0 != A[i][j]) {
+                    if (0 != twee) {
+                        // Here we have slightly modified GCD calculation that doesn't allow zeros in any arguments.
+                        // (Is it required by the algorithm? If no we can remove one of `if's` above).
+                        G = ExtMath.gcd(A[i][j], twee);
                         if ((min == 0) || (G < min)) {
                             min = G;
                         }
                     }
-                    twee = een;
+                    twee = A[i][j];
                 }
             }
 
-            een = Math.abs(b[i]);
-            // The same situation: `Math.abs` always returns something greater than 0.
-            // `if (een) {...}`
-            if (een > 0) {
-                G = ExtMath.gcd(een, twee);
+            if (0 != b[i]) {
+                // `twee` can be zero here and we don't check it. Therefore I believe we can allow one zero-value
+                // argument in the code above as we do here (thus removing `if (0 != twee)` statement).
+                G = ExtMath.gcd(b[i], twee);
                 if ((min == 0) || (G < min)) {
                     min = G;
                 }
