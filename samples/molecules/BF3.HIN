@@ -1,0 +1,10 @@
+;Boron trifluoride, a trigonal planar molecule
+forcefield mm+
+sys 0
+view 40 0.36496 55 15 1 0 0 0 1 0 0 0 1 0.30348 -0.51956 -55
+mol 1
+atom 1 - B B3 - 0 -0.3034813 0.1345571 0 3 2 s 3 s 4 s
+atom 2 - F F - 0 -0.3034813 1.674557 0 1 1 s
+atom 3 - F F - 0 1.030198 -0.6354429 -4.714734e-017 1 1 s
+atom 4 - F F - 0 -1.63716 -0.6354429 4.714734e-017 1 1 s
+endmol 1

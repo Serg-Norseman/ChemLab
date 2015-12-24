@@ -1,0 +1,11 @@
+;Nitrosyl chloride, a bent molecule based on a trigonal planar 
+;arrangement of electrons  
+forcefield mm+
+sys 0
+view 40 0.3966 55 15 0.9952122 0.09361461 -0.02809005 -0.09761934 0.9662323 -0.2384652 0.004817682 0.2400656 0.9707447 -0.029441 0.42522 -55.118
+mol 1
+atom 1 - N N2 - 0 -0.3784421 -0.5209098 -0.1389119 3 2 s 3 d 4 s
+atom 2 - Cl CL - 0 1.276539 -0.01222377 0.03393721 1 1 s
+atom 3 - O O1 - 0 -1.476393 0.4497551 0.0677627 1 1 d
+atom 4 - Lp LP - 0 -0.5563301 -1.326882 -0.342048 1 1 s
+endmol 1

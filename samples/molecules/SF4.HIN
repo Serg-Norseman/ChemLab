@@ -1,0 +1,13 @@
+;Sulfur tetrafluoride, a "seesaw" molecule based on a trigonal bipyramidal
+;arrangement of electron pairs.
+forcefield mm+
+sys 0
+view 40 0.39286 55 15 -0.04690092 0.875341 -0.481226 -0.08962755 -0.4835007 -0.8707434 -0.9948704 0.002292442 0.1011313 -1.0575e-007 -0.1107 -54.75
+mol 1
+atom 1 - S S+ - 0 0 0 0 5 2 s 3 s 4 s 5 s 6 s
+atom 2 - F F - 0 0 1.74 0 1 1 s
+atom 3 - Lp LP - 0 0.9699484 -0.56 0 1 1 s
+atom 4 - F F - 0 -1.506884 -0.87 0 1 1 s
+atom 5 - F F - 0 0 0 1.74 1 1 s
+atom 6 - F F - 0 0 0 -1.74 1 1 s
+endmol 1

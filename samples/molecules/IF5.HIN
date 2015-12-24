@@ -1,0 +1,14 @@
+;Iodine pentafluoride, a square pyramidal molecule based on an
+;octahedral arrangement of electron pairs
+forcefield mm+
+sys 0
+view 40 0.29639 55 15 0.7228172 0.2343776 -0.6500788 0.01013127 0.9370309 0.3490994 0.6909651 -0.2589212 0.6749275 0.39418 -0.31328 -55.521
+mol 1
+atom 1 - I I - 0 -0.5475997 0.1613034 0 6 2 s 3 s 4 s 5 s 6 s 7 s
+atom 2 - F F - 0 -0.5475997 2.211303 0 1 1 s
+atom 3 - F F - 0 1.502401 0.1613034 7.685761e-033 1 1 s
+atom 4 - F F - 0 -0.5475997 0.1613034 2.05 1 1 s
+atom 5 - Lp LP - 0 -0.5475997 -1.268697 0 1 1 s
+atom 6 - F F - 0 -2.5976 0.1613034 -7.685761e-033 1 1 s
+atom 7 - F F - 0 -0.5475997 0.1613034 -2.05 1 1 s
+endmol 1
