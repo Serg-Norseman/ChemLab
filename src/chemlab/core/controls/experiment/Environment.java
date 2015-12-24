@@ -24,18 +24,18 @@ import java.io.Serializable;
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public abstract class Experiment implements Serializable
+public abstract class Environment implements Serializable
 {
     protected final ExperimentParams fParams;
     protected double fPressure;
     protected double fTemperature;
 
-    public Experiment()
+    public Environment()
     {
         this.fParams = new ExperimentParams();
     }
 
-    public Experiment(double pressure, double temperature)
+    public Environment(double pressure, double temperature)
     {
         this.fParams = new ExperimentParams();
         this.fPressure = pressure;

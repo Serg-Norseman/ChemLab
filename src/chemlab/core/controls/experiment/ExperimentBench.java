@@ -53,7 +53,7 @@ import javax.swing.Timer;
  * @author Serg V. Zhdanovskih
  * @since 0.5.0
  */
-public class ExperimentBench extends EditorControl implements ActionListener
+public class ExperimentBench extends EditorControl implements ActionListener, ISimulation
 {
     private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
 
@@ -69,7 +69,6 @@ public class ExperimentBench extends EditorControl implements ActionListener
     
     private int FX;
     private int FY;
-    private boolean fActive;
     private ExperimentHeader fHeader;
     private final ArrayList<LabDevice> fDevices;
     private Bitmap fBuffer;
@@ -78,6 +77,7 @@ public class ExperimentBench extends EditorControl implements ActionListener
     private Date fEndTime = new Date(0);
     private String fDebugInfo;
     private final ArrayList<Connection> fConnections;
+    private SimulationStatus fStatus;
 
     private final Timer fTimer;
     private final JPopupMenu fDeviceMenu;
@@ -172,8 +172,10 @@ public class ExperimentBench extends EditorControl implements ActionListener
             {
             }
         });
-        
-        this.start();
+
+        this.fStatus = SimulationStatus.STOPPED;
+
+        this.play();
     }
 
     /*@Override
@@ -186,24 +188,6 @@ public class ExperimentBench extends EditorControl implements ActionListener
         }
         super.dispose(disposing);
     }*/
-
-    public final boolean getActive()
-    {
-        return this.fActive;
-    }
-
-    public final void setActive(boolean value)
-    {
-        if (this.fActive != value) {
-            this.fActive = value;
-
-            if (value) {
-                this.start();
-            } else {
-                this.finish();
-            }
-        }
-    }
 
     public final LabDevice getDevice(int index)
     {
@@ -219,6 +203,13 @@ public class ExperimentBench extends EditorControl implements ActionListener
         return this.fDevices.size();
     }
 
+    @Override
+    public final Environment getEnvironment()
+    {
+        return null;
+    }
+
+    @Override
     public final Date getBegTime()
     {
         return this.fBegTime;
@@ -229,6 +220,7 @@ public class ExperimentBench extends EditorControl implements ActionListener
         this.fBegTime = value;
     }
 
+    @Override
     public final Date getCurTime()
     {
         return this.fCurTime;
@@ -239,6 +231,7 @@ public class ExperimentBench extends EditorControl implements ActionListener
         this.fCurTime = value;
     }
 
+    @Override
     public final Date getEndTime()
     {
         return this.fEndTime;
@@ -603,19 +596,37 @@ public class ExperimentBench extends EditorControl implements ActionListener
     {
     }
 
-    public final void start()
+    @Override
+    public final SimulationStatus getStatus()
+    {
+        return this.fStatus;
+    }
+
+    @Override
+    public final void play()
     {
         this.fTimer.start();
 
         this.fBegTime = new Date();
         //this.FEndTime = 0;
+
+        this.fStatus = SimulationStatus.PLAING;
     }
 
-    public final void finish()
+    @Override
+    public final void stop()
     {
         this.fEndTime = new Date();
 
         this.fTimer.stop();
+
+        this.fStatus = SimulationStatus.STOPPED;
+    }
+
+    @Override
+    public final void pause()
+    {
+        // dummy
     }
 
     public final BenchListener getBenchListener()
