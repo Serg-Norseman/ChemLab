@@ -114,9 +114,9 @@ public final class CompoundsBook extends RefBook
                 if (fCurrentVer == 1) {
                     Element physEl = getElement(el, "physical");
                     if (physEl != null) {
-                        compRec.MolecularMass = AuxUtils.ParseFloat(physEl.getAttribute("mass"), 0);
+                        compRec.MolecularMass = AuxUtils.parseFloat(physEl.getAttribute("mass"), 0);
                         String st = physEl.getAttribute("state");
-                        double density = AuxUtils.ParseFloat(physEl.getAttribute("density"), 0);
+                        double density = AuxUtils.parseFloat(physEl.getAttribute("density"), 0);
 
                         SubstanceState state = (StringHelper.isNullOrEmpty(st) || st.equals("null")) ? SubstanceState.Solid : SubstanceState.valueOf(SubstanceState.class, st);
                         CompoundRecord.PhysicalState ps = compRec.getPhysicalState(state, true);
@@ -126,7 +126,7 @@ public final class CompoundsBook extends RefBook
                         }
                     }
                 } else {
-                    compRec.MolecularMass = AuxUtils.ParseFloat(el.getAttribute("mass"), 0);
+                    compRec.MolecularMass = AuxUtils.parseFloat(el.getAttribute("mass"), 0);
                     
                     Element pssEl = getElement(el, "physicals");
                     if (pssEl != null) {
@@ -137,7 +137,7 @@ public final class CompoundsBook extends RefBook
                                 Element psEl = (Element) n;
                                 
                                 String st = psEl.getAttribute("state");
-                                double density = AuxUtils.ParseFloat(psEl.getAttribute("density"), 0);
+                                double density = AuxUtils.parseFloat(psEl.getAttribute("density"), 0);
                                 
                                 SubstanceState state = (StringHelper.isNullOrEmpty(st) || st.equals("null")) ? SubstanceState.Solid : SubstanceState.valueOf(SubstanceState.class, st);
                                 CompoundRecord.PhysicalState ps = compRec.getPhysicalState(state, true);
@@ -145,10 +145,10 @@ public final class CompoundsBook extends RefBook
                                     ps.State = state;
                                     ps.Density = density;
 
-                                    ps.HeatFormation = AuxUtils.ParseFloat(psEl.getAttribute("HeatFormation"), 0);
-                                    ps.GibbsFreeEnergy = AuxUtils.ParseFloat(psEl.getAttribute("GibbsFreeEnergy"), 0);
-                                    ps.StdEntropy = AuxUtils.ParseFloat(psEl.getAttribute("StdEntropy"), 0);
-                                    ps.MolarHeatCapacity = AuxUtils.ParseFloat(psEl.getAttribute("SpecificHeat"), 0);
+                                    ps.HeatFormation = AuxUtils.parseFloat(psEl.getAttribute("HeatFormation"), 0);
+                                    ps.GibbsFreeEnergy = AuxUtils.parseFloat(psEl.getAttribute("GibbsFreeEnergy"), 0);
+                                    ps.StdEntropy = AuxUtils.parseFloat(psEl.getAttribute("StdEntropy"), 0);
+                                    ps.MolarHeatCapacity = AuxUtils.parseFloat(psEl.getAttribute("SpecificHeat"), 0);
                                     
                                     ps.Color = getHexColor(psEl.getAttribute("Color"));
                                 }

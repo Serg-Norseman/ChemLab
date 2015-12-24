@@ -26,6 +26,7 @@ import bslib.common.StringHelper;
 import chemlab.core.chemical.SubstanceState;
 import chemlab.core.controls.EditorControl;
 import chemlab.core.controls.experiment.misc.ClingHelper;
+import chemlab.core.measure.ChemUnits;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -448,7 +449,7 @@ public class ExperimentBench extends EditorControl implements ActionListener
             this.addConnection(dev, other);
         }
     }
-    
+
     protected void onMouseMove(MouseEvent e)
     {
         if (e.getButton() == 0) {
@@ -459,9 +460,12 @@ public class ExperimentBench extends EditorControl implements ActionListener
                 String realVol = String.valueOf(dev.getRealVolume());
                 String fillVol = String.valueOf(dev.getFillVolume());
                 hint = String.format(res_i18n.getString("CL_DevHint"), 
-                        new Object[]{realVol, fillVol, String.format("%5.5f г", 
-                                dev.getSubstancesMass()), dev.getPressure().toString(), dev.getTemperature().toString(), 
-                                String.format("%5.5f", dev.getPH()), this.getConnectionsString(dev)});
+                        new Object[]{realVol, fillVol, 
+                            String.format("%5.5f г", dev.getSubstancesMass()), 
+                            ChemUnits.toString(dev.getPressure(), "%5.5f"), 
+                            ChemUnits.toString(dev.getTemperature(), "%5.5f"), 
+                            String.format("%5.5f", dev.getPH()), 
+                            this.getConnectionsString(dev)});
             }
 
             if (StringHelper.isNullOrEmpty(hint)) {

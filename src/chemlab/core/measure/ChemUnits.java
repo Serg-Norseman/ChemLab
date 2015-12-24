@@ -119,12 +119,24 @@ public final class ChemUnits
             KILOJOULE.divide(KILOGRAM)));
     public static final Unit<CombustionHeat> MEGAJOULE_PER_KILOGRAM = add(new ProductUnit<CombustionHeat>(
             MEGAJOULE.divide(KILOGRAM)));
-    
+
+
     public static Measure<Double, ?> convert(Measure<Double, ?> src, Unit<?> targetUnit)
     {
         Unit<?> sourceUnit = src.getUnit();
         UnitConverter conv = sourceUnit.getConverterTo(targetUnit);
         double val = conv.convert(src.getValue());
         return Measure.valueOf(val, targetUnit);
+    }
+
+
+    public static String toString(Measure<Double, ?> measure, String fmt)
+    {
+        /*if (measure.getUnit() instanceof CompoundUnit) {
+            return MeasureFormat.DEFAULT.formatCompound(measure.doubleValue(measure.getUnit()),
+                    measure.getUnit(), new StringBuffer(), null).toString();
+        }*/
+
+        return String.format(fmt, measure.getValue()) + " " + measure.getUnit();
     }
 }

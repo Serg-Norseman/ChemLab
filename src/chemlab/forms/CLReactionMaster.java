@@ -272,7 +272,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                     if (temp.equals("298.15 °K")) {
                         this.fThermodynamicSolver.setTemperature(298.15f);
                     } else {
-                        this.fThermodynamicSolver.setTemperature((float) AuxUtils.ParseFloat(temp, 0));
+                        this.fThermodynamicSolver.setTemperature((float) AuxUtils.parseFloat(temp, 0));
                     }
                 } catch (ParseException ex) {
                     throw new Exception(res_i18n.getString("CL_TemperatureFormat_Invalid"));

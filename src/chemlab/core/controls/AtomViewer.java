@@ -17,7 +17,7 @@
  */
 package chemlab.core.controls;
 
-import bslib.common.AuxUtils;
+import bslib.common.ColorUtil;
 import bslib.common.Rect;
 import bslib.common.StringHelper;
 import chemlab.core.chemical.OrbitalId;
@@ -49,7 +49,7 @@ public final class AtomViewer extends JPanel
     private byte[][] fStructure = new byte[8][5];
 
     static {
-        OrbitalColors = new Color[]{AuxUtils.BGRToRGB(16711680), AuxUtils.BGRToRGB(8388608), AuxUtils.BGRToRGB(65280), AuxUtils.BGRToRGB(32768), AuxUtils.BGRToRGB(16711935)};
+        OrbitalColors = new Color[]{ColorUtil.BGRToRGB(16711680), ColorUtil.BGRToRGB(8388608), ColorUtil.BGRToRGB(65280), ColorUtil.BGRToRGB(32768), ColorUtil.BGRToRGB(16711935)};
     }
 
     public AtomViewer()

@@ -88,13 +88,13 @@ public class AtomSolver extends BaseObject
         String[] parts = s.split("[ ]", -1);
 
         for (String prt : parts) {
-            ShellId shell = ShellId.forValue(AuxUtils.ParseInt("" + prt.charAt(0), 0) - 1);
+            ShellId shell = ShellId.forValue(AuxUtils.parseInt("" + prt.charAt(0), 0) - 1);
 
             String prtOrb = prt.substring(1, 2);
 
             for (OrbitalId orbital : OrbitalId.values()) {
                 if (StringHelper.equals(orbital.toString().substring(2, 3), prtOrb)) {
-                    int cnt = AuxUtils.ParseInt(prt.substring(2, prt.length()), 0);
+                    int cnt = AuxUtils.parseInt(prt.substring(2, prt.length()), 0);
                     this.fStructure[shell.getValue()][orbital.getValue()] = (byte) cnt;
                     break;
                 }

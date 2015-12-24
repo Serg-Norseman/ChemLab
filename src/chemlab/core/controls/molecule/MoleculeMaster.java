@@ -19,6 +19,7 @@ package chemlab.core.controls.molecule;
 
 import bslib.common.AuxUtils;
 import bslib.common.Bitmap;
+import bslib.common.ColorUtil;
 import bslib.common.INotifyHandler;
 import bslib.common.Logger;
 import bslib.common.Point;
@@ -321,7 +322,7 @@ public class MoleculeMaster extends EditorControl
             }
 
             if (this.fSelector.Active) {
-                gr.setColor(AuxUtils.BGRToRGB(16776960));
+                gr.setColor(ColorUtil.BGRToRGB(16776960));
                 gr.setStroke(new BasicStroke(1));
                 //pen.DashStyle = DashStyle.Dot;
                 Rect rt = this.fSelector.Region;
@@ -892,7 +893,7 @@ public class MoleculeMaster extends EditorControl
 
             for (int i = maxr; i >= 1; i--) {
                 double d = (i / (double) maxr);
-                colors[i] = AuxUtils.newColor(
+                colors[i] = ColorUtil.newColor(
                         blend(blend(rl, 255, d), 192, 1.0), 
                         blend(blend(gl, 255, d), 192, 1.0), 
                         blend(blend(bl, 255, d), 192, 1.0));
