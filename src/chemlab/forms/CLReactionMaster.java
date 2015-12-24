@@ -313,10 +313,10 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                     substance.Formula,
                     CommonUtils.formatFloat(substance.getMolecularMass(), 5),
                     substType,
-                    CommonUtils.formatFloat(substance.getSM_HeatCapacity(), 3),
-                    CommonUtils.formatFloat(substance.getSM_Entropy(), 3),
-                    CommonUtils.formatFloat(substance.getSMF_Enthalpy(), 3),
-                    CommonUtils.formatFloat(substance.getSMF_Gibbs_Energy(), 3)
+                    CommonUtils.formatFloat(substance.getMolarHeatCapacity(), 3),
+                    CommonUtils.formatFloat(substance.getStandardEntropy(), 3),
+                    CommonUtils.formatFloat(substance.getHeatOfFormation(), 3),
+                    CommonUtils.formatFloat(substance.getGibbsFreeEnergy(), 3)
                 };
 
                 this.tblSubstances.addRow(rowData);

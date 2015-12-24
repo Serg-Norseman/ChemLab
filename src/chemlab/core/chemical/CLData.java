@@ -91,12 +91,37 @@ public class CLData
         CompoundsBook = new CompoundsBook();
         CompoundsBook.loadXML();
         
-        importExternalData();
+        //importExternalData();
     }
 
     private static void importExternalData()
     {
         // to future
         // CompoundRecord compRec = CLData.CompoundsBook.checkCompound(formula);
+        
+        /*ExtData therm = new ExtData();
+        for (ExtData.Elem tval : therm.data) {
+            String formula = tval.name;
+            SubstanceState state;
+            
+            if (formula.endsWith("(s)")) {
+                formula = formula.replace("(s)", "");
+                state = SubstanceState.Solid;
+            } else if (formula.endsWith("(g)")) {
+                formula = formula.replace("(g)", "");
+                state = SubstanceState.Gas;
+            } else if (formula.endsWith("(l)")) {
+                formula = formula.replace("(l)", "");
+                state = SubstanceState.Liquid;
+            } else {
+                continue;
+            }
+            
+            CompoundRecord record = CLData.CompoundsBook.checkCompound(formula);
+            PhysicalState physState = record.getPhysicalState(state, true);
+            physState.HeatFormation = tval.heatFormation;
+            physState.GibbsFreeEnergy = tval.gibbsFreeEnergy;
+            physState.StdEntropy = tval.stdEntropy;
+        }*/
     }
 }

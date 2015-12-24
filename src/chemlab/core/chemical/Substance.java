@@ -18,6 +18,7 @@
 package chemlab.core.chemical;
 
 import chemlab.refbooks.CompoundRecord;
+import chemlab.refbooks.PhysicalState;
 import java.awt.Color;
 
 /**
@@ -32,20 +33,15 @@ public class Substance extends CompoundSolver
 
     private CompoundRecord fRecord;
     private SubstanceState fState = SubstanceState.Solid;
-    
-    private double FSM_Entropy;
-    private double FSM_HeatCapacity;
-    private double FSMF_Gibbs_Energy;
-    private double FSMF_Enthalpy;
+    private StoicParams fStoicParams;
+
+    private double fMass; // used in LabDevice, TODO: to refactoring
+    protected double fTemperature;
+
+    // TODO: candidates to remove!
     private double FSMHC_A;
     private double FSMHC_C;
     private double FSMHC_B;
-
-    private double fMass; // used in LabDevice
-    protected double fTemperature;
-
-    private StoicParams fStoicParams;
-
     public double Melting_Point;
     public double Boiling_Point;
     public double Solubility_at_0C;
@@ -129,6 +125,12 @@ public class Substance extends CompoundSolver
         return this.fRecord;
     }
 
+    public PhysicalState getPhysicalState(SubstanceState state)
+    {
+        CompoundRecord record = this.getRecord();
+        return (record == null) ? null : record.getPhysicalState(state, false);
+    }
+
     /**
      *
      * @return J / (mole * K)
@@ -140,25 +142,29 @@ public class Substance extends CompoundSolver
 
     public final double getMolarHeatCapacity(SubstanceState state)
     {
-        CompoundRecord record = this.getRecord();
-        double specHeat = (record == null) ? 0 : record.getPhysicalState(state, true).MolarHeatCapacity;
-        return specHeat;
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.MolarHeatCapacity;
     }
+
+    /*public final double getDensity()
+    {
+        // don't switch on! conflict code
+        return this.getDensity(this.getState());
+    }*/
 
     public final double getDensity(SubstanceState state)
     {
-        CompoundRecord record = this.getRecord();
-        double density = (record == null) ? 0 : record.getPhysicalState(state, true).Density;
-        return density;
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.Density;
     }
     
     public final Color getColor(SubstanceState state)
     {
-        CompoundRecord record = this.getRecord();
+        PhysicalState physState = this.getPhysicalState(state);
         
         Color color;
-        if (record != null) {
-            color = record.getPhysicalState(state, true).Color;
+        if (physState != null) {
+            color = physState.Color;
         } else {
             switch (state) {
                 case Solid:
@@ -185,9 +191,41 @@ public class Substance extends CompoundSolver
         return color;
     }
 
-    public final double getSM_HeatCapacity()
+    /**
+     * HeatOfFormation/Enthalpy
+     * @return 
+     */
+    public final double getHeatOfFormation()
     {
-        return this.FSM_HeatCapacity;
+        return this.getHeatOfFormation(this.getState());
+    }
+
+    public double getHeatOfFormation(SubstanceState state)
+    {
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.HeatFormation;
+    }
+
+    public final double getGibbsFreeEnergy()
+    {
+        return this.getGibbsFreeEnergy(this.getState());
+    }
+
+    public double getGibbsFreeEnergy(SubstanceState state)
+    {
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.GibbsFreeEnergy;
+    }
+
+    public final double getStandardEntropy()
+    {
+        return this.getStandardEntropy(this.getState());
+    }
+
+    public double getStandardEntropy(SubstanceState state)
+    {
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.StdEntropy;
     }
 
     public final double getSMHC_A()
@@ -203,20 +241,5 @@ public class Substance extends CompoundSolver
     public final double getSMHC_C()
     {
         return this.FSMHC_C;
-    }
-
-    public final double getSM_Entropy()
-    {
-        return this.FSM_Entropy;
-    }
-
-    public final double getSMF_Enthalpy()
-    {
-        return this.FSMF_Enthalpy;
-    }
-
-    public final double getSMF_Gibbs_Energy()
-    {
-        return this.FSMF_Gibbs_Energy;
     }
 }

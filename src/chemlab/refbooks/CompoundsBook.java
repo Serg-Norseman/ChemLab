@@ -119,7 +119,7 @@ public final class CompoundsBook extends RefBook
                         double density = AuxUtils.parseFloat(physEl.getAttribute("density"), 0);
 
                         SubstanceState state = (StringHelper.isNullOrEmpty(st) || st.equals("null")) ? SubstanceState.Solid : SubstanceState.valueOf(SubstanceState.class, st);
-                        CompoundRecord.PhysicalState ps = compRec.getPhysicalState(state, true);
+                        PhysicalState ps = compRec.getPhysicalState(state, true);
                         if (ps != null) {
                             ps.State = state;
                             ps.Density = density;
@@ -140,7 +140,7 @@ public final class CompoundsBook extends RefBook
                                 double density = AuxUtils.parseFloat(psEl.getAttribute("density"), 0);
                                 
                                 SubstanceState state = (StringHelper.isNullOrEmpty(st) || st.equals("null")) ? SubstanceState.Solid : SubstanceState.valueOf(SubstanceState.class, st);
-                                CompoundRecord.PhysicalState ps = compRec.getPhysicalState(state, true);
+                                PhysicalState ps = compRec.getPhysicalState(state, true);
                                 if (ps != null) {
                                     ps.State = state;
                                     ps.Density = density;
@@ -269,7 +269,7 @@ public final class CompoundsBook extends RefBook
                 compElement.appendChild(pssElement);
                 for (SubstanceState state : SubstanceState.values()) {
                     if (state != SubstanceState.Ion) {
-                        CompoundRecord.PhysicalState ps = compRec.getPhysicalState(state, false);
+                        PhysicalState ps = compRec.getPhysicalState(state, false);
                         if (ps != null) {
                             Element psEl = doc.createElement("physical");
                             pssElement.appendChild(psEl);

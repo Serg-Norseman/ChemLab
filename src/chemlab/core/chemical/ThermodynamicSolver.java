@@ -109,19 +109,19 @@ public class ThermodynamicSolver
 
                 switch (subst.Type) {
                     case Reactant:
-                        this.fSM_Entropy = (this.fSM_Entropy - subst.Factor * subst.getSM_Entropy());
-                        this.fSM_Enthalpy = (this.fSM_Enthalpy - subst.Factor * subst.getSMF_Enthalpy());
-                        this.fdN = (this.fdN - subst.Factor);
-                        FIntegral = (FIntegral - (((subst.getSMHC_A() * dT) + subst.getSMHC_B() * (dT * dT) / 2.0) + (subst.getSMHC_C() * dT) * (dT * dT) / 3.0));
-                        SIntegral = (SIntegral - ((subst.getSMHC_A() * Math.log10((Math.abs(dT))) + subst.getSMHC_B() * dT) + subst.getSMHC_C() * (dT * dT) / 2.0));
+                        this.fSM_Entropy -= (subst.Factor * subst.getStandardEntropy());
+                        this.fSM_Enthalpy -= (subst.Factor * subst.getHeatOfFormation());
+                        this.fdN -= (subst.Factor);
+                        FIntegral -= (((subst.getSMHC_A() * dT) + subst.getSMHC_B() * (dT * dT) / 2.0) + (subst.getSMHC_C() * dT) * (dT * dT) / 3.0);
+                        SIntegral -= ((subst.getSMHC_A() * Math.log10((Math.abs(dT))) + subst.getSMHC_B() * dT) + subst.getSMHC_C() * (dT * dT) / 2.0);
                         break;
 
                     case Product:
-                        this.fSM_Entropy = (this.fSM_Entropy + subst.Factor * subst.getSM_Entropy());
-                        this.fSM_Enthalpy = (this.fSM_Enthalpy + subst.Factor * subst.getSMF_Enthalpy());
-                        this.fdN = (this.fdN + subst.Factor);
-                        FIntegral = (FIntegral + (((subst.getSMHC_A() * dT) + subst.getSMHC_B() * (dT * dT) / 2.0) + (subst.getSMHC_C() * dT) * (dT * dT) / 3.0));
-                        SIntegral = (SIntegral + ((subst.getSMHC_A() * Math.log10((Math.abs(dT))) + subst.getSMHC_B() * dT) + subst.getSMHC_C() * (dT * dT) / 2.0));
+                        this.fSM_Entropy += (subst.Factor * subst.getStandardEntropy());
+                        this.fSM_Enthalpy += (subst.Factor * subst.getHeatOfFormation());
+                        this.fdN += (subst.Factor);
+                        FIntegral += (((subst.getSMHC_A() * dT) + subst.getSMHC_B() * (dT * dT) / 2.0) + (subst.getSMHC_C() * dT) * (dT * dT) / 3.0);
+                        SIntegral += ((subst.getSMHC_A() * Math.log10((Math.abs(dT))) + subst.getSMHC_B() * dT) + subst.getSMHC_C() * (dT * dT) / 2.0);
                         break;
                 }
             }
