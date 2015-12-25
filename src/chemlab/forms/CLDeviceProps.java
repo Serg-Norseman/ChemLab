@@ -18,8 +18,8 @@
 package chemlab.forms;
 
 import bslib.common.AuxUtils;
-import chemlab.core.chemical.Substance;
 import chemlab.core.controls.experiment.LabDevice;
+import chemlab.core.controls.experiment.matter.Matter;
 import chemlab.sandbox.ReactionsEnv;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
@@ -143,7 +143,7 @@ public class CLDeviceProps extends JDialog implements ActionListener
             this.tblSubstances.clear();
             
             for (int i = 0; i < this.fDevice.getSubstancesCount(); i++) {
-                Substance substance = this.fDevice.getSubstance(i);
+                Matter substance = this.fDevice.getSubstance(i);
 
                 String substType = "";
                 switch (substance.Type) {
@@ -168,15 +168,6 @@ public class CLDeviceProps extends JDialog implements ActionListener
                 };
 
                 this.tblSubstances.addRow(rowData);
-
-                /*ListViewItem item = this.lvCompounds.Items.Add(AuxUtils.FloatToStr(substance.Factor));
-                 item.SubItems.Add(substance.Formula);
-                 item.SubItems.Add(CLData.formatFloat(substance.getMolecularMass(), 5));
-                 item.SubItems.Add(substType);
-                 item.SubItems.Add(CLData.formatFloat(substance.getSM_HeatCapacity(), 3));
-                 item.SubItems.Add(CLData.formatFloat(substance.getSM_Entropy(), 3));
-                 item.SubItems.Add(CLData.formatFloat(substance.getSMF_Enthalpy(), 3));
-                 item.SubItems.Add(CLData.formatFloat(substance.getSMF_Gibbs_Energy(), 3));*/
             }
             this.tblSubstances.packColumns(10);
 

@@ -294,7 +294,7 @@ public class LabDevice extends BaseObject
         // update internal state
         if (this.isContainer()) {
             for (int i = this.fSubstances.size() - 1; i >= 0; i--) {
-                Substance subst = this.fSubstances.get(i);
+                Matter subst = this.fSubstances.get(i);
                 if (DoubleHelper.equals(subst.getMass(), 0.0D, 0.0001)) {
                     this.fSubstances.remove(i);
                 }
@@ -400,7 +400,7 @@ public class LabDevice extends BaseObject
     public final double getSubstancesMass()
     {
         double result = 0.0;
-        for (Substance subst : this.fSubstances) {
+        for (Matter subst : this.fSubstances) {
             result = (result + subst.getMass());
         }
         return result;
@@ -451,7 +451,7 @@ public class LabDevice extends BaseObject
         Color liqColor = Color.cyan;
 
         for (int i = 0; i < this.fSubstances.size(); i++) {
-            Substance subst = this.fSubstances.get(i);
+            Matter subst = this.fSubstances.get(i);
             SubstanceState state = subst.getState();
             
             double substVol = (subst.getMass() / subst.getDensity(state));

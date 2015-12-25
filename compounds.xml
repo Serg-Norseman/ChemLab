@@ -399,7 +399,7 @@
     </compound>
     <compound formula="CO" mass="0.0">
         <physicals>
-            <physical Color="#000000" GibbsFreeEnergy="-137.1999969482422" HeatFormation="-110.5" SpecificHeat="0.0" StdEntropy="197.89999389648438" density="0.0" state="Gas"/>
+            <physical Color="#000000" GibbsFreeEnergy="-137.1999969482422" HeatFormation="-110.53" SpecificHeat="0.0" StdEntropy="197.89999389648438" density="0.0" state="Gas"/>
         </physicals>
         <names/>
         <radicals/>

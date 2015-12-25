@@ -35,18 +35,6 @@ public class Substance extends CompoundSolver
     private SubstanceState fState = SubstanceState.Solid;
     private StoicParams fStoicParams;
 
-    private double fMass; // used in LabDevice, TODO: to refactoring
-    protected double fTemperature;
-
-    // TODO: candidates to remove!
-    private double FSMHC_A;
-    private double FSMHC_C;
-    private double FSMHC_B;
-    public double Melting_Point;
-    public double Boiling_Point;
-    public double Solubility_at_0C;
-    public double Solubility_at_100C;
-
     public Substance()
     {
         super();
@@ -58,16 +46,16 @@ public class Substance extends CompoundSolver
         this.Type = SubstanceType.Reactant;
     }
 
-    public SubstanceState getState()
+    public final SubstanceState getState()
     {
         return this.fState;
     }
 
-    public void setState(SubstanceState value)
+    public final void setState(SubstanceState value)
     {
         this.fState = value;
     }
-    
+
     public final StoicParams getStoicParams()
     {
         if (fStoicParams == null) {
@@ -75,7 +63,7 @@ public class Substance extends CompoundSolver
         }
         return this.fStoicParams;
     }
-    
+
     public final double getMolecularMass(boolean withFactor)
     {
         double molMass = super.getMolecularMass();
@@ -85,37 +73,6 @@ public class Substance extends CompoundSolver
         return molMass;
     }
 
-    public final double getMoles()
-    {
-        double moles = (this.fMass /*gram*/ / this.getMolecularMass());
-        return moles;
-    }
-    
-    public final double getMass()
-    {
-        return this.fMass;
-    }
-    
-    public final void setMass(double value)
-    {
-        this.fMass = value;
-    }
-    
-    public final void adjustMass(double value)
-    {
-        this.fMass += value;
-    }
-
-    public final double getTemperature()
-    {
-        return fTemperature;
-    }
-
-    public final void setTemperature(double value)
-    {
-        this.fTemperature = value;
-    }
-    
     protected final CompoundRecord getRecord()
     {
         if (this.fRecord == null) {
@@ -200,7 +157,7 @@ public class Substance extends CompoundSolver
         return this.getHeatOfFormation(this.getState());
     }
 
-    public double getHeatOfFormation(SubstanceState state)
+    public final double getHeatOfFormation(SubstanceState state)
     {
         PhysicalState physState = this.getPhysicalState(state);
         return (physState == null) ? Double.NaN : physState.HeatFormation;
@@ -211,7 +168,7 @@ public class Substance extends CompoundSolver
         return this.getGibbsFreeEnergy(this.getState());
     }
 
-    public double getGibbsFreeEnergy(SubstanceState state)
+    public final double getGibbsFreeEnergy(SubstanceState state)
     {
         PhysicalState physState = this.getPhysicalState(state);
         return (physState == null) ? Double.NaN : physState.GibbsFreeEnergy;
@@ -222,24 +179,39 @@ public class Substance extends CompoundSolver
         return this.getStandardEntropy(this.getState());
     }
 
-    public double getStandardEntropy(SubstanceState state)
+    public final double getStandardEntropy(SubstanceState state)
     {
         PhysicalState physState = this.getPhysicalState(state);
         return (physState == null) ? Double.NaN : physState.StdEntropy;
     }
 
+    public final double SolubilityAt(double temperature)
+    {
+        return Double.NaN;
+    }
+
     public final double getSMHC_A()
     {
-        return this.FSMHC_A;
+        return Double.NaN;
     }
 
     public final double getSMHC_B()
     {
-        return this.FSMHC_B;
+        return Double.NaN;
     }
 
     public final double getSMHC_C()
     {
-        return this.FSMHC_C;
+        return Double.NaN;
+    }
+
+    public final double getMeltingPoint()
+    {
+        return Double.NaN;
+    }
+
+    public final double getBoilingPoint()
+    {
+        return Double.NaN;
     }
 }

@@ -66,8 +66,6 @@ public final class CLReactionMaster extends JFrame implements ActionListener
     private VirtualTable tblSubstances;
     private JPanel panProperties;
     private VirtualTable tblProperties;
-    private JPanel panStoichiometry;
-    private VirtualTable tblStoichiometry;
 
     private JPopupMenu menuStoichiometry;
     
@@ -97,13 +95,11 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.tblSubstances = new VirtualTable();
         this.panProperties = new JPanel();
         this.tblProperties = new VirtualTable();
-        this.panStoichiometry = new JPanel();
-        this.tblStoichiometry = new VirtualTable();
         this.menuStoichiometry = new JPopupMenu();
 
         this.setLayout(null);
 
-        FramesHelper.setClientSize(this, 800, 400);
+        FramesHelper.setClientSize(this, 1000, 400);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setTitle(res_i18n.getString("CL_REACTION_MASTER"));
@@ -114,9 +110,10 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
         // K2O + HNO3 = KNO3 + H2O
         // NH4I + H2SO4 + KMnO4 = I2 + MnSO4 + H2O + (NH4)2SO4 + K2SO4
-        eEquation.setText("K2O + HNO3 = KNO3 + H2O");
+        // K2O + HNO3 = KNO3 + H2O
+        eEquation.setText("CH4 + H2O = CO + H2");
         eEquation.setLocation(8, 23);
-        eEquation.setSize(582, 20);
+        eEquation.setSize(782, 20);
         
         // TODO: debug, remove
         eEquation.getDocument().addDocumentListener(new DocumentListener()
@@ -141,48 +138,26 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         });
 
         Label2.setText(res_i18n.getString("CL_Temperature"));
-        Label2.setLocation(597, 8);
+        Label2.setLocation(797, 8);
         Label2.setSize(94, 15);
 
         cbTemperature.addItem("298.15 °K");
         cbTemperature.setSelectedItem("298.15 °K");
-        cbTemperature.setLocation(597, 23);
+        cbTemperature.setLocation(797, 23);
         cbTemperature.setSize(90, 20);
         cbTemperature.setEditable(true);
 
         this.btnAnalysis.setText(res_i18n.getString("CL_Analysis"));
-        this.btnAnalysis.setLocation(698, 21);
+        this.btnAnalysis.setLocation(898, 21);
         this.btnAnalysis.setSize(94, 25);
         this.btnAnalysis.addActionListener(this);
         this.btnAnalysis.setActionCommand("ACTION_ANALYSIS");
 
         this.PageControl.setLocation(8, 59);
-        this.PageControl.setSize(784, 312);
+        this.PageControl.setSize(984, 346);
 
-        this.panSubstances.setLayout(new BorderLayout());
-        this.panSubstances.add(this.tblSubstances, BorderLayout.CENTER);
-        this.PageControl.addTab(res_i18n.getString("CL_SUBSTANCES"), this.panSubstances);
-
-        tblSubstances.addActionListener(this);
-        tblSubstances.addColumn(res_i18n.getString("CL_Factor"), 88);
-        tblSubstances.addColumn(res_i18n.getString("CL_COMPOUND"), 88);
-        tblSubstances.addColumn(res_i18n.getString("CL_MolarMass"), 88);
-        tblSubstances.addColumn(res_i18n.getString("CL_Type"), 57);
-        tblSubstances.addColumn("Cp°", 59);
-        tblSubstances.addColumn("S°", 59);
-        tblSubstances.addColumn("dH°", 59);
-        tblSubstances.addColumn("dG°", 59);
-
-        this.panProperties.setLayout(new BorderLayout());
-        this.panProperties.add(this.tblProperties, BorderLayout.CENTER);
-        this.PageControl.addTab(res_i18n.getString("CL_Properties"), this.panProperties);
-
-        tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
-        tblProperties.addColumn(res_i18n.getString("CL_Value"), 139);
-        tblProperties.addColumn(res_i18n.getString("CL_Unit"), 92);
-
-        JPanel panStoicToolbar = new JPanel();
-        panStoicToolbar.setLayout(new BoxLayout(panStoicToolbar, BoxLayout.LINE_AXIS));
+        JPanel panCalcToolbar = new JPanel();
+        panCalcToolbar.setLayout(new BoxLayout(panCalcToolbar, BoxLayout.LINE_AXIS));
 
         JButton btnSetInput = new JButton(res_i18n.getString("CL_SET_SOURCE"));
         btnSetInput.setActionCommand("SET_INPUT");
@@ -192,32 +167,57 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         btnSetOutput.setActionCommand("SET_OUTPUT");
         btnSetOutput.addActionListener(this);
 
-        JButton btnSolve = new JButton(res_i18n.getString("CL_Solve"));
-        btnSolve.setActionCommand("ST_SOLVE");
-        btnSolve.addActionListener(this);
+        JButton btnThermSolve = new JButton(/*res_i18n.getString("CL_Solve")*/"Therm Solve");
+        btnThermSolve.setActionCommand("ST_THERM_SOLVE");
+        btnThermSolve.addActionListener(this);
+
+        JButton btnStoicSolve = new JButton("Stoic " + res_i18n.getString("CL_Solve"));
+        btnStoicSolve.setActionCommand("ST_SOLVE");
+        btnStoicSolve.addActionListener(this);
         
-        panStoicToolbar.add(btnSetInput);
-        panStoicToolbar.add(btnSetOutput);
-        panStoicToolbar.add(btnSolve);
+        panCalcToolbar.add(btnSetInput);
+        panCalcToolbar.add(btnSetOutput);
+        panCalcToolbar.add(btnThermSolve);
+        panCalcToolbar.add(btnStoicSolve);
+
+        this.panSubstances.setLayout(new BorderLayout());
+        this.panSubstances.add(panCalcToolbar, BorderLayout.NORTH);
+        this.panSubstances.add(this.tblSubstances, BorderLayout.CENTER);
+        this.PageControl.addTab(res_i18n.getString("CL_SUBSTANCES"), this.panSubstances);
+
+        tblSubstances.addActionListener(this);
+        tblSubstances.addColumn(res_i18n.getString("CL_F_COMPOUND"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_MolarMass"), 88);
+        tblSubstances.addColumn("[F *] " + res_i18n.getString("CL_MolarMass"), 88);
+        tblSubstances.addColumn(res_i18n.getString("CL_Type"), 57);
+        tblSubstances.addColumn(res_i18n.getString("CL_State"), 57);
+        tblSubstances.addColumn("Cp°", 59);
+        tblSubstances.addColumn("S°", 59);
+        tblSubstances.addColumn("dH°", 59);
+        tblSubstances.addColumn("dG°", 59);
+        tblSubstances.addColumn(res_i18n.getString("CL_IO"), 57);
+        tblSubstances.addColumn(res_i18n.getString("CL_DATA"), 57);
+        tblSubstances.addColumn(res_i18n.getString("CL_RESULT"), 57);
+
+        this.panProperties.setLayout(new BorderLayout());
+        this.panProperties.add(this.tblProperties, BorderLayout.CENTER);
+        this.PageControl.addTab(res_i18n.getString("CL_Properties"), this.panProperties);
+
+        tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
+        tblProperties.addColumn(res_i18n.getString("CL_Value"), 139);
+        tblProperties.addColumn(res_i18n.getString("CL_Unit"), 92);
 
         //StoichiometryTableModel model = new StoichiometryTableModel(tblStoichiometry);
         //tblStoichiometry.setTableModel(model);
         //tblStoichiometry.setEditable(true);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_F_COMPOUND"), 88);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_MolarMass"), 88);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_Type"), 57);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_State"), 57);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_IO"), 57);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_DATA"), 57);
-        tblStoichiometry.addColumn(res_i18n.getString("CL_RESULT"), 57);
         
-        tblStoichiometry.addMouseListener(new MouseAdapter()
+        tblSubstances.addMouseListener(new MouseAdapter()
         {
             @Override
             public void mouseReleased(MouseEvent e)
             {
                 if (e.getButton() == MouseEvent.BUTTON3) {
-                    menuStoichiometry.show(tblStoichiometry, e.getX(), e.getY());
+                    menuStoichiometry.show(tblSubstances, e.getX(), e.getY());
                 }
             }
         });
@@ -225,11 +225,6 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         /*TableColumn col = tblStoichiometry.getTable().getColumnModel().getColumn(3);
         col.setCellEditor(new MyComboBoxEditor(CLData.SubstanceStates));
         col.setCellRenderer(new MyComboBoxRenderer(CLData.SubstanceStates));*/
-
-        this.panStoichiometry.setLayout(new BorderLayout());
-        this.panStoichiometry.add(panStoicToolbar, BorderLayout.NORTH);
-        this.panStoichiometry.add(this.tblStoichiometry, BorderLayout.CENTER);
-        this.PageControl.addTab(res_i18n.getString("CL_STOICHIOMETRY"), this.panStoichiometry);
         
         JMenuItem miSetInput = new JMenuItem(res_i18n.getString("CL_SET_SOURCE"));
         miSetInput.setActionCommand("SET_INPUT");
@@ -277,7 +272,6 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                 } catch (ParseException ex) {
                     throw new Exception(res_i18n.getString("CL_TemperatureFormat_Invalid"));
                 }
-                this.fThermodynamicSolver.calculate();
                 
                 this.eEquation.setText(this.fReactionMaster.getEquation());
 
@@ -308,27 +302,30 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                         break;
                 }
 
+                String comp = "[" + AuxUtils.FloatToStr(substance.Factor) + "] " + substance.Formula;
+                String state = substance.getState().toString();
+
+                StoicParams params = substance.getStoicParams();
+                String strParams = (params == null) ? "" : params.toString();
+                String typ = (params == null) ? "" : params.Type.toString();
+                String result = (params == null) ? "" : ((params.Result == null) ? "" : params.Result.toString());
+                
                 Object[] rowData = new Object[]{
-                    AuxUtils.FloatToStr(substance.Factor),
-                    substance.Formula,
+                    comp,
                     CommonUtils.formatFloat(substance.getMolecularMass(), 5),
+                    CommonUtils.formatFloat(substance.getMolecularMass(true), 5),
                     substType,
+                    state,
                     CommonUtils.formatFloat(substance.getMolarHeatCapacity(), 3),
                     CommonUtils.formatFloat(substance.getStandardEntropy(), 3),
                     CommonUtils.formatFloat(substance.getHeatOfFormation(), 3),
-                    CommonUtils.formatFloat(substance.getGibbsFreeEnergy(), 3)
+                    CommonUtils.formatFloat(substance.getGibbsFreeEnergy(), 3),
+                    typ,
+                    strParams,
+                    result
                 };
 
                 this.tblSubstances.addRow(rowData);
-
-                /*ListViewItem item = this.lvCompounds.Items.Add(AuxUtils.FloatToStr(substance.Factor));
-                 item.SubItems.Add(substance.Formula);
-                 item.SubItems.Add(CLData.formatFloat(substance.getMolecularMass(), 5));
-                 item.SubItems.Add(substType);
-                 item.SubItems.Add(CLData.formatFloat(substance.getSM_HeatCapacity(), 3));
-                 item.SubItems.Add(CLData.formatFloat(substance.getSM_Entropy(), 3));
-                 item.SubItems.Add(CLData.formatFloat(substance.getSMF_Enthalpy(), 3));
-                 item.SubItems.Add(CLData.formatFloat(substance.getSMF_Gibbs_Energy(), 3));*/
             }
             this.tblSubstances.packColumns(10);
 
@@ -337,8 +334,8 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             this.addProperty(res_i18n.getString("CL_DIRECTION"), this.fReactionMaster.getReactionDirection().name(), "");
             this.addProperty(res_i18n.getString("CL_REACTANTS_MASS"), CommonUtils.formatFloat(this.fReactionMaster.getSourceMass(), 5), "");
             this.addProperty(res_i18n.getString("CL_PRODUCTS_MASS"), CommonUtils.formatFloat(this.fReactionMaster.getProductMass(), 5), "");
-            this.addProperty("dH° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Enthalpy(), 3), "кДж");
-            this.addProperty("dS° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Entropy(), 3), "Дж/К");
+            this.addProperty("dH° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getTotalEnthalpy(), 3), "кДж");
+            this.addProperty("dS° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getTotalEntropy(), 3), "Дж/К");
             this.addProperty("dG° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Gibbs_Energy(), 3), "кДж");
             this.addProperty("lg K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getlg_K(), 3), "");
             this.addProperty("K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getStdBalanceConstant(), 3), "");
@@ -346,55 +343,11 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             this.addProperty("K(реакц., первое прибл.)", CommonUtils.formatFloat(this.fThermodynamicSolver.getFBalanceConstant(), 3), "");
             this.addProperty("K(реакц., второе прибл.)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSBalanceConstant(), 3), "");
             this.tblProperties.packColumns(10);
-            
-            this.updateStoic();
         } catch (Exception ex) {
             CommonUtils.showError(this, ex.getMessage());
         }
     }
 
-    private void updateStoic()
-    {
-        try {
-            this.tblStoichiometry.clear();
-            for (int i = 0; i < this.fReactionMaster.getSubstanceCount(); i++) {
-                Substance substance = this.fReactionMaster.getSubstance(i);
-
-                String substType = "";
-                switch (substance.Type) {
-                    case Reactant:
-                        substType = res_i18n.getString("CL_reactant");
-                        break;
-                    case Product:
-                        substType = res_i18n.getString("CL_product");
-                        break;
-                }
-
-                String comp = "[" + AuxUtils.FloatToStr(substance.Factor) + "] " + substance.Formula;
-                String state = substance.getState().toString();
-                StoicParams params = substance.getStoicParams();
-                String strParams = (params == null) ? "" : params.toString();
-                String typ = (params == null) ? "" : params.Type.toString();
-                String result = (params == null) ? "" : ((params.Result == null) ? "" : params.Result.toString());
-                
-                Object[] rowData = new Object[]{
-                    comp,
-                    CommonUtils.formatFloat(substance.getMolecularMass(true), 5),
-                    substType,
-                    state,
-                    typ,
-                    strParams,
-                    result
-                };
-
-                this.tblStoichiometry.addRow(rowData);
-            }
-            this.tblStoichiometry.packColumns(10);
-        } catch (Exception ex) {
-            CommonUtils.showError(this, ex.getMessage());
-        }
-    }
-    
     private void addProperty(String valueName, String value, String mUnit)
     {
         Object[] rowData = new Object[] {
@@ -402,13 +355,19 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         };
         
         this.tblProperties.addRow(rowData);
-        
-        /*ListViewItem item = this.lvProperties.Items.Add(valueName);
-        item.SubItems.Add(value);
-        item.SubItems.Add(mUnit);*/
     }
 
-    private void solve()
+    private void thermSolve()
+    {
+        if (!this.fThermodynamicSolver.checkInput()) {
+            return;
+        }
+
+        this.fThermodynamicSolver.calculate();
+        this.updateTables();
+    }
+
+    private void stoicSolve()
     {
         boolean hasSourceData = false;
         boolean hasTargetData = false;
@@ -441,7 +400,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             if (result < 0) {
                 CommonUtils.showError(this, "Error");
             } else {
-                this.updateStoic();
+                this.updateTables();
             }
         } else {
             CommonUtils.showError(this, res_i18n.getString("CL_INPUT_OUTPUT_SUBSTANCES_NOT_DEFINED"));
@@ -473,7 +432,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                 break;
 
             case "SET_INPUT": {
-                int row = this.tblStoichiometry.getSelectedRow();
+                int row = this.tblSubstances.getSelectedRow();
                 if (row < 0) {
                     CommonUtils.showError(this, res_i18n.getString("CL_SUBSTANCE_NOT_SELECTED"));
                 } else {
@@ -483,13 +442,13 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                     CLSubstanceInput input = new CLSubstanceInput(this, substance);
                     input.setVisible(true);
 
-                    this.updateStoic();
+                    this.updateTables();
                 }
                 break;
             }
 
             case "SET_OUTPUT": {
-                int row = this.tblStoichiometry.getSelectedRow();
+                int row = this.tblSubstances.getSelectedRow();
                 if (row < 0) {
                     CommonUtils.showError(this, res_i18n.getString("CL_SUBSTANCE_NOT_SELECTED"));
                 } else {
@@ -499,13 +458,18 @@ public final class CLReactionMaster extends JFrame implements ActionListener
                     CLSubstanceInput input = new CLSubstanceInput(this, substance);
                     input.setVisible(true);
 
-                    this.updateStoic();
+                    this.updateTables();
                 }
                 break;
             }
 
+            case "ST_THERM_SOLVE": {
+                this.thermSolve();
+                break;
+            }
+
             case "ST_SOLVE": {
-                this.solve();
+                this.stoicSolve();
                 break;
             }
         }
