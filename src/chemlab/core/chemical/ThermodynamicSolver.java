@@ -17,6 +17,11 @@
  */
 package chemlab.core.chemical;
 
+import chemlab.core.measure.ChemUnits;
+import chemlab.core.measure.HeatCapacity;
+import javax.measure.Measure;
+import javax.measure.quantity.Energy;
+
 /**
  *
  * @author Serg V. Zhdanovskih
@@ -43,23 +48,23 @@ public class ThermodynamicSolver
         this.fTemperature = ChemConsts.T0;
     }
 
-    public final double getTotalEntropy()
+    public final Measure<Double, HeatCapacity> getTotalEntropy()
     {
-        return this.fTotalEntropy;
+        return Measure.valueOf(this.fTotalEntropy, ChemUnits.JOULE_PER_KELVIN);
     }
 
     /**
      * HeatOfFormation/Enthalpy
      * @return 
      */
-    public final double getTotalEnthalpy()
+    public final Measure<Double, Energy> getTotalEnthalpy()
     {
-        return this.fTotalEnthalpy;
+        return Measure.valueOf(this.fTotalEnthalpy, ChemUnits.KILOJOULE);
     }
 
-    public final double getSM_Gibbs_Energy()
+    public final Measure<Double, Energy> getGibbsFreeEnergy()
     {
-        return this.fGibbsFreeEnergy;
+        return Measure.valueOf(this.fGibbsFreeEnergy, ChemUnits.KILOJOULE);
     }
 
     public final double getlg_K()
@@ -108,12 +113,13 @@ public class ThermodynamicSolver
     public void calculate()
     {
         try {
-            double T = this.fTemperature;
-            double dT = (T - ChemConsts.T0); // StdConds
+            // for debug, all calcs at T0
+            double temp = ChemConsts.T0; //this.fTemperature;
+            double dT = (temp - ChemConsts.T0); // StdConds
 
-            this.fTotalEntropy = 0.0;
+            this.fTotalEntropy = 0.0; // calc checked
             this.fTotalEnthalpy = 0.0; // calc checked
-            this.fdN = 0.0;
+            this.fdN = 0.0; // calc checked
 
             double FIntegral = 0.0;
             double SIntegral = 0.0;
@@ -142,12 +148,13 @@ public class ThermodynamicSolver
                 }
             }
 
-            this.fGibbsFreeEnergy = this.fTotalEnthalpy - (ChemConsts.T0 * this.fTotalEntropy * 0.001);
+            this.fGibbsFreeEnergy = this.fTotalEnthalpy - (temp * this.fTotalEntropy) * 0.001; // calc checked
 
-            this.flg_K = (-(this.fGibbsFreeEnergy * 1000.0 / (2.3 * ChemConsts.GAS_CONST_R * ChemConsts.T0)));
+            this.flg_K = -((this.fGibbsFreeEnergy * 1000.0) / (ChemConsts.GAS_CONST_R * temp));
             this.fStdBalanceConstant = Math.pow(10.0, this.flg_K);
             this.fFBalanceConstant = (this.fStdBalanceConstant * Math.pow(0.1013, this.fdN));
-            this.flg_K = (-(this.fTotalEnthalpy / (ChemConsts.GAS_CONST_R * T)) + this.fTotalEntropy / ChemConsts.GAS_CONST_R - 1.0 / (ChemConsts.GAS_CONST_R * T) * FIntegral + 1.0 / ChemConsts.GAS_CONST_R * SIntegral);
+
+            this.flg_K = (-(this.fTotalEnthalpy / (ChemConsts.GAS_CONST_R * temp)) + this.fTotalEntropy / ChemConsts.GAS_CONST_R - 1.0 / (ChemConsts.GAS_CONST_R * temp) * FIntegral + 1.0 / ChemConsts.GAS_CONST_R * SIntegral);
             this.fStdBalanceConstant = Math.pow(10.0, this.flg_K);
             this.fSBalanceConstant = (this.fStdBalanceConstant * Math.pow(0.1013, this.fdN));
         } catch (Exception ex) {

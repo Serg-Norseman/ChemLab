@@ -120,6 +120,9 @@ public final class ChemUnits
     public static final Unit<CombustionHeat> MEGAJOULE_PER_KILOGRAM = add(new ProductUnit<CombustionHeat>(
             MEGAJOULE.divide(KILOGRAM)));
 
+    public static final Unit<HeatCapacity> JOULE_PER_KELVIN = add(HeatCapacity.UNIT);
+    public static final Unit<HeatCapacity> KILOJOULE_PER_KELVIN = add(new ProductUnit<HeatCapacity>(
+            KILOJOULE.divide(KELVIN)));
 
     public static Measure<Double, ?> convert(Measure<Double, ?> src, Unit<?> targetUnit)
     {

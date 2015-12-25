@@ -111,7 +111,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         // K2O + HNO3 = KNO3 + H2O
         // NH4I + H2SO4 + KMnO4 = I2 + MnSO4 + H2O + (NH4)2SO4 + K2SO4
         // K2O + HNO3 = KNO3 + H2O
-        eEquation.setText("CH4 + H2O = CO + H2");
+        eEquation.setText("SO2Cl2 = SO2 + Cl2");
         eEquation.setLocation(8, 23);
         eEquation.setSize(782, 20);
         
@@ -205,7 +205,6 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
         tblProperties.addColumn(res_i18n.getString("CL_DIMENSION"), 231);
         tblProperties.addColumn(res_i18n.getString("CL_Value"), 139);
-        tblProperties.addColumn(res_i18n.getString("CL_Unit"), 92);
 
         //StoichiometryTableModel model = new StoichiometryTableModel(tblStoichiometry);
         //tblStoichiometry.setTableModel(model);
@@ -330,30 +329,27 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             this.tblSubstances.packColumns(10);
 
             this.tblProperties.clear();
-            this.addProperty(res_i18n.getString("CL_REACTION_TYPE"), this.fReactionMaster.getReactionType().name(), "");
-            this.addProperty(res_i18n.getString("CL_DIRECTION"), this.fReactionMaster.getReactionDirection().name(), "");
-            this.addProperty(res_i18n.getString("CL_REACTANTS_MASS"), CommonUtils.formatFloat(this.fReactionMaster.getSourceMass(), 5), "");
-            this.addProperty(res_i18n.getString("CL_PRODUCTS_MASS"), CommonUtils.formatFloat(this.fReactionMaster.getProductMass(), 5), "");
-            this.addProperty("dH° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getTotalEnthalpy(), 3), "кДж");
-            this.addProperty("dS° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getTotalEntropy(), 3), "Дж/К");
-            this.addProperty("dG° (298 K)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSM_Gibbs_Energy(), 3), "кДж");
-            this.addProperty("lg K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getlg_K(), 3), "");
-            this.addProperty("K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getStdBalanceConstant(), 3), "");
-            this.addProperty("Приращение числа молей", CommonUtils.formatFloat(this.fThermodynamicSolver.getdN(), 3), "");
-            this.addProperty("K(реакц., первое прибл.)", CommonUtils.formatFloat(this.fThermodynamicSolver.getFBalanceConstant(), 3), "");
-            this.addProperty("K(реакц., второе прибл.)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSBalanceConstant(), 3), "");
+            this.addProperty(res_i18n.getString("CL_REACTION_TYPE"), this.fReactionMaster.getReactionType().name());
+            this.addProperty(res_i18n.getString("CL_DIRECTION"), this.fReactionMaster.getReactionDirection().name());
+            this.addProperty(res_i18n.getString("CL_REACTANTS_MASS"), CommonUtils.formatFloat(this.fReactionMaster.getSourceMass(), 5));
+            this.addProperty(res_i18n.getString("CL_PRODUCTS_MASS"), CommonUtils.formatFloat(this.fReactionMaster.getProductMass(), 5));
+            this.addProperty("dH° (298 K)", ChemUnits.toString(this.fThermodynamicSolver.getTotalEnthalpy(), "%5.5f"));
+            this.addProperty("dS° (298 K)", ChemUnits.toString(this.fThermodynamicSolver.getTotalEntropy(), "%5.5f"));
+            this.addProperty("dG° (298 K)", ChemUnits.toString(this.fThermodynamicSolver.getGibbsFreeEnergy(), "%5.5f"));
+            this.addProperty("lg K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getlg_K(), 3));
+            this.addProperty("K°", CommonUtils.formatFloat(this.fThermodynamicSolver.getStdBalanceConstant(), 3));
+            this.addProperty("Изменение числа молей", CommonUtils.formatFloat(this.fThermodynamicSolver.getdN(), 3));
+            this.addProperty("K(реакц., первое прибл.)", CommonUtils.formatFloat(this.fThermodynamicSolver.getFBalanceConstant(), 3));
+            this.addProperty("K(реакц., второе прибл.)", CommonUtils.formatFloat(this.fThermodynamicSolver.getSBalanceConstant(), 3));
             this.tblProperties.packColumns(10);
         } catch (Exception ex) {
             CommonUtils.showError(this, ex.getMessage());
         }
     }
 
-    private void addProperty(String valueName, String value, String mUnit)
+    private void addProperty(String valueName, String value)
     {
-        Object[] rowData = new Object[] {
-            valueName, value, mUnit
-        };
-        
+        Object[] rowData = new Object[] { valueName, value };
         this.tblProperties.addRow(rowData);
     }
 
@@ -421,11 +417,11 @@ public final class CLReactionMaster extends JFrame implements ActionListener
             case VirtualTable.ACTION_DOUBLE_CLICK:
                 if (source == this.tblSubstances) {
                     int row = this.tblSubstances.getSelectedRow();
-                    String formula = (String) this.tblSubstances.getValueAt(row, 1);
+                    Substance substance = this.fReactionMaster.getSubstance(row);
 
                     CLCompoundMaster compoundMaster = new CLCompoundMaster();
                     compoundMaster.setLocationRelativeTo(this);
-                    compoundMaster.setFormula(formula);
+                    compoundMaster.setFormula(substance.Formula);
                     compoundMaster.actAnalysis();
                     compoundMaster.setVisible(true);
                 }
