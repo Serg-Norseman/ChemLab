@@ -48,7 +48,7 @@ public final class BalanceSolver extends BaseObject
     {
         for (int i = 0; i < this.fElementsCount; i++) {
             if (this.fData[i][0] == elementId) {
-                return i;
+                return i + 1;
             }
         }
 
