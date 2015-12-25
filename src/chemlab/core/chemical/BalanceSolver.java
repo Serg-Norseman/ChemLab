@@ -165,14 +165,6 @@ public final class BalanceSolver extends BaseObject
 
     private void simplify(int[] b)
     {
-        // I would replace the following line with `if (0 > b[b.length - 1])` -- it's more obvious.
-        // There are too many bindings to the `fReagentsCount` all over the code.
-        if (b[this.fReagentsCount] < 0) {
-            // `for (int i = 1; i < b.length; i++)` or `for ({type} value: {container})`
-            for (int i = 1; i <= this.fReagentsCount; i++) {
-                b[i] = -b[i];
-            }
-        }
         /*
          * You've inverted elements in `b` array above ^... because implementation of `ExtMath.gcd` has a bug?
          *  `ExtMath.gcd` fails on negative integers:
@@ -196,7 +188,7 @@ public final class BalanceSolver extends BaseObject
         }
 
         for (int i = 1; i <= this.fReagentsCount; i++) {
-            b[i] /= min;
+            b[i] = Math.abs(b[i] / min);
         }
     }
 
@@ -241,10 +233,8 @@ public final class BalanceSolver extends BaseObject
         int[] b = new int[this.fReagentsCount];
 
         for (int i = 1; i < A.length; i++) {
-//            b[i] = 0; -- Java do this by itself.
             // 'Cos `A` is a square matrix I use `A.length` field for the both sizes.
             for (int j = 1; j < A.length; j++) {
-//                A[i][j] = 0; -- Java guarantees `A` was initialized with 0s!
                 for (int k = 0; k < this.fElementsCount; ++k) {
                     A[i][j] += this.fData[k][i] * this.fData[k][j];
                     if (1 == j)
@@ -269,8 +259,8 @@ public final class BalanceSolver extends BaseObject
 
             /*
              * The following `for` loop is modified GCD algorithm for vectors. You already have the implementation
-             * of `ExtMath.gcd` method overloaded for arrays. Can we use it? Does the "balance-by-least-squares"
-             * require the modified GCD?
+             * of `ExtMath.gcd` method overloaded for arrays. Currently I can't use it because it calculates GCD
+             * starting from the element with '0' index. Code below starts from index '1'.
              */
             for (int j = 1; j < this.fReagentsCount; j++) {
                 if (0 != A[i][j]) {
@@ -330,16 +320,16 @@ public final class BalanceSolver extends BaseObject
         }
 
         // `result` is zero here...
-        for (int i = 1; i <= this.fElementsCount; i++) {
+        for (int i = 0; i < this.fElementsCount; i++) {
             int r = 0;
             for (int j = 1; j <= this.fReagentsCount; j++) {
-                r += this.fData[i - 1][j] * this.fFactors[j];
+                r += this.fData[i][j] * this.fFactors[j];
             }
             result += Math.abs(r);
         }
         // ... you have been adding NON-NEGATIVE numbers (`result += Math.abs(r)`)...
         // How `result` may become a negative number? Why do you check it below? Did you intent to check for 0?
-        if (result > 0) {
+        if (0 != result) {
             for (int i = 1; i <= this.fReagentsCount; i++) {
                 this.fFactors[i] = 1;
             }
