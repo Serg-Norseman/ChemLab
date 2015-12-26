@@ -88,9 +88,21 @@ public class CLDeviceProps extends JDialog implements ActionListener
 
         JButton btnAddSubst = new JButton();
         btnAddSubst.setText("Add subst");
-        btnAddSubst.setActionCommand("ADD_SUBST");
+        btnAddSubst.setActionCommand("ADD_SUBSTANCE");
         btnAddSubst.addActionListener(this);
         panSubstToolbar.add(btnAddSubst);
+
+        JButton btnDeleteSubst = new JButton();
+        btnDeleteSubst.setText("Delete subst");
+        btnDeleteSubst.setActionCommand("DELETE_SUBSTANCE");
+        btnDeleteSubst.addActionListener(this);
+        panSubstToolbar.add(btnDeleteSubst);
+
+        JButton btnClearSubsts = new JButton();
+        btnClearSubsts.setText("Clear substs");
+        btnClearSubsts.setActionCommand("CLEAR_SUBSTANCES");
+        btnClearSubsts.addActionListener(this);
+        panSubstToolbar.add(btnClearSubsts);
 
         this.panSubstances.add(panSubstToolbar, BorderLayout.NORTH);
         this.panSubstances.add(this.tblSubstances, BorderLayout.CENTER);
@@ -122,6 +134,24 @@ public class CLDeviceProps extends JDialog implements ActionListener
         btnSearch.setActionCommand("SEARCH");
         btnSearch.addActionListener(this);
         panReactsToolbar.add(btnSearch);
+
+        JButton btnAddReact = new JButton();
+        btnAddReact.setText("Add reaction");
+        btnAddReact.setActionCommand("ADD_REACTION");
+        btnAddReact.addActionListener(this);
+        panReactsToolbar.add(btnAddReact);
+
+        JButton btnDeleteReact = new JButton();
+        btnDeleteReact.setText("Delete reaction");
+        btnDeleteReact.setActionCommand("DELETE_REACTION");
+        btnDeleteReact.addActionListener(this);
+        panReactsToolbar.add(btnDeleteReact);
+
+        JButton btnClearReactions = new JButton();
+        btnClearReactions.setText("Clear reactions");
+        btnClearReactions.setActionCommand("CLEAR_REACTIONS");
+        btnClearReactions.addActionListener(this);
+        panReactsToolbar.add(btnClearReactions);
 
         this.panReactions.add(panReactsToolbar, BorderLayout.NORTH);
         this.panReactions.add(this.tblReactions, BorderLayout.CENTER);
@@ -216,6 +246,11 @@ public class CLDeviceProps extends JDialog implements ActionListener
         this.tblReactions.addRow(rowData);
     }
     
+    private void addReaction()
+    {
+        
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -223,12 +258,28 @@ public class CLDeviceProps extends JDialog implements ActionListener
         Object source = e.getSource();
 
         switch (actionPerformed) {
-            case "ADD_SUBST":
+            case "ADD_SUBSTANCE":
                 this.addSubst();
                 break;
-                
+
+            case "DELETE_SUBSTANCE":
+                break;
+
+            case "CLEAR_SUBSTANCES":
+                break;
+
             case "SEARCH":
                 this.searchReactions();
+                break;
+
+            case "ADD_REACTION":
+                this.addReaction();
+                break;
+
+            case "DELETE_REACTION":
+                break;
+
+            case "CLEAR_REACTIONS":
                 break;
         }
     }
