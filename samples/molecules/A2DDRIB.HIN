@@ -1,0 +1,83 @@
+; alpha-2-Deoxy-D-ribofuranose  
+forcefield amber
+sys 0
+mol 1 a-2-deoxy-D-Rib
+res 1 2RIB 1 - -
+atom 1 O1 O OA - -0.65 0.4007848 2.510193 -2.730026 2 2 s 19 s
+atom 2 C1 C AC - 0.35 0.4007848 1.080193 -2.730026 4 1 s 3 s 10 s 8 s
+atom 3 C2 C CS - -0.2 -1.03928 0.5360411 -2.730026 4 2 s 4 s 11 s 12 s
+atom 4 C3 C CS - 0.15 -1.346751 0.3219187 -1.237679 4 3 s 5 s 9 s 13 s
+atom 5 C4 C CS - 0.1 -0.04544082 0.7461638 -0.5320178 4 4 s 6 s 8 s 14 s
+atom 6 C5 C CS - 0.05 0.2265087 -0.1494796 0.6908747 4 5 s 7 s 15 s 16 s
+atom 7 O5 O OT - -0.65 -0.8588105 -0.03666425 1.615134 2 6 s 17 s
+atom 8 O4 O OE - -0.4 0.9748935 0.5743647 -1.520741 2 5 s 2 s
+atom 9 O3 O OT - -0.65 -2.443003 1.139895 -0.8204907 2 4 s 18 s
+atom 10 H1 H AH - 0.1 0.9499493 0.7168639 -3.598651 1 2 s
+atom 11 H2A H HT - 0.1 -1.727806 1.257889 -3.169307 1 3 s
+atom 12 H2B H HT - 0.1 -1.09982 -0.4040368 -3.278376 1 3 s
+atom 13 H3 H HT - 0.1 -1.575918 -0.7241275 -1.034283 1 4 s
+atom 14 H4 H HT - 0.1 -0.1019134 1.787345 -0.2144445 1 5 s
+atom 15 H5A H HT - 0.1 1.150365 0.1672139 1.174915 1 6 s
+atom 16 H5B H HT - 0.1 0.3224169 -1.186096 0.3678752 1 6 s
+atom 17 HO5 H HY - 0.4 -0.6892771 -0.5949895 2.377453 1 7 s
+atom 18 HO3 H HY - 0.4 -2.617108 0.9905419 0.1117009 1 9 s
+atom 19 HO1 H HY - 0.4 1.305883 2.83019 -2.730026 1 1 s
+endres 1
+endmol 1
+selection _HO1 1
+selectatom 19 molecule 1
+endselection _HO1
+selection _O1 1
+selectatom 1 molecule 1
+endselection _O1
+selection _H1 1
+selectatom 10 molecule 1
+endselection _H1
+selection _C1 1
+selectatom 2 molecule 1
+endselection _C1
+selection _C2 1
+selectatom 3 molecule 1
+endselection _C2
+selection _H2B 1
+selectatom 12 molecule 1
+endselection _H2B
+selection _H2A 1
+selectatom 11 molecule 1
+endselection _H2A
+selection _C3 1
+selectatom 4 molecule 1
+endselection _C3
+selection _H3 1
+selectatom 13 molecule 1
+endselection _H3
+selection _O3 1
+selectatom 9 molecule 1
+endselection _O3
+selection _HO3 1
+selectatom 18 molecule 1
+endselection _HO3
+selection _C4 1
+selectatom 5 molecule 1
+endselection _C4
+selection _H4 1
+selectatom 14 molecule 1
+endselection _H4
+selection _O4 1
+selectatom 8 molecule 1
+endselection _O4
+selection _C5 1
+selectatom 6 molecule 1
+endselection _C5
+selection _H5A 1
+selectatom 15 molecule 1
+endselection _H5A
+selection _H5B 1
+selectatom 16 molecule 1
+endselection _H5B
+selection _O5 1
+selectatom 7 molecule 1
+endselection _O5
+selection _HO5 1
+selectatom 17 molecule 1
+endselection _HO5

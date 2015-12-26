@@ -1,0 +1,12 @@
+;Ammonia, a trigonal pyramidal molecule based on a tetrahedral arrangement
+;of electron pairs
+forcefield mm+
+sys 0
+view 40 0.51078 55 15 0.7849798 -0.3397574 0.5180459 -0.5984868 -0.1998348 0.775809 -0.1600632 -0.9190381 -0.3602066 -0.016556 -0.30802 -55.219
+mol 1
+atom 1 - N N3 - 0 -0.2120103 -0.003642224 0.0504914 4 2 s 3 s 4 s 5 s
+atom 2 - H HN - 0 0.7661498 -0.4211953 0.1677608 1 1 s
+atom 3 - H HN - 0 -0.8719479 -0.4319754 0.7756899 1 1 s
+atom 4 - H HN - 0 -0.1666885 1.05607 0.1914048 1 1 s
+atom 5 - Lp LP - 0 -0.5008041 -0.1735019 -0.730691 1 1 s
+endmol 1

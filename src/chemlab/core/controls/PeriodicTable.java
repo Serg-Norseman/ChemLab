@@ -17,7 +17,7 @@
  */
 package chemlab.core.controls;
 
-import bslib.common.AuxUtils;
+import bslib.common.ColorUtil;
 import bslib.common.INotifyHandler;
 import bslib.common.StringHelper;
 import chemlab.core.chemical.CLData;
@@ -407,8 +407,8 @@ public final class PeriodicTable extends JPanel implements ActionListener
         array[8][17] = "Lr ";
         PTable = array;
 
-        ElementClassColors = new Color[]{AuxUtils.BGRToRGB(16711680), AuxUtils.BGRToRGB(32768), AuxUtils.BGRToRGB(8388736), AuxUtils.BGRToRGB(8421376), AuxUtils.BGRToRGB(0), AuxUtils.BGRToRGB(33023), AuxUtils.BGRToRGB(8388863), AuxUtils.BGRToRGB(255)};
+        ElementClassColors = new Color[]{ColorUtil.BGRToRGB(16711680), ColorUtil.BGRToRGB(32768), ColorUtil.BGRToRGB(8388736), ColorUtil.BGRToRGB(8421376), ColorUtil.BGRToRGB(0), ColorUtil.BGRToRGB(33023), ColorUtil.BGRToRGB(8388863), ColorUtil.BGRToRGB(255)};
 
-        ElementABPColors = new Color[]{AuxUtils.BGRToRGB(65280), AuxUtils.BGRToRGB(4227327), AuxUtils.BGRToRGB(16711935)};
+        ElementABPColors = new Color[]{ColorUtil.BGRToRGB(65280), ColorUtil.BGRToRGB(4227327), ColorUtil.BGRToRGB(16711935)};
     }
 }

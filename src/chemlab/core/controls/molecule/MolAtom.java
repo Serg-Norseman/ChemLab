@@ -17,12 +17,13 @@
  */
 package chemlab.core.controls.molecule;
 
-import chemlab.core.chemical.CLData;
 import bslib.common.AuxUtils;
 import bslib.common.BaseObject;
 import bslib.common.Bitmap;
+import bslib.common.ColorUtil;
 import bslib.common.EnumSet;
 import bslib.common.Rect;
+import chemlab.core.chemical.CLData;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -78,7 +79,7 @@ public class MolAtom extends BaseObject
     public final void initBalls()
     {
         int num = this.fElementNumber;
-        this.FColor = AuxUtils.BGRToRGB(CLData.ElementsBook.get(num - -1).FColor);
+        this.FColor = ColorUtil.BGRToRGB(CLData.ElementsBook.get(num - -1).FColor);
 
         BallsBuffer[] ballsBuffers = this.fOwner.getMaster().FAtomsHash;
         int j = 2;
@@ -224,10 +225,10 @@ public class MolAtom extends BaseObject
         //Canvas.Brush.Color = Color.FromArgb(0);
         if (this.fSelected) {
             //brush = new SolidBrush(AuxUtils.BGRToRGB(16776960));
-            canvas.setColor(AuxUtils.BGRToRGB(16776960)); // 2
+            canvas.setColor(ColorUtil.BGRToRGB(16776960)); // 2
         } else {
             //brush = new SolidBrush(AuxUtils.BGRToRGB(16777215));
-            canvas.setColor(AuxUtils.BGRToRGB(16777215)); // 1
+            canvas.setColor(ColorUtil.BGRToRGB(16777215)); // 1
         }
 
         int sx = (int) (Math.round((double) this.FTX));

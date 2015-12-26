@@ -82,10 +82,10 @@ public class DecayBook extends RefBook
             {
                 DecayRecord decRec = new DecayRecord();
 
-                decRec.DecayId = AuxUtils.ParseInt(el.getAttribute("ID"), 0);
-                decRec.NuclideId = AuxUtils.ParseInt(el.getAttribute("Nuclide_ID"), 0);
+                decRec.DecayId = AuxUtils.parseInt(el.getAttribute("ID"), 0);
+                decRec.NuclideId = AuxUtils.parseInt(el.getAttribute("Nuclide_ID"), 0);
                 decRec.Mode = chemlab.core.chemical.DecayMode.valueOf(el.getAttribute("DecayMode"));
-                decRec.DescendantId = AuxUtils.ParseInt(el.getAttribute("DescendantID"), 0);
+                decRec.DescendantId = AuxUtils.parseInt(el.getAttribute("DescendantID"), 0);
 
                 fList.add(decRec);
 

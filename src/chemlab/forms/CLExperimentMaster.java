@@ -236,7 +236,6 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
         this.ListDevices.setPreferredSize(new Dimension(120, 100));
 
         this.fBench = new ExperimentBench();
-        this.fBench.setActive(false);
         this.fBench.setMinimumSize(new Dimension(120, 100));
         this.fBench.setBenchListener(this);
         

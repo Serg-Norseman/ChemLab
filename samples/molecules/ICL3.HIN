@@ -1,0 +1,13 @@
+;Iodine trichloride, a "T-shaped" molecule based on a trigonal bipyramidal
+;arrangement of electron pairs.
+forcefield mm+
+sys 0
+view 40 0.30753 55 15 -0.1768687 0.8719251 0.4565787 0.3137149 0.4896389 -0.8135335 -0.9328989 -0.0006530773 -0.3601377 0.031097 0.19143 -55.075
+mol 1
+atom 1 - I I - 0 0.0763406 0.04407792 0 5 2 s 3 s 4 s 5 s 6 s
+atom 2 - Lp LP - 0 0.0763406 1.474078 0 1 1 s
+atom 3 - Lp LP - 0 1.314757 -0.6709221 -4.377968e-017 1 1 s
+atom 4 - Cl CL - 0 -1.932839 -1.115922 7.102717e-017 1 1 s
+atom 5 - Cl CL - 0 0.0763406 0.04407792 2.32 1 1 s
+atom 6 - Cl CL - 0 0.0763406 0.04407792 -2.32 1 1 s
+endmol 1

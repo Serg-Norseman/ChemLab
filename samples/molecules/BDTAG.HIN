@@ -1,0 +1,103 @@
+; beta-D-tagatofuranose    
+forcefield amber
+sys 0
+mol 1 b-D-Tag
+res 1 TAG 1 - -
+atom 1 O1 O OT - -0.65 -1.080063 3.211769 4.6101 2 2 s 13 s
+atom 2 C1 C CS - 0.15 -1.754176 2.735097 3.442514 4 1 s 3 s 14 s 15 s
+atom 3 C2 C BC - 0.35 -1.754176 1.195097 3.442514 4 2 s 4 s 5 s 11 s
+atom 4 O2 O OB - -0.65 -2.474638 0.7184358 4.582088 2 3 s 24 s
+atom 5 C3 C CS - 0.15 -0.3141108 0.6509454 3.442514 4 3 s 6 s 9 s 16 s
+atom 6 C4 C CS - 0.15 -0.006639957 0.4368229 1.950168 4 5 s 7 s 10 s 17 s
+atom 7 C5 C CS - 0.1 -1.30795 0.8610677 1.244506 4 6 s 8 s 11 s 18 s
+atom 8 C6 C CS - 0.05 -1.579899 -0.03457618 0.02161407 4 7 s 12 s 19 s 20 s
+atom 9 O3 O OT - -0.65 -0.2346864 -0.5823677 4.16191 2 5 s 21 s
+atom 10 O4 O OT - -0.65 0.2940111 -0.9355128 1.683327 2 6 s 22 s
+atom 11 O5 O OE - -0.4 -2.328284 0.6892684 2.233229 2 7 s 3 s
+atom 12 O6 O OT - -0.65 -0.4945793 0.0782392 -0.9026444 2 8 s 23 s
+atom 13 HO1 H HY - 0.4 -1.080066 4.171769 4.610093 1 1 s
+atom 14 H1A H HT - 0.1 -2.781839 3.098427 3.442514 1 2 s
+atom 15 H1B H HT - 0.1 -1.240352 3.098427 2.552527 1 2 s
+atom 16 H3 H HT - 0.1 0.3744149 1.372793 3.881796 1 5 s
+atom 17 H4 H HT - 0.1 0.8289647 1.060315 1.632171 1 6 s
+atom 18 H5 H HT - 0.1 -1.251477 1.902249 0.9269328 1 7 s
+atom 19 H6A H HT - 0.1 -2.503755 0.2821171 -0.4624267 1 8 s
+atom 20 H6B H HT - 0.1 -1.675807 -1.071192 0.3446136 1 8 s
+atom 21 HO3 H HY - 0.4 0.6702123 -0.9026659 4.148977 1 9 s
+atom 22 HO4 H HY - 0.4 0.4822564 -1.045937 0.7484636 1 10 s
+atom 23 HO6 H HY - 0.4 -0.6641123 -0.4800863 -1.664964 1 12 s
+atom 24 HO2 H HY - 0.4 -2.474638 -0.2415643 4.582087 1 4 s
+endres 1
+endmol 1
+selection _O1 1
+selectatom 1 molecule 1
+endselection _O1
+selection _C1 1
+selectatom 2 molecule 1
+endselection _C1
+selection _C2 1
+selectatom 3 molecule 1
+endselection _C2
+selection _O2 1
+selectatom 4 molecule 1
+endselection _O2
+selection _C3 1
+selectatom 5 molecule 1
+endselection _C3
+selection _C4 1
+selectatom 6 molecule 1
+endselection _C4
+selection _C5 1
+selectatom 7 molecule 1
+endselection _C5
+selection _C6 1
+selectatom 8 molecule 1
+endselection _C6
+selection _O3 1
+selectatom 9 molecule 1
+endselection _O3
+selection _O4 1
+selectatom 10 molecule 1
+endselection _O4
+selection _O5 1
+selectatom 11 molecule 1
+endselection _O5
+selection _O6 1
+selectatom 12 molecule 1
+endselection _O6
+selection _HO1 1
+selectatom 13 molecule 1
+endselection _HO1
+selection _H1A 1
+selectatom 14 molecule 1
+endselection _H1A
+selection _H1B 1
+selectatom 15 molecule 1
+endselection _H1B
+selection _H3 1
+selectatom 16 molecule 1
+endselection _H3
+selection _H4 1
+selectatom 17 molecule 1
+endselection _H4
+selection _H5 1
+selectatom 18 molecule 1
+endselection _H5
+selection _H6A 1
+selectatom 19 molecule 1
+endselection _H6A
+selection _H6B 1
+selectatom 20 molecule 1
+endselection _H6B
+selection _HO3 1
+selectatom 21 molecule 1
+endselection _HO3
+selection _HO4 1
+selectatom 22 molecule 1
+endselection _HO4
+selection _HO6 1
+selectatom 23 molecule 1
+endselection _HO6
+selection _HO2 1
+selectatom 24 molecule 1
+endselection _HO2

@@ -54,7 +54,7 @@ public class BunsenBurner extends LabDevice
                 double energy = METHANE_HC_JpG.getValue(); // 1 gram/sec
                 energy *= 0.01; // 1/100 of gram per sec
                 
-                List<LabDevice> devs = this.fBench.findConnections(this);
+                List<LabDevice> devs = this.findConnections();
                 if (devs.size() > 0) {
                     devs.get(0).addHeatEnergy(energy);
                 }
@@ -62,6 +62,12 @@ public class BunsenBurner extends LabDevice
             
             this.fPrevTick = time;
         }
+    }
+
+    @Override
+    public boolean isActivable()
+    {
+        return true;
     }
 
     @Override

@@ -1,0 +1,51 @@
+- = 0.180000 (0.499992,0.499992,0.499992)
+N = 1.5, 0.600000 (0,0,1) ;N
+O = 1.4, 0.58 (1,0,0) ;O
+H = 0.9, 0.360000 (1,1,1) ;H
+C = 1.5, 0.600000 (0.5,0.5,0.5) ;C
+H20:0.162000 -2.20700 -1.36300 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H19:-0.384000 -1.777 0.178000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H18:0.971000 -2.77200 0.009 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H17:1.642 -0.521000 0.593 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H16:0.265 0.166 -2.037 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H15:1.214 1.29 -1.04 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H14:-2.19000 -0.512000 -1.05200 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H13:0.083 2.159 1.31200 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H12:-3.76600 0.475 0.786000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+N11:0.453000 -1.97300 -0.398000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+O10:2.429 -1.364 -2.48600 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O9:3.67000 -0.988 -0.763000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C8:2.55800 -1.05400 -1.26100 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C7:-0.728 1.568 0.912000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N6:-1.984 1.538 1.377 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C5:-2.71900 0.695 0.638000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N4:-1.912 0.155000 -0.346 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C3:-0.651000 0.699000 -0.183 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C2:0.571 0.412000 -1.022 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C1:1.336 -0.767000 -0.422 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N11-H19
+N11-H18
+N11-H20
+C8-O9
+C8-O10
+C7-H13
+N6-C7
+C5-N6
+C5-H12
+N4-C5
+N4-H14
+C3-C7
+C3-N4
+C2-C3
+C2-H15
+C2-H16
+C1-H17
+C1-N11
+C1-C2
+C1-C8
+;;start instance definitions here;;
+;instancetext:http://www.molvent.com\
+\
+This file contains\
+	20 atoms\
+	20 bonds

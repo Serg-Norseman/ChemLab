@@ -1,0 +1,24 @@
+;H-H + H+  ->  H+ + H-H
+;CNDO dynamics, UHF, singlet
+forcefield mm+
+sys 0
+view 40 0.18974 55 15 -1 1.22461e-016 0 -1.22461e-016 -1 0 0 0 1 15.185 8.9784e-009 -55
+dynamics Samples\Dynamics\H3.snp
+mol 1 0
+atom 1 - H H - 0 20.37 4.74945e-009 0 2 2 s 3 s
+vel  1 0 0 0
+atom 2 - H H - 0 19.63 4.74945e-009 0 2 1 s 3 s
+vel  2 0 0 0
+atom 3 - H H - 0 10 0 0 2 1 s 2 s
+vel  3 90 0 0
+endmol 1
+selection bond1 2
+selectrestraint 1 0.000000 0.000000 0.000000 0.000000 0.000000
+selectatom 1 molecule 1
+selectatom 2 molecule 1
+endselection bond1
+selection bond2 2
+selectrestraint 1 0.000000 0.000000 0.000000 0.000000 0.000000
+selectatom 2 molecule 1
+selectatom 3 molecule 1
+endselection bond2

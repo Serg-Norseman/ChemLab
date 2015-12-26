@@ -18,7 +18,6 @@
 package chemlab.refbooks;
 
 import chemlab.core.chemical.SubstanceState;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,25 +29,11 @@ import java.util.List;
  */
 public final class CompoundRecord
 {
-    // physical properties
-    public static final class PhysicalState
-    {
-        public SubstanceState State;
-        public double Density;
+    private final PhysicalState[] fPhysicalStates;
 
-        public double HeatFormation;
-        public double GibbsFreeEnergy;
-        public double StdEntropy;
-        public double MolarHeatCapacity;
-        
-        public Color Color;
-    }
-    
     public String Formula;
     public double MolecularMass;
 
-    private final PhysicalState[] fPhysicalStates;
-    
     public final HashMap<String, String> Names;
     public final List<RadicalRecord> Radicals;
 
@@ -65,14 +50,15 @@ public final class CompoundRecord
         if (state == null || state == SubstanceState.Ion) {
             return null;
         }
-        
+
         int idx = state.getValue();
-        PhysicalState phState = this.fPhysicalStates[idx];
-        if (phState == null && canCreate) {
-            phState = new PhysicalState();
-            this.fPhysicalStates[idx] = phState;
+        PhysicalState physState = this.fPhysicalStates[idx];
+        if (physState == null && canCreate) {
+            physState = new PhysicalState();
+            physState.State = state;
+            this.fPhysicalStates[idx] = physState;
         }
 
-        return phState;
+        return physState;
     }
 }

@@ -106,11 +106,11 @@ public final class DecayShape extends JComponent
                 }
                 sValue = sbv.toString();
                 
-                int iValue = (int) (AuxUtils.ParseInt(sValue, 0) / 4.0f + 2.75f);
+                int iValue = (int) (AuxUtils.parseInt(sValue, 0) / 4.0f + 2.75f);
 
                 for (NuclideId nid : NuclideId.values()) {
                     sValue = nid.toString().substring(3);
-                    int iNID = AuxUtils.ParseInt(sValue, 0);
+                    int iNID = AuxUtils.parseInt(sValue, 0);
 
                     if (iValue == iNID || (iNID >= iValue - 2 && iNID <= iValue + 2)) {
                         break;

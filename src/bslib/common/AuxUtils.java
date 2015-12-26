@@ -17,7 +17,6 @@
  */
 package bslib.common;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -122,50 +121,6 @@ public final class AuxUtils
         return extension;
     }
     
-    public static Color newColor(int r, int g, int b)
-    {
-        if (r < 0) {
-            r = 0;
-        } else if (r > 255) {
-            r = 255;
-        }
-
-        if (g < 0) {
-            g = 0;
-        } else if (g > 255) {
-            g = 255;
-        }
-
-        if (b < 0) {
-            b = 0;
-        } else if (b > 255) {
-            b = 255;
-        }
-
-        return new Color(r, g, b);
-    }
-    
-    public static Color blend(Color color, Color backColor, double amount)
-    {
-        double invAmount = (1 - amount);
-        
-        int col = color.getRGB();
-        int r1 = (col >> 16) & 0xFF;
-        int g1 = (col >> 8) & 0xFF;
-        int b1 = (col) & 0xFF;
-
-        int backCol = color.getRGB();
-        int r2 = (backCol >> 16) & 0xFF;
-        int g2 = (backCol >> 8) & 0xFF;
-        int b2 = (backCol) & 0xFF;
-
-        int r = (int) ((r1 * amount) + r2 * invAmount);
-        int g = (int) ((g1 * amount) + g2 * invAmount);
-        int b = (int) ((b1 * amount) + b2 * invAmount);
-
-        return newColor(r, g, b);
-    }
-
     public static String[] getParams(String s)
     {
         s = prepareString(s);
@@ -229,19 +184,6 @@ public final class AuxUtils
         return AuxUtils.distance(pt1.X, pt1.Y, pt2.X, pt2.Y);
     }
 
-    public static String adjustNumber(int val, int up)
-    {
-        String result = Integer.toString(val);
-        if (result.length() < up) {
-            StringBuilder sb = new StringBuilder(result);
-            while (sb.length() < up) {
-                sb.insert(0, '0');
-            }
-            result = sb.toString();
-        }
-        return result;
-    }
-
     public static String adjustString(String val, int up)
     {
         String result = val;
@@ -255,13 +197,13 @@ public final class AuxUtils
         return result;
     }
 
-    public static String adjustNum(int val, int up)
+    public static String adjustNumber(int val, int up)
     {
         String result = Integer.toString(val);
         if (result.length() < up) {
             StringBuilder sb = new StringBuilder(result);
             while (sb.length() < up) {
-                sb.insert(0, ' ');
+                sb.insert(0, '0');
             }
             result = sb.toString();
         }
@@ -321,14 +263,6 @@ public final class AuxUtils
         return (value - Int(value));
     }
 
-    public static Color BGRToRGB(int bgrColor)
-    {
-        int r = (bgrColor >> 0) & 0xFF;
-        int g = (bgrColor >> 8) & 0xFF;
-        int b = (bgrColor >> 16) & 0xFF;
-        return new Color(r, g, b);
-    }
-
     public static String getAppPath()
     {
         return System.getProperty("user.dir") + File.separatorChar;
@@ -354,7 +288,7 @@ public final class AuxUtils
         return result;
     }
 
-    public static int ParseInt(String str, int Default)
+    public static int parseInt(String str, int Default)
     {
         if (StringHelper.isNullOrEmpty(str)) {
             return Default;
@@ -367,7 +301,7 @@ public final class AuxUtils
         //}
     }
 
-    public static double ParseFloat(String S, double Default) throws ParseException
+    public static double parseFloat(String S, double Default) throws ParseException
     {
         //try {
         if (StringHelper.isNullOrEmpty(S)) {
@@ -388,19 +322,6 @@ public final class AuxUtils
          Logger.write("AuxUtils.ParseFloat()" + ex.getMessage());
          return 0;
          }*/
-    }
-
-    public static String NumUpdate(int val, int up)
-    {
-        String result = (new Integer(val)).toString();
-        if (result.length() < up) {
-            StringBuilder sb = new StringBuilder(result);
-            while (sb.length() < up) {
-                sb.insert(0, '0');
-            }
-            result = sb.toString();
-        }
-        return result;
     }
 
     public static int setBit(int changeValue, int position, int value)

@@ -17,7 +17,7 @@
  */
 package chemlab.core.controls;
 
-import bslib.common.AuxUtils;
+import bslib.common.ColorUtil;
 import chemlab.core.chemical.ValencyId;
 import chemlab.core.chemical.ValencySet;
 import java.awt.Insets;
@@ -59,7 +59,7 @@ public final class ValencyControl extends JPanel
             btn.setSize(super.getWidth() / 8, 24);
             btn.setText(val.Sign);
             btn.setFont(this.getFont());
-            btn.setForeground(AuxUtils.BGRToRGB(8421376));
+            btn.setForeground(ColorUtil.BGRToRGB(8421376));
             btn.setMargin(new Insets(0, 0, 0, 0));
             //btn.Click += this.ButtonClick;
 

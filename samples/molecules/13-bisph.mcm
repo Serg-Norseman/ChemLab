@@ -1,0 +1,48 @@
+- = 0.180000 (0.499992,0.499992,0.499992)
+P = 2.1, 0.740000 (0.850000,0.850000,0.5) ;P
+O = 1.4, 0.58 (1,0,0) ;O
+H = 0.9, 0.360000 (1,1,1) ;H
+C = 1.5, 0.600000 (0.5,0.5,0.5) ;C
+H19:0.619000 -2.244 1.23500 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H18:0.989000 0.655 1.627 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H17:1.02900 1.06 -0.102 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H16:-0.148000 -1.055 -0.625 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+O15:-3.18700 2.58100 0.122000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O14:-4.40600 0.544000 0.9 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O13:-4.37900 1.15400 -1.47300 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+P12:-3.58100 1.14800 -0.238000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=P	aloc=P	
+O11:-2.28500 0.288 -0.458000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O10:-1.683 0.708000 1.58500 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C9:-1.44900 0.170000 0.544000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O8:3.49600 0.911000 2.11700 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O7:3.554 1.48000 -0.315 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O6:4.705 -0.511 0.529 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+P5:3.51500 0.335000 0.699000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=P	aloc=P	
+O4:2.22300 -0.526000 0.467000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C3:1.02900 0.246000 0.620000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O2:-0.188 -1.71500 1.33200 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C1:-0.188 -0.645 0.383 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+P12-O14
+P12-O15
+P12-O13
+O11-P12
+C9-O10
+C9-O11
+P5-O8
+P5-O7
+P5-O6
+O4-P5
+C3-H18
+C3-H17
+C3-O4
+O2-H19
+C1-O2
+C1-C3
+C1-C9
+C1-H16
+;;start instance definitions here;;
+;instancetext:http://www.molvent.com\
+\
+This file contains\
+	19 atoms\
+	18 bonds

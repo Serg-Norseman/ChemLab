@@ -44,7 +44,7 @@ public class FilesLoader
         if (sb.indexOf("-.") == 0) {
             sb.insert(1, "0");
         }
-        return (AuxUtils.ParseFloat(sb.toString(), 0.0f));
+        return (AuxUtils.parseFloat(sb.toString(), 0.0f));
     }
 
     public static final void loadFromXYZ(String fileName, Molecule activeMolecule)
@@ -98,13 +98,13 @@ public class FilesLoader
 
                         if (line.indexOf("!Atoms") == 0) {
                             params = AuxUtils.getParams(line);
-                            aCnt = AuxUtils.ParseInt(params[1], 0);
+                            aCnt = AuxUtils.parseInt(params[1], 0);
 
                             for (int i = 0; i < aCnt; i++) {
                                 line = tf.readLine();
                                 params = AuxUtils.getParams(line);
 
-                                int eNum = AuxUtils.ParseInt(params[1], 0);
+                                int eNum = AuxUtils.parseInt(params[1], 0);
                                 if (eNum >= -1 && eNum <= 118) {
                                     MolAtom curAtom = activeMolecule.addAtom();
                                     curAtom.setSign(CLData.ElementsBook.get(eNum - -1).FSymbol);
@@ -115,14 +115,14 @@ public class FilesLoader
 
                         if (line.indexOf("!Bonds") == 0) {
                             params = AuxUtils.getParams(line);
-                            int bCnt = AuxUtils.ParseInt(params[1], 0);
+                            int bCnt = AuxUtils.parseInt(params[1], 0);
                             if (bCnt > 0) {
                                 for (int i = 0; i < bCnt; i++) {
                                     line = tf.readLine();
 
                                     params = AuxUtils.getParams(line);
-                                    int aNum = AuxUtils.ParseInt(params[0], 0);
-                                    int aNum2 = AuxUtils.ParseInt(params[1], 0);
+                                    int aNum = AuxUtils.parseInt(params[0], 0);
+                                    int aNum2 = AuxUtils.parseInt(params[1], 0);
                                     MolBond curBond = activeMolecule.addBond(activeMolecule.getAtom(aNum), activeMolecule.getAtom(aNum2), BondKind.bkSingle);
                                     curBond.setKindByChar(params[2].charAt(0));
                                 }
@@ -134,11 +134,11 @@ public class FilesLoader
                                 line = tf.readLine();
                                 params = AuxUtils.getParams(line);
 
-                                int aNum = AuxUtils.ParseInt(params[0], 0);
+                                int aNum = AuxUtils.parseInt(params[0], 0);
                                 MolAtom atom = activeMolecule.getAtom(aNum);
-                                atom.setX(AuxUtils.ParseFloat(params[1], 0));
-                                atom.setY(AuxUtils.ParseFloat(params[2], 0));
-                                atom.setZ(AuxUtils.ParseFloat(params[3], 0));
+                                atom.setX(AuxUtils.parseFloat(params[1], 0));
+                                atom.setY(AuxUtils.parseFloat(params[2], 0));
+                                atom.setZ(AuxUtils.parseFloat(params[3], 0));
                             }
                         }
 
@@ -147,8 +147,8 @@ public class FilesLoader
                                 line = tf.readLine();
 
                                 params = AuxUtils.getParams(line);
-                                int aNum = AuxUtils.ParseInt(params[0], 0);
-                                activeMolecule.getAtom(aNum).setPartialCharge((float) (AuxUtils.ParseFloat(params[1], 0)));
+                                int aNum = AuxUtils.parseInt(params[0], 0);
+                                activeMolecule.getAtom(aNum).setPartialCharge((float) (AuxUtils.parseFloat(params[1], 0)));
                             }
                         }
                     }
@@ -181,7 +181,7 @@ public class FilesLoader
 
                         if (line.indexOf("mol") == 0) {
                             params = AuxUtils.getParams(line);
-                            int mol = AuxUtils.ParseInt(params[1], 0);
+                            int mol = AuxUtils.parseInt(params[1], 0);
                             if (mol > 1) {
                                 break; // файлы с двумя и более молекулами не отрабатываем
                             }
@@ -200,11 +200,11 @@ public class FilesLoader
                             MolAtom curAtom = activeMolecule.addAtom();
                             curAtom.setSign(params[3]);
                             curAtom.setElementNumber(CLData.ElementsBook.findElementNumber(params[3]));
-                            curAtom.setX(AuxUtils.ParseFloat(params[7], 0));
-                            curAtom.setY(AuxUtils.ParseFloat(params[8], 0));
-                            curAtom.setZ(AuxUtils.ParseFloat(params[9], 0));
+                            curAtom.setX(AuxUtils.parseFloat(params[7], 0));
+                            curAtom.setY(AuxUtils.parseFloat(params[8], 0));
+                            curAtom.setZ(AuxUtils.parseFloat(params[9], 0));
 
-                            int bonds = AuxUtils.ParseInt(params[10], 0);
+                            int bonds = AuxUtils.parseInt(params[10], 0);
                             i = 11;
                             for (int k = 1; k <= bonds; k++) {
                                 HINBond hinBond = new HINBond();
@@ -224,8 +224,8 @@ public class FilesLoader
                                         hinBond.bt = BondKind.bkTriple;
                                         break;
                                 }
-                                hinBond.F = AuxUtils.ParseInt(params[1], 0);
-                                hinBond.T = AuxUtils.ParseInt(params[i], 0);
+                                hinBond.F = AuxUtils.parseInt(params[1], 0);
+                                hinBond.T = AuxUtils.parseInt(params[i], 0);
                                 i += 2;
                             }
                         }
@@ -267,8 +267,8 @@ public class FilesLoader
                         if (line == 4) {
                             String[] params;
                             params = AuxUtils.getParams(sline);
-                            aCnt = AuxUtils.ParseInt(params[0], 0);
-                            bCnt = AuxUtils.ParseInt(params[1], 0);
+                            aCnt = AuxUtils.parseInt(params[0], 0);
+                            bCnt = AuxUtils.parseInt(params[1], 0);
                         } else {
                             if (line > 4 && line <= 4 + aCnt) {
                                 String[] params;
@@ -277,9 +277,9 @@ public class FilesLoader
                                 MolAtom curAtom = activeMolecule.addAtom();
                                 curAtom.setSign(params[3]);
                                 curAtom.setElementNumber(CLData.ElementsBook.findElementNumber(params[3]));
-                                curAtom.setX(AuxUtils.ParseFloat(params[0], 0));
-                                curAtom.setY(AuxUtils.ParseFloat(params[1], 0));
-                                curAtom.setZ(AuxUtils.ParseFloat(params[2], 0));
+                                curAtom.setX(AuxUtils.parseFloat(params[0], 0));
+                                curAtom.setY(AuxUtils.parseFloat(params[1], 0));
+                                curAtom.setZ(AuxUtils.parseFloat(params[2], 0));
 
                                 String tempVar = params[4];
                                 if (StringHelper.equals(tempVar, "1")) {
@@ -298,10 +298,10 @@ public class FilesLoader
                             } else if (line > 4 + aCnt && line <= 4 + aCnt + bCnt) {
                                 String[] params;
                                 params = AuxUtils.getParams(sline);
-                                int F = AuxUtils.ParseInt(params[0], 0);
-                                int T = AuxUtils.ParseInt(params[1], 0);
+                                int F = AuxUtils.parseInt(params[0], 0);
+                                int T = AuxUtils.parseInt(params[1], 0);
                                 BondKind bt = BondKind.bkSingle;
-                                int num = AuxUtils.ParseInt(params[2], 0);
+                                int num = AuxUtils.parseInt(params[2], 0);
                                 switch (num) {
                                     case 1:
                                         bt = BondKind.bkSingle;
@@ -372,7 +372,7 @@ public class FilesLoader
             i++;
         }
 
-        number.argValue = AuxUtils.ParseInt(num, 0);
+        number.argValue = AuxUtils.parseInt(num, 0);
     }
 
     private static void prepareMCMAtom(Molecule molecule, String s)
@@ -403,9 +403,9 @@ public class FilesLoader
             MolAtom curAtom = molecule.getAtom(number - 1);
             curAtom.setSign(element);
             curAtom.setElementNumber(CLData.ElementsBook.findElementNumber(element));
-            curAtom.setX(AuxUtils.ParseFloat(params[0], 0));
-            curAtom.setY(AuxUtils.ParseFloat(params[1], 0));
-            curAtom.setZ(AuxUtils.ParseFloat(params[2], 0));
+            curAtom.setX(AuxUtils.parseFloat(params[0], 0));
+            curAtom.setY(AuxUtils.parseFloat(params[1], 0));
+            curAtom.setZ(AuxUtils.parseFloat(params[2], 0));
         } catch (ParseException ex) {
             Logger.write("" + ex.getMessage());
         }

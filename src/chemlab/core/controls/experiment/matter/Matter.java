@@ -13,11 +13,45 @@ import chemlab.core.chemical.SubstanceState;
  */
 public abstract class Matter extends Substance
 {
+    private double fMass;
+    protected double fTemperature;
+
     protected Matter(String formula, double temperature, double mass)
     {
         this.Formula = formula;
         this.setMass(mass);
         this.fTemperature = temperature;
+    }
+
+    public final double getMoles()
+    {
+        double moles = (this.fMass /*gram*/ / this.getMolecularMass());
+        return moles;
+    }
+
+    public final double getMass()
+    {
+        return this.fMass;
+    }
+
+    public final void setMass(double value)
+    {
+        this.fMass = value;
+    }
+
+    public final void adjustMass(double value)
+    {
+        this.fMass += value;
+    }
+
+    public final double getTemperature()
+    {
+        return fTemperature;
+    }
+
+    public final void setTemperature(double value)
+    {
+        this.fTemperature = value;
     }
 
     public static final Steam createSteam(String formula, double temperature, double mass)
