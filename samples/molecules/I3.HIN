@@ -1,0 +1,13 @@
+;Triiodide ion, a linear molecule based on a trigonal bipyramidal
+;arrangement of electron pairs.
+forcefield mm+
+sys 0
+view 40 0.29944 55 15 -0.1768687 0.8719251 0.4565787 0.3137149 0.4896389 -0.8135335 -0.9328989 -0.0006530773 -0.3601377 -0.00032565 0.26195 -54.708
+mol 1
+atom 1 - I I - 0 0.07633857 0.04407675 0 5 2 s 3 s 4 s 5 s 6 s
+atom 2 - Lp LP - 0 0.07633857 1.474077 0 1 1 s
+atom 3 - Lp LP - 0 1.314755 -0.6709233 -4.377968e-017 1 1 s
+atom 4 - Lp LP - 0 -1.162078 -0.6709233 4.377968e-017 1 1 s
+atom 5 - I I - 0 0.07633857 0.04407675 2.66 1 1 s
+atom 6 - I I - 0 0.07633857 0.04407675 -2.66 1 1 s
+endmol 1

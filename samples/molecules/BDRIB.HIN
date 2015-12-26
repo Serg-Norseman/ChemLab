@@ -1,0 +1,87 @@
+; beta-D-ribofuranose    
+forcefield amber
+sys 0
+mol 1 b-D-Rib
+res 1 RIB 1 - -
+atom 1 H1 H BH - 0.1 -0.9833776 1.576338 -3.018516 1 2 s
+atom 2 C1 C BC - 0.35 -0.729929 0.527705 -2.855409 4 1 s 3 s 11 s 8 s
+atom 3 C2 C CS - 0.15 -1.997094 -0.3152608 -2.778619 4 2 s 4 s 6 s 12 s
+atom 4 C3 C CS - 0.15 -2.478033 0.0374404 -1.375829 4 3 s 5 s 7 s 13 s
+atom 5 C4 C CS - 0.1 -1.152934 0.1902475 -0.6142386 4 4 s 8 s 9 s 14 s
+atom 6 O2 O OT - -0.65 -2.93832 0.01644902 -3.777724 2 3 s 15 s
+atom 7 O3 O OT - -0.65 -3.161319 1.274893 -1.382251 2 4 s 16 s
+atom 8 O4 O OE - -0.4 -0.1305727 0.3833931 -1.582378 2 5 s 2 s
+atom 9 C5 C CS - 0.05 -0.8271702 -1.05738 0.2128607 4 5 s 10 s 17 s 18 s
+atom 10 O5 O OT - -0.65 -1.776008 -1.216645 1.245595 2 9 s 19 s
+atom 11 O1 O OB - -0.65 0.1377856 0.07218839 -3.870424 2 2 s 20 s
+atom 12 H2 H HT - 0.1 -1.744903 -1.375701 -2.828167 1 3 s
+atom 13 H3 H HT - 0.1 -3.124611 -0.7386404 -0.9657099 1 4 s
+atom 14 H4 H HT - 0.1 -1.190848 1.055736 0.04982339 1 5 s
+atom 15 HO2 H HY - 0.4 -3.731093 -0.5057365 -3.635037 1 6 s
+atom 16 HO3 H HY - 0.4 -3.413886 1.488914 -0.4811481 1 7 s
+atom 17 H5A H HT - 0.1 0.1616749 -0.9495434 0.6599179 1 9 s
+atom 18 H5B H HT - 0.1 -0.8341252 -1.941129 -0.4259709 1 9 s
+atom 19 HO5 H HY - 0.4 -1.557305 -2.008226 1.742652 1 10 s
+atom 20 HO1 H HY - 0.4 0.3499359 -0.848813 -3.701823 1 11 s
+endres 1
+endmol 1
+selection _O1 1
+selectatom 11 molecule 1
+endselection _O1
+selection _C1 1
+selectatom 2 molecule 1
+endselection _C1
+selection _C2 1
+selectatom 3 molecule 1
+endselection _C2
+selection _C3 1
+selectatom 4 molecule 1
+endselection _C3
+selection _C4 1
+selectatom 5 molecule 1
+endselection _C4
+selection _O2 1
+selectatom 6 molecule 1
+endselection _O2
+selection _O3 1
+selectatom 7 molecule 1
+endselection _O3
+selection _O4 1
+selectatom 8 molecule 1
+endselection _O4
+selection _C5 1
+selectatom 9 molecule 1
+endselection _C5
+selection _O5 1
+selectatom 10 molecule 1
+endselection _O5
+selection _H1 1
+selectatom 1 molecule 1
+endselection _H1
+selection _H2 1
+selectatom 12 molecule 1
+endselection _H2
+selection _H3 1
+selectatom 13 molecule 1
+endselection _H3
+selection _H4 1
+selectatom 14 molecule 1
+endselection _H4
+selection _HO2 1
+selectatom 15 molecule 1
+endselection _HO2
+selection _HO3 1
+selectatom 16 molecule 1
+endselection _HO3
+selection _H5A 1
+selectatom 17 molecule 1
+endselection _H5A
+selection _H5B 1
+selectatom 18 molecule 1
+endselection _H5B
+selection _HO5 1
+selectatom 19 molecule 1
+endselection _HO5
+selection _HO1 1
+selectatom 20 molecule 1
+endselection _HO1

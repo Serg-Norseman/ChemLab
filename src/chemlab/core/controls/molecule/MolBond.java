@@ -17,10 +17,10 @@
  */
 package chemlab.core.controls.molecule;
 
-import chemlab.core.chemical.CLData;
-import chemlab.core.chemical.BondKind;
-import bslib.common.AuxUtils;
 import bslib.common.BaseObject;
+import bslib.common.ColorUtil;
+import chemlab.core.chemical.BondKind;
+import chemlab.core.chemical.CLData;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -197,8 +197,8 @@ public class MolBond extends BaseObject
             Color c2;
             int w = 1;
             if (this.fSelected) {
-                c = AuxUtils.BGRToRGB(16776960);
-                c2 = AuxUtils.BGRToRGB(16776960);
+                c = ColorUtil.BGRToRGB(16776960);
+                c2 = ColorUtil.BGRToRGB(16776960);
                 w = 2;
             } else {
                 c = this.getF_Atom().getColor();

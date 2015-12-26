@@ -27,7 +27,7 @@ public class ChemConsts
     public static final double AVOGADRO = 6.0221413 * Math.pow(10, 23);
     public static final double GAS_CONST_R = 8.3144621; // gas constant
     public static final double BOLTZMAN_CONSTANT = GAS_CONST_R / AVOGADRO;
-    public static final double T0 = 298.15;
+    public static final double T0 = 298.15; // +25 °С (298,15 К)
 
     public static final double ATMOSPHERIC_PRESSURE = 100_000; // Pa
     public static final double ROOM_TEMP = 273.15; // K, 0 °С

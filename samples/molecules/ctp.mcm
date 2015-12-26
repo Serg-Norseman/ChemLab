@@ -1,0 +1,95 @@
+- = 0.180000 (0.499992,0.499992,0.499992)
+N = 1.5, 0.600000 (0,0,1) ;N
+P = 2.1, 0.740000 (0.850000,0.850000,0.5) ;P
+O = 1.4, 0.58 (1,0,0) ;O
+H = 0.9, 0.360000 (1,1,1) ;H
+C = 1.5, 0.600000 (0.5,0.5,0.5) ;C
+H41:-6.47900 3.84 1.864 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H40:-5.923 4.31 0.384000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H39:0.559000 -2.00300 -1.63900 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H38:-0.344000 -0.496 -1.905 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H37:-1.97000 -4.358 -1.49100 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H36:-5.25 -2.678 -1.022 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H35:-4.757 -0.370000 2.60100 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H34:-6.198 1.66400 2.76 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H33:-1.94900 -2.267 -2.142 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H32:-3.859 -1.14100 -1.5 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H31:-0.588 -2.34200 0.462000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H30:-3.21000 -1.66600 1.428 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+O29:-3.258 0.934000 -1.42900 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+N28:-6.36600 3.563 0.9 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C27:-4.76900 0.356000 1.80200 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C26:-5.57800 1.49600 1.892 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C25:-5.566 2.41300 0.835 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N24:-4.79300 2.198 -0.239 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C23:-4.015 1.111 -0.338 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N22:-3.987 0.172000 0.676 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+O21:6.15000 3.82500 -1.872 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O20:7.41900 1.706 -1.499 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O19:7.48600 3.511 0.156000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+P18:6.627 2.824 -0.818000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=P	aloc=P	
+O17:5.38500 2.21000 -0.08 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O16:3.91400 2.441 -2.12700 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O15:5.153 0.366 -1.726 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+P14:4.424 1.46000 -1.06900 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=P	aloc=P	
+O13:3.20700 0.871 -0.271 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O12:1.66100 1.06700 -2.26600 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O11:2.902 -1.007 -1.86500 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+P10:2.204 0.106 -1.206 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=P	aloc=P	
+O9:1.01400 -0.456000 -0.35 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C8:0.066 -1.165 -1.15100 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O7:-4.47900 -2.806 -0.447 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C6:-3.497 -1.801 -0.715 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O5:-2.14100 -3.806 -0.712000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C4:-2.13800 -2.42400 -1.08200 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C3:-1.063 -1.685 -0.263000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O2:-1.77 -0.618 0.374000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C1:-3.13000 -1.017 0.559000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N28-H41
+N28-H40
+C27-H35
+C26-H34
+C26-C27
+C25-C26
+C25-N28
+N24-C25
+C23-N24
+C23-O29
+N22-C27
+N22-C23
+P18-O19
+P18-O21
+P18-O20
+O17-P18
+P14-O17
+P14-O16
+P14-O15
+O13-P14
+P10-O13
+P10-O12
+P10-O11
+O9-P10
+C8-O9
+C8-H38
+C8-H39
+O7-H36
+C6-O7
+C6-H32
+O5-H37
+C4-O5
+C4-C6
+C4-H33
+C3-H31
+C3-C8
+C3-C4
+O2-C3
+C1-H30
+C1-N22
+C1-O2
+C1-C6
+;;start instance definitions here;;
+;instancetext:http://www.molvent.com\
+\
+This file contains\
+	41 atoms\
+	42 bonds

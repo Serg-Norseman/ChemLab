@@ -1,0 +1,37 @@
+- = 0.180000 (0.499992,0.499992,0.499992)
+O = 1.4, 0.58 (1,0,0) ;O
+H = 0.9, 0.360000 (1,1,1) ;H
+C = 1.5, 0.600000 (0.5,0.5,0.5) ;C
+H14:2.198 -1.29900 0.42 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H13:1.507 0.721000 1.37000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H12:-3.29600 0.609000 1.11000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H11:-1.145 0.665000 2.02 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H10:-1.382 -0.720000 0.933000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+O9:-0.451000 1.62300 -0.802 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O8:1.958 0.838 -1.884 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O7:3.03500 1.78400 -0.273000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C6:2.12800 1.058 -0.645 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O5:1.28900 -1.004 0.256000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C4:1.208 0.419 0.369 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C3:-0.211 0.865000 0.111000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O2:-2.57100 0.925000 0.549000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C1:-1.331 0.366 0.991 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C6-O7
+C6-O8
+O5-H14
+C4-H13
+C4-C6
+C4-O5
+C3-C4
+C3-O9
+O2-H12
+C1-H11
+C1-C3
+C1-O2
+C1-H10
+;;start instance definitions here;;
+;instancetext:http://www.molvent.com\
+\
+This file contains\
+	14 atoms\
+	13 bonds

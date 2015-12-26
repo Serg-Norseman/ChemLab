@@ -88,7 +88,7 @@ public final class SpectrumViewer extends JPanel
             
             String[] parts = value.split("[;]", -1);
             for (String val : parts) {
-                this.fNanometersList.add(AuxUtils.ParseFloat(val, 0));
+                this.fNanometersList.add(AuxUtils.parseFloat(val, 0));
             }
             
             this.changed();

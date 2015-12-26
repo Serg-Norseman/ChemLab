@@ -95,12 +95,12 @@ public class NuclidesBook extends RefBook
             {
                 NuclideRecord nucRec = new NuclideRecord();
 
-                nucRec.NuclideId = AuxUtils.ParseInt(el.getAttribute("ID"), 0);
-                nucRec.ElementId = AuxUtils.ParseInt(el.getAttribute("ElementID"), 0);
+                nucRec.NuclideId = AuxUtils.parseInt(el.getAttribute("ID"), 0);
+                nucRec.ElementId = AuxUtils.parseInt(el.getAttribute("ElementID"), 0);
                 nucRec.Sign = el.getAttribute("Sign");
-                nucRec.Abundance = AuxUtils.ParseFloat(el.getAttribute("Abundance"), 0);
-                nucRec.Weight = AuxUtils.ParseFloat(el.getAttribute("Weight"), 0);
-                nucRec.Spin = AuxUtils.ParseFloat(el.getAttribute("Spin"), 0);
+                nucRec.Abundance = AuxUtils.parseFloat(el.getAttribute("Abundance"), 0);
+                nucRec.Weight = AuxUtils.parseFloat(el.getAttribute("Weight"), 0);
+                nucRec.Spin = AuxUtils.parseFloat(el.getAttribute("Spin"), 0);
                 nucRec.HalfLife = el.getAttribute("HalfLife");
                 nucRec.DecayModes.parse(el.getAttribute("DecayModes"), true);
 

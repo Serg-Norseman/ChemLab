@@ -25,31 +25,65 @@ import java.awt.Color;
  */
 public class ColorUtil
 {
+    public static Color BGRToRGB(int bgrColor)
+    {
+        int r = (bgrColor >> 0) & 0xFF;
+        int g = (bgrColor >> 8) & 0xFF;
+        int b = (bgrColor >> 16) & 0xFF;
+        return new Color(r, g, b);
+    }
+
+    public static Color newColor(int r, int g, int b)
+    {
+        if (r < 0) {
+            r = 0;
+        } else if (r > 255) {
+            r = 255;
+        }
+
+        if (g < 0) {
+            g = 0;
+        } else if (g > 255) {
+            g = 255;
+        }
+
+        if (b < 0) {
+            b = 0;
+        } else if (b > 255) {
+            b = 255;
+        }
+
+        return new Color(r, g, b);
+    }
+    
     /**
      * Blend two colors.
      *
-     * @param color1 First color to blend.
-     * @param color2 Second color to blend.
+     * @param color First color to blend.
+     * @param backColor Second color to blend.
      * @param ratio Blend ratio. 0.5 will give even blend, 1.0 will return
      * color1, 0.0 will return color2 and so on.
      * @return Blended color.
      */
-    public static Color blend(Color color1, Color color2, double ratio)
+    public static Color blend(Color color, Color backColor, double ratio)
     {
-        float r = (float) ratio;
-        float ir = (float) 1.0 - r;
+        double invRatio = (1.0 - ratio);
+        
+        int col = color.getRGB();
+        int r1 = (col >> 16) & 0xFF;
+        int g1 = (col >> 8) & 0xFF;
+        int b1 = (col) & 0xFF;
 
-        float rgb1[] = new float[3];
-        float rgb2[] = new float[3];
+        int backCol = color.getRGB();
+        int r2 = (backCol >> 16) & 0xFF;
+        int g2 = (backCol >> 8) & 0xFF;
+        int b2 = (backCol) & 0xFF;
 
-        color1.getColorComponents(rgb1);
-        color2.getColorComponents(rgb2);
+        int r = (int) ((r1 * ratio) + r2 * invRatio);
+        int g = (int) ((g1 * ratio) + g2 * invRatio);
+        int b = (int) ((b1 * ratio) + b2 * invRatio);
 
-        Color color = new Color(rgb1[0] * r + rgb2[0] * ir,
-                rgb1[1] * r + rgb2[1] * ir,
-                rgb1[2] * r + rgb2[2] * ir);
-
-        return color;
+        return newColor(r, g, b);
     }
 
     /**

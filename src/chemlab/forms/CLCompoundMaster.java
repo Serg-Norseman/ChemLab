@@ -183,7 +183,7 @@ public final class CLCompoundMaster extends JFrame implements ActionListener
     public final void actAnalysis()
     {
         try {
-            this.fCompoundMaster.analyseFull(this.eFormula.getText(), AuxUtils.ParseInt(this.seCharge.getText(), 0));
+            this.fCompoundMaster.analyseFull(this.eFormula.getText(), AuxUtils.parseInt(this.seCharge.getText(), 0));
 
             this.tblElements.clear();
 

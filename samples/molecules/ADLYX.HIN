@@ -1,0 +1,87 @@
+; alpha-D-lyxofuranose    
+forcefield amber
+sys 0
+mol 1 a-D-Lyx
+res 1 LYX 1 - -
+atom 1 O1 O OA - -0.65 -1.150301 0.9989074 -3.015779 2 2 s 20 s
+atom 2 C1 C AC - 0.35 -1.168262 -0.4142073 -3.004843 4 1 s 3 s 11 s 9 s
+atom 3 C2 C CS - 0.15 -2.609917 -0.9288846 -3.02777 4 2 s 4 s 7 s 12 s
+atom 4 C3 C CS - 0.15 -2.940232 -1.165776 -1.547127 4 3 s 5 s 8 s 13 s
+atom 5 C4 C CS - 0.1 -1.64486 -0.7742464 -0.8225749 4 4 s 6 s 9 s 14 s
+atom 6 C5 C CS - 0.05 -1.316243 -1.614315 0.4165826 4 5 s 10 s 15 s 16 s
+atom 7 O2 O OT - -0.65 -2.675956 -2.124126 -3.780095 2 3 s 17 s
+atom 8 O3 O OT - -0.65 -3.297112 -2.512952 -1.30667 2 4 s 18 s
+atom 9 O4 O OE - -0.4 -0.6246241 -0.8947144 -1.792696 2 5 s 2 s
+atom 10 O5 O OT - -0.65 -2.382215 -1.55331 1.339554 2 6 s 19 s
+atom 11 H1 H AH - 0.1 -0.5959411 -0.7798008 -3.858192 1 2 s
+atom 12 H2 H HT - 0.1 -3.283608 -0.1925985 -3.468868 1 3 s
+atom 13 H3 H HT - 0.1 -3.756671 -0.5179278 -1.225238 1 4 s
+atom 14 H4 H HT - 0.1 -1.719345 0.2739929 -0.5265674 1 5 s
+atom 15 H5A H HT - 0.1 -0.4153502 -1.221363 0.8888475 1 6 s
+atom 16 H5B H HT - 0.1 -1.139183 -2.652967 0.1347773 1 6 s
+atom 17 HO2 H HY - 0.4 -3.555616 -2.496012 -3.681889 1 7 s
+atom 18 HO3 H HY - 0.4 -3.454461 -2.620513 -0.3653833 1 8 s
+atom 19 HO5 H HY - 0.4 -2.15351 -2.084642 2.1055 1 10 s
+atom 20 HO1 H HY - 0.4 -0.2377747 1.293341 -2.969634 1 1 s
+endres 1
+endmol 1
+selection _O1 1
+selectatom 1 molecule 1
+endselection _O1
+selection _C1 1
+selectatom 2 molecule 1
+endselection _C1
+selection _C2 1
+selectatom 3 molecule 1
+endselection _C2
+selection _C3 1
+selectatom 4 molecule 1
+endselection _C3
+selection _C4 1
+selectatom 5 molecule 1
+endselection _C4
+selection _C5 1
+selectatom 6 molecule 1
+endselection _C5
+selection _O2 1
+selectatom 7 molecule 1
+endselection _O2
+selection _O3 1
+selectatom 8 molecule 1
+endselection _O3
+selection _O4 1
+selectatom 9 molecule 1
+endselection _O4
+selection _O5 1
+selectatom 10 molecule 1
+endselection _O5
+selection _H1 1
+selectatom 11 molecule 1
+endselection _H1
+selection _H2 1
+selectatom 12 molecule 1
+endselection _H2
+selection _H3 1
+selectatom 13 molecule 1
+endselection _H3
+selection _H4 1
+selectatom 14 molecule 1
+endselection _H4
+selection _H5A 1
+selectatom 15 molecule 1
+endselection _H5A
+selection _H5B 1
+selectatom 16 molecule 1
+endselection _H5B
+selection _HO2 1
+selectatom 17 molecule 1
+endselection _HO2
+selection _HO3 1
+selectatom 18 molecule 1
+endselection _HO3
+selection _HO5 1
+selectatom 19 molecule 1
+endselection _HO5
+selection _HO1 1
+selectatom 20 molecule 1
+endselection _HO1

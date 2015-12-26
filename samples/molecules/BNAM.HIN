@@ -1,0 +1,105 @@
+; beta-N-Acetylmuramic acid          
+forcefield amber
+sys 0
+mol 1 b-NAM
+res 1 NAM 1 - -
+atom 1 O1 O OH - -0.65 -5.021873 3.283731 3.326601 2 2 s 13 s
+atom 2 HO1 H HO - 0.4 -4.512124 2.988014 4.084431 1 1 s
+atom 3 N2 N N - -0.463 -6.601057 2.688947 0.9662036 3 4 s 7 s 12 s
+atom 4 C2B C C - 0.616 -7.372468 3.032888 1.980614 3 3 s 5 d 6 s
+atom 5 O2B O O - -0.504 -6.945082 3.778401 2.846612 1 4 d
+atom 6 C2C C CT - -0.142 -8.793241 2.500106 2.069775 4 4 s 8 s 9 s 10 s
+atom 7 HN2 H H - 0.252 -6.954876 2.07176 0.249271 1 3 s
+atom 8 H2C1 H HC - 0.01 -9.27174 2.889915 2.968211 1 6 s
+atom 9 H2C2 H HC - 0.01 -9.355937 2.817148 1.191734 1 6 s
+atom 10 H2C3 H HC - 0.01 -8.770888 1.411206 2.113319 1 6 s
+atom 11 C3 C CS - 0.15 -4.503625 2.683922 -0.372968 4 12 s 15 s 30 s 37 s
+atom 12 C2 C CS - 0.35 -5.22702 3.204203 0.8799752 4 11 s 13 s 3 s 38 s
+atom 13 C1 C AC - 0.35 -4.44405 2.757857 2.128904 4 12 s 14 s 18 s 1 s
+atom 14 H1 H HC - 0.1 -4.461057 1.66799 2.1293 1 13 s
+atom 15 C4 C CS - 0.15 -3.057124 3.204187 -0.3442953 4 11 s 16 s 17 s 19 s
+atom 16 H4 H HT - 0.1 -3.061429 4.292841 -0.3982774 1 15 s
+atom 17 C5 C CS - 0.1 -2.392936 2.758055 0.9717196 4 15 s 18 s 20 s 22 s
+atom 18 O5 O OE - -0.4 -3.113951 3.288461 2.090205 2 17 s 13 s
+atom 19 O4 O OT - -0.65 -2.329805 2.679137 -1.457951 2 15 s 26 s
+atom 20 C6 C CS - 0.05 -0.9393603 3.265197 1.010783 4 17 s 21 s 23 s 24 s
+atom 21 O6 O OT - -0.65 -0.3226755 2.850974 2.232674 2 20 s 25 s
+atom 22 H5 H HT - 0.1 -2.403196 1.669403 1.024917 1 17 s
+atom 23 H6A H HT - 0.1 -0.387422 2.851532 0.1667774 1 20 s
+atom 24 H6B H HT - 0.1 -0.9325299 4.353539 0.9510654 1 20 s
+atom 25 HO6 H HY - 0.4 0.5834494 3.167114 2.257025 1 21 s
+atom 26 HO4 H HY - 0.4 -1.427951 3.007335 -1.434586 1 19 s
+atom 27 C3C C CT - 0.204 -4.665464 3.007681 -4.056194 4 28 s 33 s 34 s 35 s
+atom 28 C3B C CT - 0.035 -4.167233 2.532134 -2.678798 4 27 s 29 s 30 s 36 s
+atom 29 C3D C C - 0.714 -4.277127 1.018419 -2.595186 3 28 s 31 a 32 a
+atom 30 O3 O OS - -0.4 -4.966268 3.125501 -1.651979 2 28 s 11 s
+atom 31 O3D1 O O2 - -0.721 -3.931666 0.4368888 -1.579863 1 29 a
+atom 32 O3D2 O O2 - -0.721 -4.760558 0.3123056 -3.652209 1 29 a
+atom 33 H3C1 H HC - 0.1 -4.586658 4.093174 -4.116153 1 27 s
+atom 34 H3C2 H HC - 0.1 -4.05641 2.555393 -4.838875 1 27 s
+atom 35 H3C3 H HC - 0.1 -5.705956 2.711067 -4.188464 1 27 s
+atom 36 H3B H HC - 0.1 -3.12674 2.828747 -2.546528 1 28 s
+atom 37 H3 H HT - 0.1 -4.663898 1.607817 -0.3065468 1 11 s
+atom 38 H2 H HT - 0.1 -5.276072 4.291406 0.8192817 1 12 s
+endres 1
+endmol 1
+selection _C1 1
+selectatom 13 molecule 1
+endselection _C1
+selection _H1 1
+selectatom 14 molecule 1
+endselection _H1
+selection _O1 1
+selectatom 1 molecule 1
+endselection _O1
+selection _HO1 1
+selectatom 2 molecule 1
+endselection _HO1
+selection _C2 1
+selectatom 12 molecule 1
+endselection _C2
+selection _H2 1
+selectatom 38 molecule 1
+endselection _H2
+selection _C3 1
+selectatom 11 molecule 1
+endselection _C3
+selection _H3 1
+selectatom 37 molecule 1
+endselection _H3
+selection _C4 1
+selectatom 15 molecule 1
+endselection _C4
+selection _O4 1
+selectatom 19 molecule 1
+endselection _O4
+selection _HO4 1
+selectatom 26 molecule 1
+endselection _HO4
+selection _H5 1
+selectatom 22 molecule 1
+endselection _H5
+selection _H4 1
+selectatom 16 molecule 1
+endselection _H4
+selection _C5 1
+selectatom 17 molecule 1
+endselection _C5
+selection _O5 1
+selectatom 18 molecule 1
+endselection _O5
+selection _C6 1
+selectatom 20 molecule 1
+endselection _C6
+selection _H6A 1
+selectatom 23 molecule 1
+endselection _H6A
+selection _H6B 1
+selectatom 24 molecule 1
+endselection _H6B
+selection _O6 1
+selectatom 21 molecule 1
+endselection _O6
+selection _HO6 1
+selectatom 25 molecule 1
+endselection _HO6

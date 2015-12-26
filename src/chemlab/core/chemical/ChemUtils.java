@@ -37,7 +37,7 @@ public class ChemUtils
                 str.argValue = str.argValue.substring(0, pos) + str.argValue.substring(pos + 1);
             }
 
-            result = AuxUtils.ParseFloat(val, 1.0);
+            result = AuxUtils.parseFloat(val, 1.0);
         } catch (Exception ex) {
             result = 1.0;
         }
