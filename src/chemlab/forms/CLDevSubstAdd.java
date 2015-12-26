@@ -21,11 +21,12 @@ import bslib.components.ComboItem;
 import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
-import chemlab.core.measure.MeasureBox;
 import chemlab.core.controls.experiment.LabDevice;
 import chemlab.core.measure.ChemUnits;
+import chemlab.core.measure.MeasureBox;
 import chemlab.refbooks.CompoundRecord;
 import chemlab.refbooks.CompoundsBook;
+import chemlab.refbooks.PhysicalState;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -196,7 +197,7 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
 
                 cmbStates.removeAllItems();
                 for (SubstanceState state : SubstanceState.values()) {
-                    CompoundRecord.PhysicalState ps = this.fCompound.getPhysicalState(state, false);
+                    PhysicalState ps = this.fCompound.getPhysicalState(state, false);
                     if (ps != null) {
                         cmbStates.addItem(new ComboItem(state.name(), state));
                     }

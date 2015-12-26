@@ -18,6 +18,7 @@
 package chemlab.core.chemical;
 
 import chemlab.refbooks.CompoundRecord;
+import chemlab.refbooks.PhysicalState;
 import java.awt.Color;
 
 /**
@@ -32,24 +33,7 @@ public class Substance extends CompoundSolver
 
     private CompoundRecord fRecord;
     private SubstanceState fState = SubstanceState.Solid;
-    
-    private double FSM_Entropy;
-    private double FSM_HeatCapacity;
-    private double FSMF_Gibbs_Energy;
-    private double FSMF_Enthalpy;
-    private double FSMHC_A;
-    private double FSMHC_C;
-    private double FSMHC_B;
-
-    private double fMass; // used in LabDevice
-    protected double fTemperature;
-
     private StoicParams fStoicParams;
-
-    public double Melting_Point;
-    public double Boiling_Point;
-    public double Solubility_at_0C;
-    public double Solubility_at_100C;
 
     public Substance()
     {
@@ -62,16 +46,16 @@ public class Substance extends CompoundSolver
         this.Type = SubstanceType.Reactant;
     }
 
-    public SubstanceState getState()
+    public final SubstanceState getState()
     {
         return this.fState;
     }
 
-    public void setState(SubstanceState value)
+    public final void setState(SubstanceState value)
     {
         this.fState = value;
     }
-    
+
     public final StoicParams getStoicParams()
     {
         if (fStoicParams == null) {
@@ -79,7 +63,7 @@ public class Substance extends CompoundSolver
         }
         return this.fStoicParams;
     }
-    
+
     public final double getMolecularMass(boolean withFactor)
     {
         double molMass = super.getMolecularMass();
@@ -89,37 +73,6 @@ public class Substance extends CompoundSolver
         return molMass;
     }
 
-    public final double getMoles()
-    {
-        double moles = (this.fMass /*gram*/ / this.getMolecularMass());
-        return moles;
-    }
-    
-    public final double getMass()
-    {
-        return this.fMass;
-    }
-    
-    public final void setMass(double value)
-    {
-        this.fMass = value;
-    }
-    
-    public final void adjustMass(double value)
-    {
-        this.fMass += value;
-    }
-
-    public final double getTemperature()
-    {
-        return fTemperature;
-    }
-
-    public final void setTemperature(double value)
-    {
-        this.fTemperature = value;
-    }
-    
     protected final CompoundRecord getRecord()
     {
         if (this.fRecord == null) {
@@ -127,6 +80,12 @@ public class Substance extends CompoundSolver
         }
         
         return this.fRecord;
+    }
+
+    public PhysicalState getPhysicalState(SubstanceState state)
+    {
+        CompoundRecord record = this.getRecord();
+        return (record == null) ? null : record.getPhysicalState(state, false);
     }
 
     /**
@@ -140,25 +99,29 @@ public class Substance extends CompoundSolver
 
     public final double getMolarHeatCapacity(SubstanceState state)
     {
-        CompoundRecord record = this.getRecord();
-        double specHeat = (record == null) ? 0 : record.getPhysicalState(state, true).MolarHeatCapacity;
-        return specHeat;
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.MolarHeatCapacity;
     }
+
+    /*public final double getDensity()
+    {
+        // don't switch on! conflict code
+        return this.getDensity(this.getState());
+    }*/
 
     public final double getDensity(SubstanceState state)
     {
-        CompoundRecord record = this.getRecord();
-        double density = (record == null) ? 0 : record.getPhysicalState(state, true).Density;
-        return density;
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.Density;
     }
     
     public final Color getColor(SubstanceState state)
     {
-        CompoundRecord record = this.getRecord();
+        PhysicalState physState = this.getPhysicalState(state);
         
         Color color;
-        if (record != null) {
-            color = record.getPhysicalState(state, true).Color;
+        if (physState != null) {
+            color = physState.Color;
         } else {
             switch (state) {
                 case Solid:
@@ -185,38 +148,70 @@ public class Substance extends CompoundSolver
         return color;
     }
 
-    public final double getSM_HeatCapacity()
+    /**
+     * HeatOfFormation/Enthalpy
+     * @return 
+     */
+    public final double getHeatOfFormation()
     {
-        return this.FSM_HeatCapacity;
+        return this.getHeatOfFormation(this.getState());
+    }
+
+    public final double getHeatOfFormation(SubstanceState state)
+    {
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.HeatFormation;
+    }
+
+    public final double getGibbsFreeEnergy()
+    {
+        return this.getGibbsFreeEnergy(this.getState());
+    }
+
+    public final double getGibbsFreeEnergy(SubstanceState state)
+    {
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.GibbsFreeEnergy;
+    }
+
+    public final double getStandardEntropy()
+    {
+        return this.getStandardEntropy(this.getState());
+    }
+
+    public final double getStandardEntropy(SubstanceState state)
+    {
+        PhysicalState physState = this.getPhysicalState(state);
+        return (physState == null) ? Double.NaN : physState.StdEntropy;
+    }
+
+    public final double SolubilityAt(double temperature)
+    {
+        return Double.NaN;
     }
 
     public final double getSMHC_A()
     {
-        return this.FSMHC_A;
+        return Double.NaN;
     }
 
     public final double getSMHC_B()
     {
-        return this.FSMHC_B;
+        return Double.NaN;
     }
 
     public final double getSMHC_C()
     {
-        return this.FSMHC_C;
+        return Double.NaN;
     }
 
-    public final double getSM_Entropy()
+    public final double getMeltingPoint()
     {
-        return this.FSM_Entropy;
+        return Double.NaN;
     }
 
-    public final double getSMF_Enthalpy()
+    public final double getBoilingPoint()
     {
-        return this.FSMF_Enthalpy;
-    }
-
-    public final double getSMF_Gibbs_Energy()
-    {
-        return this.FSMF_Gibbs_Energy;
+        return Double.NaN;
     }
 }

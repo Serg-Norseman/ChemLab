@@ -1,0 +1,174 @@
+- = 0.180000 (0.499992,0.499992,0.499992)
+S = 2, 0.800000 (0.850000,0.850000,0) ;S
+N = 1.5, 0.600000 (0,0,1) ;N
+P = 2.1, 0.740000 (0.850000,0.850000,0.5) ;P
+O = 1.4, 0.58 (1,0,0) ;O
+H = 0.9, 0.360000 (1,1,1) ;H
+C = 1.5, 0.600000 (0.5,0.5,0.5) ;C
+H80:-14.6140 -0.763000 0.553 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H79:-12.502 -1.57200 -0.834 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H78:-12.011 -0.305000 0.312000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H77:-11.007 -2.02500 1.782 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H76:-11.497 -3.291 0.637000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H75:-9.97200 -1.341 -0.794000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H74:-7.798 -2.688 -1.614 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H73:-7.30800 -1.42100 -0.468 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H72:-6.303 -3.14100 1.00300 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H71:-6.79400 -4.40700 -0.143000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H70:-5.26800 -2.45700 -1.57400 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H69:-1.69900 -4.65100 -2.498 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H68:-1.22000 -5.09100 0.162000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H67:-2.429 -4.336 1.22300 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H66:-0.730000 -3.82500 1.308 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H65:-2.406 -1.043 -0.494 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H64:-3.12100 -1.97300 0.84 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H63:-1.42200 -1.46200 0.925000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H62:-3.09500 -2.82 -2.102 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H61:-0.709 -2.10100 -1.98300 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H60:-0.215000 -3.78600 -1.71000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H59:11.5010 -6.101 4.63800 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H58:11.908 -5.83500 6.21400 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H57:11.988 -0.300000 1.058 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H56:10.759 -1.59700 7.152 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H55:9.42300 -3.701 1.073 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H54:6.54600 0.164000 -1.119 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H53:7.03900 -1.52100 -0.845000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H52:10.389 -1.571 0.461 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H51:9.07400 -0.247 -0.897000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H50:7.19700 0.741 1.13800 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H49:9.219 -0.233 2.93300 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+O48:-4.16300 -4.64200 0.368000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O47:-2.50600 -4.79600 -1.981 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O46:4.83300 -2.655 -1.509 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O45:4.147 -0.329 -1.852 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+N44:11.1770 -5.74 5.52400 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C43:10.0530 -2.54200 4.06500 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N42:10.2 -1.75600 5.14 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C41:10.65 -2.25200 6.30000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N40:10.966 -3.54900 6.42000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C39:10.841 -4.38600 5.382 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C38:10.374 -3.902 4.154 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N37:10.143 -4.461 2.95900 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C36:9.69 -3.53200 2.106 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N35:9.62300 -2.32100 2.76900 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+O34:7.84800 -1.168 1.69700 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C33:9.179 -1.03900 2.20300 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O32:11.167 0.124 1.35000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C31:10.0430 -0.680000 0.980000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O30:8.408 2.00200 -2.066 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O29:10.8350 1.47500 -1.79100 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O28:9.91600 3.59400 -0.974 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+P27:9.62600 2.16400 -1.155 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=P	aloc=P	
+O26:9.32600 1.51100 0.241 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C25:9.03600 0.115000 0.128000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C24:7.63600 -0.157000 0.708000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C23:6.65700 -0.619000 -0.371 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O22:5.38700 -0.895 0.224000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+P21:4.33300 -1.375 -0.836000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=P	aloc=P	
+O20:2.964 -1.66 -0.122000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O19:1.63300 -1.06900 -2.192 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O18:2.30900 -3.38700 -1.78100 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+P17:1.864 -2.146 -1.13 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=P	aloc=P	
+O16:0.525 -2.41300 -0.356000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C15:-0.518000 -2.86 -1.226 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C14:-1.52300 -4.165 0.646000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C13:-2.215 -1.80200 0.263000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C12:-1.79 -3.10100 -0.415 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C11:-2.905 -3.57800 -1.346 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C10:-4.16200 -3.817 -0.544000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N9:-5.26900 -3.13400 -0.825 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C8:-6.49300 -3.366 -0.044 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O7:-8.86600 -3.52600 1.147 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+S6:-13.8280 -1.634 1.17900 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=S	aloc=S	
+C5:-12.3120 -1.346 0.213 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C4:-11.197 -2.25 0.735000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+N3:-9.97200 -2.018 -0.0450000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=N	aloc=N	
+C2:-8.86600 -2.701 0.235 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C1:-7.608 -2.462 -0.566 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O47-H69
+N44-H58
+N44-H59
+N42-C43
+C41-H56
+C41-N42
+N40-C41
+C39-N40
+C39-N44
+C38-C39
+C38-C43
+N37-C38
+C36-N37
+C36-H55
+N35-C43
+N35-C36
+C33-H49
+C33-N35
+C33-O34
+O32-H57
+C31-C33
+C31-O32
+C31-H52
+P27-O28
+P27-O29
+P27-O30
+O26-P27
+C25-C31
+C25-O26
+C25-H51
+C24-O34
+C24-H50
+C24-C25
+C23-C24
+C23-H54
+C23-H53
+O22-C23
+P21-O22
+P21-O45
+P21-O46
+O20-P21
+P17-O20
+P17-O19
+P17-O18
+O16-P17
+C15-O16
+C15-H61
+C15-H60
+C14-H66
+C14-H67
+C14-H68
+C13-H63
+C13-H64
+C13-H65
+C12-C14
+C12-C13
+C12-C15
+C11-C12
+C11-H62
+C11-O47
+C10-O48
+C10-C11
+N9-C10
+N9-H70
+C8-H72
+C8-N9
+C8-H71
+C5-S6
+C5-H78
+C5-H79
+C4-H77
+C4-C5
+C4-H76
+N3-C4
+N3-H75
+C2-O7
+C2-N3
+C1-C2
+C1-C8
+C1-H73
+C1-H74
+;;start instance definitions here;;
+;instancetext:http://www.molvent.com\
+\
+This file contains\
+	80 atoms\
+	81 bonds

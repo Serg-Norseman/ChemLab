@@ -1,0 +1,50 @@
+- = 0.180000 (0.499992,0.499992,0.499992)
+O = 1.4, 0.58 (1,0,0) ;O
+H = 0.9, 0.360000 (1,1,1) ;H
+C = 1.5, 0.600000 (0.5,0.5,0.5) ;C
+H20:-1.706 -1.902 -0.804000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H19:-3.23600 1.384 0.324000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H18:0.541000 0.761 -3.69000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H17:3.352 0.158000 -1.112 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H16:-1.59000 1.97200 -0.866 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H15:-1.765 -0.142000 -1.987 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H14:0.675000 -0.826 -2.30500 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H13:1.56500 -0.336 -0.0810000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H12:-0.44 2.30100 1.272 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+H11:-0.0500000 0.592000 1.37600 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=H	aloc=H	
+O10:2.66700 0.768000 -1.428 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O9:0.305000 1.12600 -2.823 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+O8:1.015 1.65100 -0.04 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C7:-0.196 1.41900 0.685000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O6:-2.51900 0.758000 0.51 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C5:-1.364 1.094 -0.265 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O4:-1.037 -1.298 -0.444000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=O	aloc=O	
+C3:-1.02 -0.083 -1.196 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C2:0.373 0.103000 -1.826 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+C1:1.426 0.493000 -0.772000 ;type=UNK	name= 	num=1	chain= 	ss=	ssid=	elem=C	aloc=C	
+O10-H17
+O9-H18
+C7-H11
+C7-H12
+C7-O8
+O6-H19
+C5-C7
+C5-O6
+C5-H16
+O4-H20
+C3-C5
+C3-O4
+C3-H15
+C2-C3
+C2-O9
+C2-H14
+C1-O8
+C1-H13
+C1-O10
+C1-C2
+;;start instance definitions here;;
+;instancetext:http://www.molvent.com\
+\
+This file contains\
+	20 atoms\
+	20 bonds

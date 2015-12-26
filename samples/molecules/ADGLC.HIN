@@ -1,0 +1,103 @@
+; alpha-D-glucopyranose                  
+forcefield amber
+sys 0
+mol 1 a-D-Glc
+res 1 GLC 1 - -
+atom 1 O5 O OE - -0.4 -2.18537 -0.1906562 -0.680543 2 2 s 6 s
+atom 2 C5 C CS - 0.1 -2.174011 1.243569 -0.6502682 4 1 s 3 s 7 s 12 s
+atom 3 C4 C CS - 0.15 -0.7294746 1.755111 -0.6195636 4 2 s 4 s 8 s 13 s
+atom 4 C3 C CS - 0.15 0.03392379 1.127585 0.545162 4 3 s 5 s 9 s 14 s
+atom 5 C2 C CS - 0.15 -0.07349595 -0.3949777 0.4775268 4 4 s 6 s 10 s 15 s
+atom 6 C1 C AC - 0.35 -1.539811 -0.8288072 0.4285773 4 5 s 1 s 11 s 16 s
+atom 7 H5 H HT - 0.1 -2.685122 1.562706 0.2693149 1 2 s
+atom 8 H4 H HT - 0.1 -0.2336736 1.458041 -1.554743 1 3 s
+atom 9 H3 H HT - 0.1 -0.4204685 1.469949 1.485947 1 4 s
+atom 10 H2 H HT - 0.1 0.4151239 -0.7340045 -0.4471507 1 5 s
+atom 11 H1 H AH - 0.1 -1.574472 -1.91284 0.2505187 1 6 s
+atom 12 C6 C CS - 0.05 -2.956049 1.781554 -1.848141 4 2 s 17 s 18 s 19 s
+atom 13 O4 O OT - -0.65 -0.7117289 3.162084 -0.5032664 2 3 s 20 s
+atom 14 O3 O OT - -0.65 1.389304 1.520959 0.5057386 2 4 s 21 s
+atom 15 O2 O OT - -0.65 0.5713759 -0.9795852 1.589354 2 5 s 22 s
+atom 16 O1 O OA - -0.65 -2.183025 -0.5297115 1.650555 2 6 s 24 s
+atom 17 H6A H HT - 0.1 -3.989796 1.412357 -1.792439 1 12 s
+atom 18 O6 O OT - -0.65 -2.362422 1.367908 -3.060594 2 12 s 23 s
+atom 19 H6B H HT - 0.1 -2.986224 2.879032 -1.797556 1 12 s
+atom 20 HO4 H HY - 0.4 0.2097788 3.470889 -0.4880288 1 13 s
+atom 21 HO3 H HY - 0.4 1.864178 1.110535 1.247899 1 14 s
+atom 22 HO2 H HY - 0.4 1.388369 -1.415196 1.293493 1 15 s
+atom 23 HO6 H HY - 0.4 -2.876199 1.719448 -3.806973 1 18 s
+atom 24 HO1 H HY - 0.4 -3.077153 -0.9105556 1.644351 1 16 s
+endres 1
+endmol 1
+selection _HO1 1
+selectatom 24 molecule 1
+endselection _HO1
+selection _O1 1
+selectatom 16 molecule 1
+endselection _O1
+selection _C1 1
+selectatom 6 molecule 1
+endselection _C1
+selection _HO2 1
+selectatom 22 molecule 1
+endselection _HO2
+selection _O2 1
+selectatom 15 molecule 1
+endselection _O2
+selection _C2 1
+selectatom 5 molecule 1
+endselection _C2
+selection _HO3 1
+selectatom 21 molecule 1
+endselection _HO3
+selection _O3 1
+selectatom 14 molecule 1
+endselection _O3
+selection _C3 1
+selectatom 4 molecule 1
+endselection _C3
+selection _HO4 1
+selectatom 20 molecule 1
+endselection _HO4
+selection _O4 1
+selectatom 13 molecule 1
+endselection _O4
+selection _C4 1
+selectatom 3 molecule 1
+endselection _C4
+selection _C5 1
+selectatom 2 molecule 1
+endselection _C5
+selection _O5 1
+selectatom 1 molecule 1
+endselection _O5
+selection _HO6 1
+selectatom 23 molecule 1
+endselection _HO6
+selection _O6 1
+selectatom 18 molecule 1
+endselection _O6
+selection _C6 1
+selectatom 12 molecule 1
+endselection _C6
+selection _H6A 1
+selectatom 17 molecule 1
+endselection _H6A
+selection _H6B 1
+selectatom 19 molecule 1
+endselection _H6B
+selection _H1 1
+selectatom 11 molecule 1
+endselection _H1
+selection _H2 1
+selectatom 10 molecule 1
+endselection _H2
+selection _H3 1
+selectatom 9 molecule 1
+endselection _H3
+selection _H4 1
+selectatom 8 molecule 1
+endselection _H4
+selection _H5 1
+selectatom 7 molecule 1
+endselection _H5

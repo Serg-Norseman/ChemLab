@@ -17,9 +17,9 @@
  */
 package chemlab.core.controls.experiment;
 
-import bslib.common.AuxUtils;
 import bslib.common.BaseObject;
 import bslib.common.Bitmap;
+import bslib.common.ColorUtil;
 import bslib.common.ImageHelper;
 import bslib.common.Rect;
 import bslib.math.DoubleHelper;
@@ -42,6 +42,7 @@ import java.awt.Graphics2D;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.measure.Measure;
 import javax.measure.quantity.Pressure;
@@ -192,10 +193,10 @@ public class LabDevice extends BaseObject
 
         if (this.fFrames > 1) {
             for (int i = 0; i < this.fFrames; i++) {
-                this.fDevImages[i] = loadImage(dev + "_" + String.valueOf(i), AuxUtils.BGRToRGB(0));
+                this.fDevImages[i] = loadImage(dev + "_" + String.valueOf(i), ColorUtil.BGRToRGB(0));
             }
         } else {
-            this.fDevImages[0] = loadImage(dev, AuxUtils.BGRToRGB(0));
+            this.fDevImages[0] = loadImage(dev, ColorUtil.BGRToRGB(0));
 
             this.fInternalImage = loadImage(Int, false);
         }
@@ -224,9 +225,9 @@ public class LabDevice extends BaseObject
         return (this.fID.Type == DeviceType.Container);
     }
 
-    public final boolean isActivable()
+    public boolean isActivable()
     {
-        return (this.fID == DeviceId.dev_Bunsen_Burner);
+        return false;
     }
 
     public final boolean getActive()
@@ -293,7 +294,7 @@ public class LabDevice extends BaseObject
         // update internal state
         if (this.isContainer()) {
             for (int i = this.fSubstances.size() - 1; i >= 0; i--) {
-                Substance subst = this.fSubstances.get(i);
+                Matter subst = this.fSubstances.get(i);
                 if (DoubleHelper.equals(subst.getMass(), 0.0D, 0.0001)) {
                     this.fSubstances.remove(i);
                 }
@@ -399,7 +400,7 @@ public class LabDevice extends BaseObject
     public final double getSubstancesMass()
     {
         double result = 0.0;
-        for (Substance subst : this.fSubstances) {
+        for (Matter subst : this.fSubstances) {
             result = (result + subst.getMass());
         }
         return result;
@@ -409,7 +410,7 @@ public class LabDevice extends BaseObject
     {
         int result = 0;
         if (this.isContainer()) {
-            int check = AuxUtils.BGRToRGB(16777215).getRGB();
+            int check = ColorUtil.BGRToRGB(16777215).getRGB();
 
             for (int y = this.fHeight - 1; y >= 0; y--) {
                 int d = 0;
@@ -431,7 +432,7 @@ public class LabDevice extends BaseObject
 
     private void drawContentLine(Bitmap internalImage, Bitmap contentsImage, int y, Color color)
     {
-        int check = AuxUtils.BGRToRGB(16777215).getRGB();
+        int check = ColorUtil.BGRToRGB(16777215).getRGB();
         for (int x = 0; x < this.fWidth; x++) {
             if (internalImage.getRGB(x, y) == check) {
                 contentsImage.setRGB(x, y, color.getRGB());
@@ -450,7 +451,7 @@ public class LabDevice extends BaseObject
         Color liqColor = Color.cyan;
 
         for (int i = 0; i < this.fSubstances.size(); i++) {
-            Substance subst = this.fSubstances.get(i);
+            Matter subst = this.fSubstances.get(i);
             SubstanceState state = subst.getState();
             
             double substVol = (subst.getMass() / subst.getDensity(state));
@@ -460,12 +461,12 @@ public class LabDevice extends BaseObject
                 case Solid:
                     subVol = substVol;
                     solidVolume = (int) (solidVolume + ((long) Math.round(subVol)));
-                    solColor = (i == 0) ? substColor : AuxUtils.blend(solColor, substColor, 0.5);
+                    solColor = (i == 0) ? substColor : ColorUtil.blend(solColor, substColor, 0.5);
                     break;
 
                 case Liquid:
                     subVol = substVol;
-                    liqColor = (i == 0) ? substColor : AuxUtils.blend(liqColor, substColor, 0.5);
+                    liqColor = (i == 0) ? substColor : ColorUtil.blend(liqColor, substColor, 0.5);
                     break;
 
                 case Gas:
@@ -474,7 +475,7 @@ public class LabDevice extends BaseObject
 
                 case Ion:
                     subVol = substVol;
-                    liqColor = (i == 0) ? substColor : AuxUtils.blend(liqColor, substColor, 0.5);
+                    liqColor = (i == 0) ? substColor : ColorUtil.blend(liqColor, substColor, 0.5);
                     break;
             }
 
@@ -500,7 +501,7 @@ public class LabDevice extends BaseObject
         db.X2 = -1;
         db.Y = -1;
 
-        int check = AuxUtils.BGRToRGB(16777215).getRGB();
+        int check = ColorUtil.BGRToRGB(16777215).getRGB();
         for (int y = this.fHeight - 1; y >= 0; y--) {
             int d = 0;
             for (int x = 0; x < this.fWidth; x++) {
@@ -753,6 +754,11 @@ public class LabDevice extends BaseObject
         }
         
         return null;
+    }
+    
+    public final List<LabDevice> findConnections()
+    {
+        return this.fBench.findConnections(this);
     }
     
     public static final void loadNames()

@@ -38,12 +38,13 @@ public final class ExtMath
      */
     public static int gcd(int aa, int bb)
     {
-        while (bb > 0) {
+        while (0 != bb) {
             int tmp = bb;
             bb = aa % bb;
             aa = tmp;
         }
-        return aa;
+        //  The greatest common divisor is the largest positive integer.
+        return Math.abs(aa);
     }
 
     /**
