@@ -1,8 +1,17 @@
 package chemlab.core.controls.experiment.matter;
 
+import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.ChemConsts;
+import chemlab.core.chemical.ChemFuncs;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
+import chemlab.core.measure.ChemUnits;
+import chemlab.refbooks.CompoundRecord;
+import chemlab.refbooks.PhysicalState;
+import javax.measure.Measure;
+import javax.measure.quantity.Mass;
+import javax.measure.quantity.Volume;
+import javax.measure.quantity.VolumetricDensity;
 
 /**
  * Note about particleNr: pV = NRT. Considering Avogadro's number (number of
@@ -29,6 +38,7 @@ public abstract class Matter extends Substance
         return moles;
     }
 
+    // gram
     public final double getMass()
     {
         return this.fMass;
@@ -89,6 +99,28 @@ public abstract class Matter extends Substance
                 break;
         }
         return result;
+    }
+
+    public static final Matter createMatter(String formula, SubstanceState state, Measure<Double, ?> amount)
+    {
+        Measure<Double, Mass> measMass;
+
+        if (state == SubstanceState.Liquid || state == SubstanceState.Gas) {
+            Measure<Double, Volume> volume = (Measure<Double, Volume>)amount;
+
+            CompoundRecord compound = CLData.CompoundsBook.checkCompound(formula);
+            if (compound == null) return null; // TODO: exception!
+            PhysicalState physState = compound.getPhysicalState(state, false);
+            if (physState == null) return null; // TODO: exception!
+
+            Measure<Double, VolumetricDensity> density = Measure.valueOf(physState.Density, ChemConsts.STD_REF_DENSITY_UNIT); // g/cm³!
+
+            measMass = ChemFuncs.volumeToMass(volume, density); // just in grams
+        } else {
+            measMass = (Measure<Double, Mass>)ChemUnits.convert(amount, ChemConsts.STD_MASS_UNIT);
+        }
+
+        return createMatter(formula, state, ChemConsts.ROOM_TEMP, measMass.getValue());
     }
 
     /**
