@@ -23,7 +23,7 @@ import bslib.math.ExtMath;
 
 /**
  *
- * @author Serg V. Zhdanovskih
+ * @author Serg V. Zhdanovskih, Ruslan N. Garipov
  * @since 0.3.0
  */
 public final class BalanceSolver extends BaseObject
@@ -113,13 +113,13 @@ public final class BalanceSolver extends BaseObject
         while (permutation[j - 1] <= permutation[i - 1]) {
             j--;
         }
-        teken *= -1;  // is `teken = -teken` better?
+        teken = -teken;  // zsv: I like it better
         swap(permutation, i - 1, j - 1);
         i++;
         j = permutation.length;
         if (i < j) {
             do {
-                teken *= -1;
+                teken = -teken;
                 swap(permutation, i - 1, j - 1);
                 i++;
                 j--;
@@ -142,6 +142,7 @@ public final class BalanceSolver extends BaseObject
             for (int j = 1; j <= this.fDimension; j++) {
                 invert[i][j] = subdeterminant(j, i, this.fDimension, mtx);
             }
+
             // Now, here, the first row in `invert` matrix is initialized (invert[1][{any}]).
             det.argValue += mtx[i][1] * invert[1][i];
         }
@@ -255,7 +256,6 @@ public final class BalanceSolver extends BaseObject
         for (int i = 1; i < this.fReagentsCount; i++) {
             int min = 0;
             int twee = 0;
-            int een;
 
             /*
              * The following `for` loop is modified GCD algorithm for vectors. You already have the implementation

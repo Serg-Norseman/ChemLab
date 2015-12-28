@@ -70,8 +70,14 @@ public class ExtMathTest
     @Test
     public void testGCD_I2()
     {
-        System.out.println("gcd");
+        System.out.println("gcd 1");
         assertEquals(35, ExtMath.gcd(70, 105));
+
+        System.out.println("gcd 2");
+        assertEquals(2, ExtMath.gcd(10, -4));
+
+        System.out.println("gcd 3");
+        assertEquals(2, ExtMath.gcd(-10, 4));
     }
 
     /**
