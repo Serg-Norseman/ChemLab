@@ -19,7 +19,6 @@ package chemlab.forms;
 
 import bslib.components.ComboItem;
 import chemlab.core.chemical.CLData;
-import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
 import chemlab.core.controls.experiment.LabDevice;
 import chemlab.core.measure.ChemUnits;
@@ -32,6 +31,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
+import javax.measure.Measure;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -176,14 +176,20 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
         if (this.fCompound == null) {
             return;
         }
-        
-        Substance subst = this.fDevice.addSubstance(this.fCompound.Formula, SubstanceState.Solid, 10);
-        
+
+        Object item = cmbStates.getSelectedItem();
+        SubstanceState state = (item == null) ? null : (SubstanceState) ((ComboItem) item).Data;
+        if (state == null) {
+            return;
+        }
+
+        Measure<Double, ?> amount = meaAmount.getMeasure();
+        this.fDevice.addSubstance(this.fCompound.Formula, state, amount);
         this.fDevice.changeContents();
-        
+
         this.setVisible(false);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -202,7 +208,7 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
                         cmbStates.addItem(new ComboItem(state.name(), state));
                     }
                 }
-                cmbStates.setSelectedItem(null);
+                cmbStates.setSelectedIndex(0);
 
                 this.updateProps();
             }

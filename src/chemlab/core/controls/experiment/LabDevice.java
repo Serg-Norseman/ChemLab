@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.measure.Measure;
+import javax.measure.quantity.Mass;
 import javax.measure.quantity.Pressure;
 import javax.measure.quantity.Temperature;
 
@@ -397,13 +398,14 @@ public class LabDevice extends BaseObject
         return this.fSubstances.size();
     }
 
-    public final double getSubstancesMass()
+    public final Measure<Double, Mass> getSubstancesMass()
     {
         double result = 0.0;
         for (Matter subst : this.fSubstances) {
             result = (result + subst.getMass());
         }
-        return result;
+
+        return Measure.valueOf(result, ChemUnits.GRAM);
     }
 
     private int getAbstractVolume()
@@ -543,7 +545,7 @@ public class LabDevice extends BaseObject
         Bitmap intImage = new Bitmap(this.fWidth, this.fHeight);
         Graphics2D intCanvas = (Graphics2D) intImage.getGraphics();
 
-        if (this.isContainer() && this.getSubstancesMass() > 0.0f) {
+        if (this.isContainer() && this.getSubstancesMass().getValue() > 0.0f) {
             //deskCanvas.drawImage(this.fContentsImage, this.getLeft(), this.getTop(), null);
             intCanvas.drawImage(this.fContentsImage, 0, 0, null);
         }
@@ -575,6 +577,15 @@ public class LabDevice extends BaseObject
     public final DevBottom getDevBottom()
     {
         return this.fBottom;
+    }
+    
+    public final Substance addSubstance(String formula, SubstanceState state, Measure<Double, ?> amount)
+    {
+        Matter result = Matter.createMatter(formula, state, amount);
+        this.fSubstances.add(result);
+
+        //this.changeContents();
+        return result;
     }
     
     public final Substance addSubstance(String formula, SubstanceState state, double mass)
