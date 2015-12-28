@@ -28,12 +28,12 @@ import java.awt.Color;
 public final class PhysicalState
 {
     public SubstanceState State;
-    public double Density;
+    public double Density; // g/cm³!
 
-    public double HeatFormation; // Enthalpy
-    public double GibbsFreeEnergy;
-    public double StdEntropy;
-    public double MolarHeatCapacity;
+    public double HeatFormation; // Enthalpy, KJ
+    public double GibbsFreeEnergy; // KJ
+    public double StdEntropy; // J/K
+    public double MolarHeatCapacity; // J / (mole * K)
 
     public Color Color;
 }
