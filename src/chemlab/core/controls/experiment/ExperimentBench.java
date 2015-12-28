@@ -454,10 +454,10 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
                 String fillVol = String.valueOf(dev.getFillVolume());
                 hint = String.format(res_i18n.getString("CL_DevHint"), 
                         new Object[]{realVol, fillVol, 
-                            String.format("%5.5f г", dev.getSubstancesMass()), 
+                            ChemUnits.toString(dev.getSubstancesMass(), "%5.5f"), 
                             ChemUnits.toString(dev.getPressure(), "%5.5f"), 
                             ChemUnits.toString(dev.getTemperature(), "%5.5f"), 
-                            String.format("%5.5f", dev.getPH()), 
+                            String.format("%5.2f", dev.getPH()), 
                             this.getConnectionsString(dev)});
             }
 

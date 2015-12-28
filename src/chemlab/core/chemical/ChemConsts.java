@@ -17,6 +17,11 @@
  */
 package chemlab.core.chemical;
 
+import chemlab.core.measure.ChemUnits;
+import javax.measure.quantity.Mass;
+import javax.measure.quantity.VolumetricDensity;
+import javax.measure.unit.Unit;
+
 /**
  *
  * @author Serg V. Zhdanovskih
@@ -24,6 +29,9 @@ package chemlab.core.chemical;
  */
 public class ChemConsts
 {
+    public static final Unit<Mass> STD_MASS_UNIT = ChemUnits.GRAM;
+    public static final Unit<VolumetricDensity> STD_REF_DENSITY_UNIT = ChemUnits.G_CM3; // for PhysicalState.Density
+
     public static final double AVOGADRO = 6.0221413 * Math.pow(10, 23);
     public static final double GAS_CONST_R = 8.3144621; // gas constant
     public static final double BOLTZMAN_CONSTANT = GAS_CONST_R / AVOGADRO;

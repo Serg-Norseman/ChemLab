@@ -17,7 +17,6 @@
  */
 package chemlab.forms;
 
-import bslib.common.AuxUtils;
 import chemlab.core.controls.experiment.LabDevice;
 import chemlab.core.controls.experiment.matter.Matter;
 import chemlab.sandbox.ReactionsEnv;
@@ -110,14 +109,8 @@ public class CLDeviceProps extends JDialog implements ActionListener
         Dimension tblDim = new Dimension(580, 280);
         
         tblSubstances.setPreferredSize(tblDim);
-        tblSubstances.addColumn(res_i18n.getString("CL_Factor"), 88);
         tblSubstances.addColumn(res_i18n.getString("CL_COMPOUND"), 88);
         tblSubstances.addColumn(res_i18n.getString("CL_MolarMass"), 88);
-        tblSubstances.addColumn(res_i18n.getString("CL_Type"), 57);
-        tblSubstances.addColumn("Cp°", 59);
-        tblSubstances.addColumn("S°", 59);
-        tblSubstances.addColumn("dH°", 59);
-        tblSubstances.addColumn("dG°", 59);
         tblSubstances.addColumn("Mass", 59);
 
         tblProperties.setPreferredSize(tblDim);
@@ -175,25 +168,9 @@ public class CLDeviceProps extends JDialog implements ActionListener
             for (int i = 0; i < this.fDevice.getSubstancesCount(); i++) {
                 Matter substance = this.fDevice.getSubstance(i);
 
-                String substType = "";
-                switch (substance.Type) {
-                    case Reactant:
-                        substType = "реагент";
-                        break;
-                    case Product:
-                        substType = "продукт";
-                        break;
-                }
-
                 Object[] rowData = new Object[]{
-                    AuxUtils.FloatToStr(substance.Factor),
                     substance.Formula,
                     CommonUtils.formatFloat(substance.getMolecularMass(), 5),
-                    substType,
-                    CommonUtils.formatFloat(substance.getMolarHeatCapacity(), 3),
-                    CommonUtils.formatFloat(substance.getStandardEntropy(), 3),
-                    CommonUtils.formatFloat(substance.getHeatOfFormation(), 3),
-                    CommonUtils.formatFloat(substance.getGibbsFreeEnergy(), 3),
                     CommonUtils.formatFloat(substance.getMass(), 2)
                 };
 
@@ -225,7 +202,22 @@ public class CLDeviceProps extends JDialog implements ActionListener
     {
         CLDevSubstAdd addDlg = new CLDevSubstAdd(null, this.fDevice);
         addDlg.setVisible(true);
-        
+
+        this.updateControls();
+    }
+
+    private void deleteSubst()
+    {
+        int row = this.tblSubstances.getSelectedRow();
+        if (row < 0) return;
+
+        this.fDevice.deleteSubstance(row);
+        this.updateControls();
+    }
+
+    private void clearSubsts()
+    {
+        this.fDevice.clear();
         this.updateControls();
     }
     
@@ -263,9 +255,11 @@ public class CLDeviceProps extends JDialog implements ActionListener
                 break;
 
             case "DELETE_SUBSTANCE":
+                this.deleteSubst();
                 break;
 
             case "CLEAR_SUBSTANCES":
+                this.clearSubsts();
                 break;
 
             case "SEARCH":
