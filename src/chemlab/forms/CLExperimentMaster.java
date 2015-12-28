@@ -127,7 +127,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
 
         this.setLayout(new BorderLayout());
 
-        FramesHelper.setClientSize(this, 800, 600);
+        FramesHelper.setClientSize(this, 1024, 768);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setFont(CommonUtils.DEFAULT_UI_FONT);
         this.setJMenuBar(this.MainMenu);
@@ -243,7 +243,7 @@ public final class CLExperimentMaster extends JFrame implements ActionListener, 
 
         this.Splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, ListDevices, fBench);
         this.Splitter1.setOneTouchExpandable(true);
-        this.Splitter1.setDividerLocation(120);
+        this.Splitter1.setDividerLocation(200);
         this.Splitter1.setResizeWeight(0.2);
         this.add(this.Splitter1, BorderLayout.CENTER);
     }
