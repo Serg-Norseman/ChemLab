@@ -24,10 +24,13 @@ import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.StoicParams;
 import chemlab.core.chemical.StoichiometricSolver;
 import chemlab.core.chemical.Substance;
+import chemlab.core.chemical.SubstanceState;
 import chemlab.core.chemical.ThermodynamicSolver;
 import chemlab.core.measure.ChemUnits;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -42,7 +45,10 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -66,6 +72,8 @@ public final class CLReactionMaster extends JFrame implements ActionListener
     private VirtualTable tblSubstances;
     private JPanel panProperties;
     private VirtualTable tblProperties;
+    private JTextArea txtProps;
+    private JSplitPane Splitter1;
 
     private JPopupMenu menuStoichiometry;
     
@@ -96,10 +104,11 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.panProperties = new JPanel();
         this.tblProperties = new VirtualTable();
         this.menuStoichiometry = new JPopupMenu();
+        this.txtProps = new JTextArea();
 
         this.setLayout(null);
 
-        FramesHelper.setClientSize(this, 1000, 400);
+        FramesHelper.setClientSize(this, 1000, 600);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setTitle(res_i18n.getString("CL_REACTION_MASTER"));
@@ -111,7 +120,8 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         // K2O + HNO3 = KNO3 + H2O
         // NH4I + H2SO4 + KMnO4 = I2 + MnSO4 + H2O + (NH4)2SO4 + K2SO4
         // K2O + HNO3 = KNO3 + H2O
-        eEquation.setText("SO2Cl2 = SO2 + Cl2");
+        // SO2Cl2 = SO2 + Cl2
+        eEquation.setText("NH4I + H2SO4 + KMnO4 = I2 + MnSO4 + H2O + (NH4)2SO4 + K2SO4");
         eEquation.setLocation(8, 23);
         eEquation.setSize(782, 20);
         
@@ -154,7 +164,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         this.btnAnalysis.setActionCommand("ACTION_ANALYSIS");
 
         this.PageControl.setLocation(8, 59);
-        this.PageControl.setSize(984, 346);
+        this.PageControl.setSize(984, 546);
 
         JPanel panCalcToolbar = new JPanel();
         panCalcToolbar.setLayout(new BoxLayout(panCalcToolbar, BoxLayout.LINE_AXIS));
@@ -180,9 +190,24 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         panCalcToolbar.add(btnThermSolve);
         panCalcToolbar.add(btnStoicSolve);
 
+        txtProps.setEditable(false);
+        txtProps.setLineWrap(true);
+        txtProps.setFont(new Font("Courier New", Font.PLAIN, 12));
+        
+        JScrollPane scrollPane = new JScrollPane(txtProps, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setViewportView(txtProps);
+        scrollPane.setPreferredSize(new Dimension(100, 150));
+
+        this.Splitter1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tblSubstances, scrollPane);
+        this.Splitter1.setOneTouchExpandable(true);
+        this.Splitter1.setDividerLocation(250);
+        this.Splitter1.setResizeWeight(0.2);
+
         this.panSubstances.setLayout(new BorderLayout());
         this.panSubstances.add(panCalcToolbar, BorderLayout.NORTH);
-        this.panSubstances.add(this.tblSubstances, BorderLayout.CENTER);
+        this.panSubstances.add(this.Splitter1, BorderLayout.CENTER);
+        //this.panSubstances.add(this.txtProps, BorderLayout.SOUTH);
+        //this.panSubstances.add(this.tblSubstances, BorderLayout.CENTER);
         this.PageControl.addTab(res_i18n.getString("CL_SUBSTANCES"), this.panSubstances);
 
         tblSubstances.addActionListener(this);
@@ -236,10 +261,30 @@ public final class CLReactionMaster extends JFrame implements ActionListener
         JMenuItem miSolve = new JMenuItem(res_i18n.getString("CL_Solve"));
         miSolve.setActionCommand("ST_SOLVE");
         miSolve.addActionListener(this);
+
+        JMenuItem miSep = new JMenuItem("States:");
+        miSep.setEnabled(false);
+
+        JMenuItem miStSolid = new JMenuItem("CL_Solid");
+        miStSolid.setActionCommand("SET_SOLID");
+        miStSolid.addActionListener(this);
+
+        JMenuItem miStLiquid = new JMenuItem("CL_Liquid");
+        miStLiquid.setActionCommand("SET_LIQUID");
+        miStLiquid.addActionListener(this);
+
+        JMenuItem miStGas = new JMenuItem("CL_Gas");
+        miStGas.setActionCommand("SET_GAS");
+        miStGas.addActionListener(this);
         
         this.menuStoichiometry.add(miSetInput);
         this.menuStoichiometry.add(miSetOutput);
         this.menuStoichiometry.add(miSolve);
+
+        this.menuStoichiometry.add(miSep);
+        this.menuStoichiometry.add(miStSolid);
+        this.menuStoichiometry.add(miStLiquid);
+        this.menuStoichiometry.add(miStGas);
         
         this.add(this.Label1);
         this.add(this.eEquation);
@@ -287,6 +332,7 @@ public final class CLReactionMaster extends JFrame implements ActionListener
     {
         try {
             this.tblSubstances.clear();
+            this.txtProps.setText("");
             
             for (int i = 0; i < this.fReactionMaster.getSubstanceCount(); i++) {
                 Substance substance = this.fReactionMaster.getSubstance(i);
@@ -351,6 +397,9 @@ public final class CLReactionMaster extends JFrame implements ActionListener
     {
         Object[] rowData = new Object[] { valueName, value };
         this.tblProperties.addRow(rowData);
+
+        this.txtProps.setText(this.txtProps.getText() + "\n" + 
+                AuxUtils.adjustString(valueName + ": ", 5) + value);
     }
 
     private void thermSolve()
@@ -466,6 +515,33 @@ public final class CLReactionMaster extends JFrame implements ActionListener
 
             case "ST_SOLVE": {
                 this.stoicSolve();
+                break;
+            }
+            
+            case "SET_SOLID": {
+                int row = this.tblSubstances.getSelectedRow();
+                Substance substance = this.fReactionMaster.getSubstance(row);
+                substance.setState(SubstanceState.Solid);
+
+                this.updateTables();
+                break;
+            }
+            
+            case "SET_LIQUID": {
+                int row = this.tblSubstances.getSelectedRow();
+                Substance substance = this.fReactionMaster.getSubstance(row);
+                substance.setState(SubstanceState.Liquid);
+
+                this.updateTables();
+                break;
+            }
+            
+            case "SET_GAS": {
+                int row = this.tblSubstances.getSelectedRow();
+                Substance substance = this.fReactionMaster.getSubstance(row);
+                substance.setState(SubstanceState.Gas);
+
+                this.updateTables();
                 break;
             }
         }
