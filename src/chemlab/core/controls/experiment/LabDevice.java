@@ -59,6 +59,7 @@ public class LabDevice extends BaseObject
     private static final ResourceBundle res_i18n = ResourceBundle.getBundle("resources/res_i18n");
 
     private static final int FRAME_CHANGE_TICKS = 5;
+    private static final int DEV_CAPACITY_COLOR = -1;
 
     private final ReactionSolver fReactionSolver;
 
@@ -67,7 +68,6 @@ public class LabDevice extends BaseObject
     protected boolean fActive;
     protected long fPrevTime;
 
-    private boolean fFocused;
     private DeviceId fID;
 
     private Bitmap fContentsImage;
@@ -94,6 +94,7 @@ public class LabDevice extends BaseObject
     private final ArrayList<IDeviceEffect> fEffects;
     private boolean fBoiling;
     private boolean fVapor;
+    private long fSteamLastTime;
     
     public final int getLeft()
     {
@@ -297,6 +298,9 @@ public class LabDevice extends BaseObject
             boolean boil = this.isBoiling();
             this.setBoiling(boil);
 
+            boolean vapor = this.isVapor();
+            this.setVapor(vapor);
+
             for (int i = this.fSubstances.size() - 1; i >= 0; i--) {
                 Matter subst = this.fSubstances.get(i);
                 if (DoubleHelper.equals(subst.getMass(), 0.0D, 0.00001)) {
@@ -343,7 +347,14 @@ public class LabDevice extends BaseObject
 
         return result;
     }
-    
+
+    public final boolean isVapor()
+    {
+        long dTime = this.fPrevTime - this.fSteamLastTime;
+
+        return (dTime < 5000);
+    }
+
     public final int getFillVolume()
     {
         return this.fFillVolume;
@@ -433,12 +444,10 @@ public class LabDevice extends BaseObject
     {
         int result = 0;
         if (this.isContainer()) {
-            int check = ColorUtil.BGRToRGB(16777215).getRGB();
-
             for (int y = this.fHeight - 1; y >= 0; y--) {
                 int d = 0;
                 for (int x = 0; x < this.fWidth; x++) {
-                    if (this.fInternalImage.getRGB(x, y) == check) {
+                    if (this.fInternalImage.getRGB(x, y) == DEV_CAPACITY_COLOR) {
                         d++;
                     }
                 }
@@ -453,12 +462,17 @@ public class LabDevice extends BaseObject
         return result;
     }
 
-    private void drawContentLine(Bitmap internalImage, Bitmap contentsImage, int y, Color color)
+    public boolean isValidPoint(int x, int y)
     {
-        int check = ColorUtil.BGRToRGB(16777215).getRGB();
+        return (this.fInternalImage.getRGB(x, y) == DEV_CAPACITY_COLOR);
+    }
+
+    private void drawContentLine(Bitmap contentsImage, int y, Color color)
+    {
+        int lineColor = color.getRGB();
         for (int x = 0; x < this.fWidth; x++) {
-            if (internalImage.getRGB(x, y) == check) {
-                contentsImage.setRGB(x, y, color.getRGB());
+            if (this.fInternalImage.getRGB(x, y) == DEV_CAPACITY_COLOR) {
+                contentsImage.setRGB(x, y, lineColor);
             }
         }
     }
@@ -524,11 +538,10 @@ public class LabDevice extends BaseObject
         db.X2 = -1;
         db.Y = -1;
 
-        int check = ColorUtil.BGRToRGB(16777215).getRGB();
         for (int y = this.fHeight - 1; y >= 0; y--) {
             int d = 0;
             for (int x = 0; x < this.fWidth; x++) {
-                if (this.fInternalImage.getRGB(x, y) == check) {
+                if (this.fInternalImage.getRGB(x, y) == DEV_CAPACITY_COLOR) {
                     d++;
 
                     if (db.Y == -1) {
@@ -545,9 +558,9 @@ public class LabDevice extends BaseObject
                 currV = (int) (currV + (Math.round((Math.PI * (r * r)))));
 
                 if (currV <= solVolume) {
-                    drawContentLine(this.fInternalImage, this.fContentsImage, y, solColor);
+                    drawContentLine(this.fContentsImage, y, solColor);
                 } else if (currV <= comVolume) {
-                    drawContentLine(this.fInternalImage, this.fContentsImage, y, liqColor);
+                    drawContentLine(this.fContentsImage, y, liqColor);
                 } else if (this.fLiquidLevel == -1) {
                     this.fLiquidLevel = y;
                 }
@@ -563,26 +576,21 @@ public class LabDevice extends BaseObject
 
     public final void paint(Graphics2D deskCanvas)
     {
-        Bitmap intImage = new Bitmap(this.fWidth, this.fHeight);
-        Graphics2D intCanvas = (Graphics2D) intImage.getGraphics();
+        int devX = this.getLeft();
+        int devY = this.getTop();
+
+        deskCanvas.translate(devX, devY);
 
         if (this.isContainer() && this.getSubstancesMass().getValue() > 0.0f) {
-            //deskCanvas.drawImage(this.fContentsImage, this.getLeft(), this.getTop(), null);
-            intCanvas.drawImage(this.fContentsImage, 0, 0, null);
+            deskCanvas.drawImage(this.fContentsImage, 0, 0, null);
+
+            for (IDeviceEffect effect : this.fEffects) {
+                effect.draw(deskCanvas);
+            }
         }
 
-        intCanvas.setXORMode(Color.black);
-        for (IDeviceEffect effect : this.fEffects) {
-            effect.draw(intCanvas);
-        }
-        intCanvas.setPaintMode();
-
-        deskCanvas.drawImage(intImage, this.getLeft(), this.getTop(), null);
-        deskCanvas.drawImage(this.fDevImages[this.fFrameIndex], this.getLeft(), this.getTop(), null);
-
-        if (this.fFocused) {
-            //Canvas.DrawFocusRect(Types.Rect(this.Left, this.Top, this.Left + this.Width, this.Top + this.Height));
-        }
+        deskCanvas.drawImage(this.fDevImages[this.fFrameIndex], 0, 0, null);
+        deskCanvas.translate(-devX, -devY);
     }
 
     public final int getLiquidLevel()
@@ -595,29 +603,42 @@ public class LabDevice extends BaseObject
         return this.fLiquidColor;
     }
 
+    public final DevBottom getDevTop()
+    {
+        return this.fBottom;
+    }
+
     public final DevBottom getDevBottom()
     {
         return this.fBottom;
     }
 
-    protected final Matter addMatter(Matter newMatter)
+    protected final Matter addMatter(Matter newMatter, boolean lost)
     {
-        Matter founded = null;
-
-        for (Matter matter : this.fSubstances) {
-            if (matter.Formula.equals(newMatter.Formula) && matter.getState() == newMatter.getState()) {
-                founded = matter;
-                break;
-            }
+        if (newMatter instanceof Steam) {
+            this.fSteamLastTime = this.fPrevTime;
         }
 
-        if (founded != null) {
-            founded.add(newMatter);
+        if (!lost) {
+            Matter founded = null;
 
-            return founded;
+            for (Matter matter : this.fSubstances) {
+                if (matter.Formula.equals(newMatter.Formula) && matter.getState() == newMatter.getState()) {
+                    founded = matter;
+                    break;
+                }
+            }
+
+            if (founded != null) {
+                founded.add(newMatter);
+
+                return founded;
+            } else {
+                this.fSubstances.add(newMatter);
+
+                return newMatter;
+            }
         } else {
-            this.fSubstances.add(newMatter);
-            
             return newMatter;
         }
     }
@@ -625,13 +646,13 @@ public class LabDevice extends BaseObject
     public final Substance addSubstance(String formula, SubstanceState state, Measure<Double, ?> amount)
     {
         Matter result = Matter.createMatter(formula, state, amount);
-        return this.addMatter(result);
+        return this.addMatter(result, false);
     }
 
     public final Substance addSubstance(String formula, SubstanceState state, double mass)
     {
         Matter result = Matter.createMatter(formula, state, mass);
-        return this.addMatter(result);
+        return this.addMatter(result, false);
     }
 
     public final void deleteSubstance(int index)
@@ -772,10 +793,12 @@ public class LabDevice extends BaseObject
             for (Matter matter : this.fSubstances) {
                 if (matter instanceof Liquid) {
                     Steam steam = ((Liquid) matter).addEnergy(energy, ChemConsts.ATMOSPHERIC_PRESSURE);
+
                     if (this.isClosedSystem()) {
-                        this.addMatter(steam);
+                        this.addMatter(steam, false);
                     } else {
                         // lost
+                        this.addMatter(steam, true);
                     }
                 } else {
                     if (matter instanceof Solid) {
