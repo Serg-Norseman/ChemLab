@@ -22,8 +22,9 @@ package chemlab.core.chemical.atom;
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public interface INeutron
+public interface INeutron extends INucleon
 {
     public static final int CHARGE_SIGN = 0;
     public static final double AMU = 1.00867;
+    public static final double ISOSPIN = -0.5;
 }

@@ -22,7 +22,7 @@ package chemlab.core.chemical.atom;
  * @author Serg V. Zhdanovskih
  * @since 0.6.0
  */
-public interface IElectron
+public interface IElectron extends ILepton
 {
     public static final int CHARGE_SIGN = -1;
     public static final double AMU = 0.000549;
