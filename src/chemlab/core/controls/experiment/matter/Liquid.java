@@ -75,11 +75,6 @@ public final class Liquid extends Matter
         return energyNeededToTemperature(getBoilingTemperature(pressure));
     }
 
-    public final void add(Liquid w)
-    {
-        super.add(w);
-    }
-
     // latent heat = ammount of energy required to transform 
     // L = E / m; m = E / L
     // return the ammount of steam created after energy has beeen added

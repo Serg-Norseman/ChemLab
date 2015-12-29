@@ -493,8 +493,6 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
             result.addSubstance("H2O", SubstanceState.Liquid, 40);
 
             result.changeContents();
-            
-            result.setBoiling(true);
         }
 
         this.repaint();

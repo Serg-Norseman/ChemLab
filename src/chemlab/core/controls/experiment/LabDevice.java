@@ -253,21 +253,21 @@ public class LabDevice extends BaseObject
     {
         
     }
-    
+
     protected void deactivate()
     {
         
     }
-    
+
     public final void tickTime(long time)
     {
         this.updateFrame();
         this.updateState(time);
-        
+
         for (IDeviceEffect effect : this.fEffects) {
             effect.doStep();
         }
-        
+
         this.fPrevTime = time;
     }
 
@@ -289,21 +289,24 @@ public class LabDevice extends BaseObject
             }
         }
     }
-    
+
     protected void updateState(long time)
     {
         // update internal state
         if (this.isContainer()) {
+            boolean boil = this.isBoiling();
+            this.setBoiling(boil);
+
             for (int i = this.fSubstances.size() - 1; i >= 0; i--) {
                 Matter subst = this.fSubstances.get(i);
-                if (DoubleHelper.equals(subst.getMass(), 0.0D, 0.0001)) {
+                if (DoubleHelper.equals(subst.getMass(), 0.0D, 0.00001)) {
                     this.fSubstances.remove(i);
                 }
             }
 
             this.changeContents();
         }
-        
+
         // update external influence
         switch (this.fID.Type) {
             case Container:
@@ -322,6 +325,24 @@ public class LabDevice extends BaseObject
                 break;
         }
     }
+
+    public final boolean isBoiling()
+    {
+        boolean result = false;
+
+        for (Matter subst : this.fSubstances) {
+            if (subst.getState() == SubstanceState.Liquid) {
+                Liquid liquid = (Liquid)subst;
+
+                if (liquid.getTemperature() >= Liquid.getBoilingTemperature(ChemConsts.ATMOSPHERIC_PRESSURE)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
     
     public final int getFillVolume()
     {
@@ -333,7 +354,7 @@ public class LabDevice extends BaseObject
         return this.fID.RealVolume;
     }
 
-    public final Measure<Double, Temperature>  getTemperature()
+    public final Measure<Double, Temperature> getTemperature()
     {
         /*if (this.fID.Type == DeviceType.Heater && this.fActive) {
             if (this.fID == DeviceId.dev_Bunsen_Burner) {
@@ -573,28 +594,44 @@ public class LabDevice extends BaseObject
     {
         return this.fLiquidColor;
     }
-    
+
     public final DevBottom getDevBottom()
     {
         return this.fBottom;
     }
-    
+
+    protected final Matter addMatter(Matter newMatter)
+    {
+        Matter founded = null;
+
+        for (Matter matter : this.fSubstances) {
+            if (matter.Formula.equals(newMatter.Formula) && matter.getState() == newMatter.getState()) {
+                founded = matter;
+                break;
+            }
+        }
+
+        if (founded != null) {
+            founded.add(newMatter);
+
+            return founded;
+        } else {
+            this.fSubstances.add(newMatter);
+            
+            return newMatter;
+        }
+    }
+
     public final Substance addSubstance(String formula, SubstanceState state, Measure<Double, ?> amount)
     {
         Matter result = Matter.createMatter(formula, state, amount);
-        this.fSubstances.add(result);
-
-        //this.changeContents();
-        return result;
+        return this.addMatter(result);
     }
-    
+
     public final Substance addSubstance(String formula, SubstanceState state, double mass)
     {
         Matter result = Matter.createMatter(formula, state, mass);
-        this.fSubstances.add(result);
-
-        //this.changeContents();
-        return result;
+        return this.addMatter(result);
     }
 
     public final void deleteSubstance(int index)
@@ -626,12 +663,12 @@ public class LabDevice extends BaseObject
     public final void write(OutputStream stream)
     {
     }
-    
+
     public final boolean getBoiling()
     {
         return this.fBoiling;
     }
-    
+
     public final void setBoiling(boolean value)
     {
         if (this.fBoiling == value) {
@@ -653,12 +690,12 @@ public class LabDevice extends BaseObject
             }
         }
     }
-    
+
     public final boolean getVapor()
     {
         return this.fBoiling;
     }
-    
+
     public final void setVapor(boolean value)
     {
         if (this.fVapor == value) {
@@ -680,14 +717,14 @@ public class LabDevice extends BaseObject
             }
         }
     }
-    
+
     public final boolean canCling(LabDevice target)
     {
         boolean result = false;
         
         return result;
     }
-    
+
     public static LabDevice createDevice(ExperimentBench owner, int x, int y, DeviceId deviceId)
     {
         LabDevice device = null;
@@ -736,7 +773,7 @@ public class LabDevice extends BaseObject
                 if (matter instanceof Liquid) {
                     Steam steam = ((Liquid) matter).addEnergy(energy, ChemConsts.ATMOSPHERIC_PRESSURE);
                     if (this.isClosedSystem()) {
-                        this.fSubstances.add(steam);
+                        this.addMatter(steam);
                     } else {
                         // lost
                     }
