@@ -80,7 +80,7 @@ public class VaporEffect implements IDeviceEffect
     @Override
     public void doStep()
     {
-        int topLevel = -15;
+        int topLevel = -20;
 
         for (Particle pcl : fParticles) {
             int dx = 1 - AuxUtils.getRandom(3);

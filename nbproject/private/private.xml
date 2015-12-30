@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="38">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="45">
         <file>
             <url>src/chemlab/forms/TfmMasterReaction.java</url>
             <bookmark id="27">
                 <name/>
                 <line>198</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/chemlab/core/controls/experiment/LabDevice.java</url>
+            <bookmark id="45">
+                <name/>
+                <line>613</line>
                 <key/>
             </bookmark>
         </file>
@@ -18,10 +26,23 @@
             </bookmark>
         </file>
         <file>
+            <url>src/chemlab/forms/CLDeviceProps.java</url>
+            <bookmark id="40">
+                <name/>
+                <line>112</line>
+                <key/>
+            </bookmark>
+            <bookmark id="39">
+                <name/>
+                <line>171</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
             <url>src/chemlab/core/controls/experiment/ExperimentBench.java</url>
             <bookmark id="32">
                 <name/>
-                <line>601</line>
+                <line>606</line>
                 <key/>
             </bookmark>
         </file>
@@ -46,9 +67,12 @@
             <file>file:/E:/TMP/ChemLab/src/chemlab/vtable/VirtualTable.java</file>
         </group>
         <group>
-            <file>file:/D:/WORKS/ChemLab/src/chemlab/forms/CLReactionMaster.java</file>
-            <file>file:/D:/WORKS/ChemLab/src/chemlab/core/chemical/BalanceSolver.java</file>
-            <file>file:/D:/WORKS/ChemLab/src/chemlab/forms/CLExperimentMaster.java</file>
+            <file>file:/E:/DEV/ChemLab/compounds.xml</file>
+            <file>file:/E:/DEV/ChemLab/src/chemlab/forms/CLMainWindow.java</file>
+            <file>file:/E:/DEV/ChemLab/src/chemlab/refbooks/CompoundsBook.java</file>
+            <file>file:/E:/DEV/ChemLab/src/chemlab/database/CLDB.java</file>
+            <file>file:/E:/DEV/ChemLab/src/chemlab/core/chemical/CLData.java</file>
+            <file>file:/E:/DEV/ChemLab/src/chemlab/refbooks/CompoundRecord.java</file>
         </group>
     </open-files>
 </project-private>

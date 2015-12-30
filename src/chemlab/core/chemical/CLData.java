@@ -17,11 +17,16 @@
  */
 package chemlab.core.chemical;
 
+import bslib.common.AuxUtils;
+import chemlab.database.CLDB;
 import chemlab.refbooks.AllotropeRecord;
+import chemlab.refbooks.CompoundRecord;
 import chemlab.refbooks.CompoundsBook;
 import chemlab.refbooks.DecayBook;
 import chemlab.refbooks.ElementsBook;
 import chemlab.refbooks.NuclidesBook;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -53,6 +58,7 @@ public class CLData
     public static final NuclidesBook NuclidesBook;
     public static final DecayBook DecayBook;
     public static final CompoundsBook CompoundsBook;
+    public static final CLDB Database = CLDB.getInstance();
 
 
     static {
@@ -90,12 +96,42 @@ public class CLData
         
         CompoundsBook = new CompoundsBook();
         CompoundsBook.loadXML();
-        
-        //importExternalData();
     }
 
-    private static void importExternalData()
+    public static void transferData()
     {
+        System.out.println("records: " + CompoundsBook.size());
+        
+        for (int i = 0; i < CompoundsBook.size(); i++) {
+            CompoundRecord oldRec = CompoundsBook.get(i);
+            
+            CompoundRecord newRec = Database.getCompound(oldRec.Formula);
+            double mMass = oldRec.getMolecularMass();
+            
+            if (mMass == 0.0) {
+                try {
+                    CompoundSolver fCompoundMaster = new CompoundSolver();
+                    fCompoundMaster.Formula = oldRec.Formula;
+                    fCompoundMaster.Charge = 0;
+                    fCompoundMaster.analyse();
+                    fCompoundMaster.loadData();
+                    fCompoundMaster.calculateMolecularMass();
+                    mMass = fCompoundMaster.getMolecularMass();
+                } catch (Exception ex) {
+                }
+            }
+            
+            newRec.setMolecularMass(mMass);
+        }
+        
+        try {
+        ResultSet rs = Database.execQuery("select count(*) as cnt from compounds");
+        rs.next();
+        System.out.println("records 2: " + rs.getString("cnt"));
+        } catch (SQLException ex) {
+            System.out.println("error2");
+        }
+        
         // to future
         // CompoundRecord compRec = CLData.CompoundsBook.checkCompound(formula);
         

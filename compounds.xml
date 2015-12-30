@@ -989,13 +989,6 @@
         <names/>
         <radicals/>
     </compound>
-    <compound formula="Na+" mass="0.0">
-        <physicals>
-            <physical Color="#000000" GibbsFreeEnergy="574.2999877929688" HeatFormation="609.2999877929688" SpecificHeat="0.0" StdEntropy="148.0" density="0.0" state="Gas"/>
-        </physicals>
-        <names/>
-        <radicals/>
-    </compound>
     <compound formula="NaBr" mass="0.0">
         <physicals>
             <physical Color="#000000" GibbsFreeEnergy="-349.29998779296875" HeatFormation="-361.3999938964844" SpecificHeat="0.0" StdEntropy="86.81999969482422" density="0.0" state="Solid"/>
@@ -1138,6 +1131,23 @@
         <physicals>
             <physical Color="#000000" GibbsFreeEnergy="-318.20001220703125" HeatFormation="-348.0" SpecificHeat="0.0" StdEntropy="43.900001525878906" density="0.0" state="Solid"/>
         </physicals>
+        <names/>
+        <radicals/>
+    </compound>
+    <compound formula="SO2Cl2" mass="0.0">
+        <physicals>
+            <physical Color="#000000" GibbsFreeEnergy="-318.85" HeatFormation="-363.17" SpecificHeat="0.0" StdEntropy="311.29" density="0.0" state="Gas"/>
+        </physicals>
+        <names/>
+        <radicals/>
+    </compound>
+    <compound formula="Al(OH)3" mass="0.0">
+        <physicals/>
+        <names/>
+        <radicals/>
+    </compound>
+    <compound formula="Al2(SO4)3" mass="0.0">
+        <physicals/>
         <names/>
         <radicals/>
     </compound>
