@@ -19,6 +19,7 @@ import javax.measure.quantity.VolumetricDensity;
  * expressed in moles, it's just that R is now 10^21 times bigger
  *
  * @author neduard (sepr4bar)
+ * @author Serg V. Zhdanovskih
  */
 public abstract class Matter extends Substance
 {
@@ -32,6 +33,22 @@ public abstract class Matter extends Substance
         this.fTemperature = temperature;
     }
 
+    /**
+     * Adds more matter, also calculates new mixed temperature (weighted
+     * average).
+     */
+    public final void add(Matter x)
+    {
+        double mass1 = this.getMass();
+        double mass2 = x.getMass();
+        double newMass = mass1 + mass2;
+        if (newMass != 0) {
+            double newTemperature = (mass1 * this.fTemperature + mass2 * x.getTemperature()) / newMass;
+            this.setMass(newMass);
+            this.fTemperature = newTemperature;
+        }
+    }
+
     public final double getMoles()
     {
         double moles = (this.fMass /*gram*/ / this.getMolecularMass());
@@ -42,6 +59,11 @@ public abstract class Matter extends Substance
     public final double getMass()
     {
         return this.fMass;
+    }
+
+    public final Measure<Double, Mass> getMeasureMass()
+    {
+        return Measure.valueOf(this.fMass, ChemUnits.GRAM);
     }
 
     public final void setMass(double value)
@@ -121,22 +143,6 @@ public abstract class Matter extends Substance
         }
 
         return createMatter(formula, state, ChemConsts.ROOM_TEMP, measMass.getValue());
-    }
-
-    /**
-     * Adds more matter, also calculates new mixed temperature (weighted
-     * average).
-     */
-    protected final void add(Matter x)
-    {
-        double mass1 = this.getMass();
-        double mass2 = x.getMass();
-        double newMass = mass1 + mass2;
-        if (newMass != 0) {
-            double newTemperature = (mass1 * this.fTemperature + mass2 * x.getTemperature()) / newMass;
-            this.setMass(newMass);
-            this.fTemperature = newTemperature;
-        }
     }
 
     /**
