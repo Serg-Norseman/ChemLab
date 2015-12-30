@@ -14,11 +14,6 @@ public final class Steam extends Matter
         this.setState(SubstanceState.Gas);
     }
 
-    public final void add(Steam s)
-    {
-        super.add(s);
-    }
-
     @Override
     public String toString()
     {

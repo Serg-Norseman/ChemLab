@@ -20,11 +20,9 @@ package chemlab.core.chemical.atom;
 /**
  *
  * @author Serg V. Zhdanovskih
- * @since 0.6.0
+ * @since 0.7.0
  */
-public interface IProton extends INucleon
+public interface IBaryon extends IHadron
 {
-    public static final int CHARGE_SIGN = 1;
-    public static final double AMU = 1.00728;
-    public static final double ISOSPIN = +0.5;
+    
 }

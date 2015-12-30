@@ -488,13 +488,11 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
         LabDevice result = LabDevice.createDevice(this, left, top, deviceId);
         this.fDevices.add(result);
 
-        if (result.getID() == DeviceId.dev_Beaker_100) {
+        if (result.isContainer()/*getID() == DeviceId.dev_Beaker_100*/) {
             result.addSubstance("CaO", SubstanceState.Solid, 20);
             result.addSubstance("H2O", SubstanceState.Liquid, 40);
 
             result.changeContents();
-            
-            result.setBoiling(true);
         }
 
         this.repaint();
