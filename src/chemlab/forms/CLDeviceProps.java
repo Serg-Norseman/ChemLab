@@ -19,6 +19,7 @@ package chemlab.forms;
 
 import chemlab.core.controls.experiment.LabDevice;
 import chemlab.core.controls.experiment.matter.Matter;
+import chemlab.core.measure.ChemUnits;
 import chemlab.sandbox.ReactionsEnv;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
@@ -159,19 +160,19 @@ public class CLDeviceProps extends JDialog implements ActionListener
         
         this.updateControls();
     }
-    
+
     private void updateControls()
     {
         try {
             this.tblSubstances.clear();
-            
+
             for (int i = 0; i < this.fDevice.getSubstancesCount(); i++) {
                 Matter substance = this.fDevice.getSubstance(i);
 
                 Object[] rowData = new Object[]{
                     substance.Formula,
                     CommonUtils.formatFloat(substance.getMolecularMass(), 5),
-                    CommonUtils.formatFloat(substance.getMass(), 2)
+                    ChemUnits.toString(substance.getMeasureMass(), "%5.5f")
                 };
 
                 this.tblSubstances.addRow(rowData);
