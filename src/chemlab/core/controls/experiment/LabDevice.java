@@ -27,6 +27,7 @@ import chemlab.core.chemical.ChemConsts;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
+import chemlab.core.controls.experiment.devices.Beaker;
 import chemlab.core.controls.experiment.devices.BunsenBurner;
 import chemlab.core.controls.experiment.effects.BoilingEffect;
 import chemlab.core.controls.experiment.effects.IDeviceEffect;
@@ -64,8 +65,10 @@ public class LabDevice extends BaseObject
     private final ReactionSolver fReactionSolver;
 
     protected final ExperimentBench fBench;
+    protected final ArrayList<Matter> fSubstances;
 
     protected boolean fActive;
+    protected boolean fDecant;
     protected long fPrevTime;
 
     private DeviceId fID;
@@ -77,8 +80,6 @@ public class LabDevice extends BaseObject
     private int fFrames;
     private int fFrameIndex;
     private int fUpdateTicks;
-
-    private final ArrayList<Matter> fSubstances;
     
     private int fAbstVolume;
     private int fFillVolume;
@@ -152,6 +153,7 @@ public class LabDevice extends BaseObject
         this.fEffects = new ArrayList<>();
         
         this.fActive = false;
+        this.fDecant = true;
         this.fFrameIndex = 0;
         this.setLeft(x);
         this.setTop(y);
@@ -365,6 +367,12 @@ public class LabDevice extends BaseObject
         return this.fID.RealVolume;
     }
 
+    public final DeviceType getType()
+    {
+        return this.fID.Type;
+    }
+
+    // Rubbish!
     public final Measure<Double, Temperature> getTemperature()
     {
         /*if (this.fID.Type == DeviceType.Heater && this.fActive) {
@@ -758,6 +766,9 @@ public class LabDevice extends BaseObject
             case dev_Beaker_100:
             case dev_Beaker_250:
             case dev_Beaker_600:
+                device = new Beaker(owner, x, y, deviceId);
+                break;
+
             case dev_Conical_Flask_100:
             case dev_Conical_Flask_250:
             case dev_Roundbottom_Flask_100:
@@ -789,6 +800,7 @@ public class LabDevice extends BaseObject
      */
     public void addHeatEnergy(double energy)
     {
+        // Rubbish!
         if (this.isContainer()) {
             for (Matter matter : this.fSubstances) {
                 if (matter instanceof Liquid) {

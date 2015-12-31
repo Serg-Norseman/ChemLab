@@ -75,47 +75,48 @@ public final class BoilingEffect implements IDeviceEffect
         bubble.Color = ColorUtil.darker(this.fDevice.getLiquidColor(), (float) (Math.random() * 0.85f));
         bubble.Size = 1;
         bubble.Stroke = 1.0f;
-        bubble.X = (int) (AuxUtils.getBoundedRnd(db.X1, db.X2));
-        bubble.Y = (int) (db.Y - 1);
         bubble.Vel = AuxUtils.getBoundedRnd(1, 3);
+        bubble.X = (int) (AuxUtils.getBoundedRnd(db.X1, db.X2));
+        bubble.Y = (int) (db.Y - bubble.Vel);
     }
 
     @Override
     public void doStep()
     {
         int liqLevel = this.fDevice.getLiquidLevel();
-        
+
         for (Bubble bubble : fBubbles) {
             if (bubble.Size == 0) {
                 continue;
             }
-            
+
             if (bubble.Stroke < 2) {
                 bubble.Stroke += 0.025f;
             }
 
-            if (bubble.Size > MAX_SIZE) {
-                int dx = 1 - AuxUtils.getRandom(3);
-                int dy = -bubble.Vel;
-                int num = AuxUtils.getRandom(2);
-                switch (num) {
-                    case 0:
-                        dx = 0;
-                        break;
-                    case 1:
-                        dy = 0;
-                        break;
-                }
-                
-                bubble.X += dx;
-                bubble.Y += dy;
+            int dx = 1 - AuxUtils.getRandom(3);
+            int dy = -bubble.Vel;
+            int num = AuxUtils.getRandom(2);
+            switch (num) {
+                case 0:
+                    dx = 0;
+                    break;
+                case 1:
+                    dy = 0;
+                    break;
+            }
 
-                if (bubble.Y + MAX_SIZE / 2 <= liqLevel) {
-                    initBubble(bubble);
-                }
-            } else {
+            bubble.X += dx;
+            bubble.Y += dy;
+
+            if (bubble.Size < MAX_SIZE) {
                 bubble.Size++;
-                bubble.Y = (int) (h - bubble.Size / 2);
+            }
+
+            if (bubble.Y + MAX_SIZE / 2 <= liqLevel) {
+                initBubble(bubble);
+            } else if (bubble.Y > 0 && !this.fDevice.isValidPoint(bubble.X, bubble.Y)) {
+                initBubble(bubble);
             }
         }
     }
