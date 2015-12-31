@@ -81,6 +81,9 @@ public final class CLMainWindow extends JFrame implements ActionListener
         */
         
         this.initializeComponents();
+        
+        
+        //CLData.transferData();
     }
 
     private void initializeComponents()

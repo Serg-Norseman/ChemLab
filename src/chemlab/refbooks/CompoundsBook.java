@@ -114,7 +114,7 @@ public final class CompoundsBook extends RefBook
                 if (fCurrentVer == 1) {
                     Element physEl = getElement(el, "physical");
                     if (physEl != null) {
-                        compRec.MolecularMass = AuxUtils.parseFloat(physEl.getAttribute("mass"), 0);
+                        compRec.setMolecularMass(AuxUtils.parseFloat(physEl.getAttribute("mass"), 0));
                         String st = physEl.getAttribute("state");
                         double density = AuxUtils.parseFloat(physEl.getAttribute("density"), 0);
 
@@ -126,7 +126,7 @@ public final class CompoundsBook extends RefBook
                         }
                     }
                 } else {
-                    compRec.MolecularMass = AuxUtils.parseFloat(el.getAttribute("mass"), 0);
+                    compRec.setMolecularMass(AuxUtils.parseFloat(el.getAttribute("mass"), 0));
                     
                     Element pssEl = getElement(el, "physicals");
                     if (pssEl != null) {
@@ -261,7 +261,7 @@ public final class CompoundsBook extends RefBook
                 rootElement.appendChild(compElement);
 
                 writeAttr(doc, compElement, "formula", compRec.Formula);
-                writeAttr(doc, compElement, "mass", String.valueOf(compRec.MolecularMass));
+                writeAttr(doc, compElement, "mass", String.valueOf(compRec.getMolecularMass()));
 
                 //
 

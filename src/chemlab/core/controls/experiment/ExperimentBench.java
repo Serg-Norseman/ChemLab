@@ -82,6 +82,7 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
     private final Timer fTimer;
     private final JPopupMenu fDeviceMenu;
     private final JMenuItem miActivationSwitch;
+    private final JMenuItem miDecant;
     private final JMenuItem miClear;
     private final JMenuItem miDelete;
     private final JMenuItem miProperties;
@@ -111,6 +112,10 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
         this.miActivationSwitch.addActionListener(this);
         this.miActivationSwitch.setActionCommand("mi_DeviceSwitch");
 
+        this.miDecant = new JMenuItem(res_i18n.getString("CL_DevDecant"));
+        this.miDecant.addActionListener(this);
+        this.miDecant.setActionCommand("mi_DeviceDecant");
+
         this.miClear = new JMenuItem(res_i18n.getString("CL_Clear"));
         this.miClear.addActionListener(this);
         this.miClear.setActionCommand("mi_DeviceClear");
@@ -124,6 +129,7 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
         this.miProperties.setActionCommand("mi_DeviceProperties");
 
         this.fDeviceMenu.add(this.miActivationSwitch);
+        this.fDeviceMenu.add(this.miDecant);
         this.fDeviceMenu.add(this.miClear);
         this.fDeviceMenu.add(this.miDelete);
         this.fDeviceMenu.add(this.miProperties);
@@ -372,6 +378,7 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
                 }
 
                 this.miActivationSwitch.setEnabled(this.fMenuDev.isActivable());
+                this.miDecant.setEnabled(/*this.fMenuDev.isContainer()*/false);
                 this.miClear.setEnabled(this.fMenuDev.isContainer());
                 this.miProperties.setEnabled(this.fMenuDev.isContainer());
 
@@ -649,6 +656,13 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
         }
     }
 
+    private void miDeviceDecantClick()
+    {
+        LabDevice device = this.fMenuDev;
+
+        //this.miDecant.set
+    }
+
     private void miDeviceClearClick()
     {
         LabDevice device = this.fMenuDev;
@@ -680,12 +694,19 @@ public class ExperimentBench extends EditorControl implements ActionListener, IS
             case "mi_DeviceSwitch":
                 miDeviceActivationSwitchClick();
                 break;
+
+            case "mi_DeviceDecant":
+                miDeviceDecantClick();
+                break;
+
             case "mi_DeviceClear":
                 miDeviceClearClick();
                 break;
+
             case "mi_DeviceDelete":
                 miDeviceDeleteClick();
                 break;
+
             case "mi_DeviceProperties":
                 miDevicePropertiesClick();
                 break;

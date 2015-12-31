@@ -18,6 +18,10 @@
 package chemlab.refbooks;
 
 import chemlab.core.chemical.SubstanceState;
+import chemlab.database.CLDB;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,10 +33,12 @@ import java.util.List;
  */
 public final class CompoundRecord
 {
+    private CLDB fDb = null;
+    
     private final PhysicalState[] fPhysicalStates;
+    private double fMolecularMass;
 
     public String Formula;
-    public double MolecularMass;
 
     public final HashMap<String, String> Names;
     public final List<RadicalRecord> Radicals;
@@ -43,6 +49,44 @@ public final class CompoundRecord
         
         this.Names = new HashMap<>();
         this.Radicals = new ArrayList<>();
+    }
+
+    public CompoundRecord(String formula, CLDB db) throws SQLException
+    {
+        this();
+        this.Formula = formula;
+        this.fDb = db;
+        this.loadData();
+    }
+
+    private void loadData() throws SQLException
+    {
+        ResultSet rs = fDb.execQuery("select * from compounds where formula = '" + this.Formula + "'");
+        if (rs.next()) {
+            this.fMolecularMass = rs.getDouble("mass");
+        } else {
+            fDb.execUpdate("insert into compounds values('" + this.Formula + "', 0)");
+        }
+    }
+    
+    public double getMolecularMass()
+    {
+        return this.fMolecularMass;
+    }
+
+    public void setMolecularMass(double value)
+    {
+        if (this.fMolecularMass == value) return;
+
+        this.fMolecularMass = value;
+        
+        if (fDb != null) {
+            try {
+                fDb.execUpdate("update compounds set mass = '" + value + "' where formula = '" + this.Formula + "'");
+            } catch (SQLException ex) {
+                System.out.println("error");
+            }
+        }
     }
     
     public final PhysicalState getPhysicalState(SubstanceState state, boolean canCreate)
