@@ -35,7 +35,6 @@ public final class BalanceSolver extends BaseObject
     private final int[][] fData = new int[9][10];
     private int[] fFactors;
 
-    private int fDimension;
     private int fElementsCount;
     private int fReagentsCount;
 
@@ -48,12 +47,12 @@ public final class BalanceSolver extends BaseObject
     {
         for (int i = 0; i < this.fElementsCount; i++) {
             if (this.fData[i][0] == elementId) {
-                return i + 1;
+                return i;
             }
         }
 
         this.fData[this.fElementsCount][0] = elementId;
-        return ++this.fElementsCount;
+        return this.fElementsCount++;
     }
 
     public final int getFactor(int reagentIndex)
@@ -64,10 +63,73 @@ public final class BalanceSolver extends BaseObject
     public final void setData(int elemIndex, int reagentIndex, boolean isProduct, int value)
     {
         if (isProduct) {
-            this.fData[elemIndex - 1][reagentIndex] -= value;
+            this.fData[elemIndex][reagentIndex] -= value;
         } else {
-            this.fData[elemIndex - 1][reagentIndex] += value;
+            this.fData[elemIndex][reagentIndex] += value;
         }
+    }
+
+    public final int balanceByLeastSquares()
+    {
+        int[][] A = new int[this.fReagentsCount - 1][this.fReagentsCount - 1];
+        int[] b = new int[A.length];
+
+        for (int i = 0; i < A.length; i++) {
+            // 'Cos `A` is a square matrix I use `A.length` field for the both sizes.
+            for (int j = 0; j < A.length; j++) {
+                for (int k = 0; k < this.fElementsCount; ++k) {
+                    A[i][j] += this.fData[k][i + 1] * this.fData[k][j + 1];
+                    if (0 == j)
+                    {
+                        b[i] -= this.fData[k][i + 1] * this.fData[k][this.fReagentsCount];
+                    }
+                }
+            }
+        }
+
+        // You're gonna cancel out the matrix `A` and vector `b`, aren't you?
+        int G = 0;
+        for (int i = 0; i < A.length; i++) {
+            int min = ExtMath.gcd(ExtMath.gcd(A[i], 0), b[i]);
+            for (int j = 0; j < A.length; j++) {
+                A[i][j] /= min;
+            }
+            b[i] /= min;
+        }
+
+        RefObject<Integer> refG = new RefObject<>(G);
+        A = this.inversion(A, refG);
+        G = refG.argValue;
+
+        if (G == 0) {
+            return BalanceSolver.RES_NoUniqueSolution;
+        }
+
+        b = this.multiply(A, b);
+
+        // WOW! The following is array resizing in Java?
+        int[] bTemp = new int[b.length + 1];
+        System.arraycopy(b, 0, bTemp, 0, b.length);
+        b = bTemp;
+        b[b.length - 1] = G;
+
+        simplify(b);
+        fFactors = b.clone();
+
+        int result = 0;
+        for (int i = 0; i < this.fElementsCount; i++) {
+            int r = 0;
+            for (int j = 0; j < this.fReagentsCount; j++) {
+                r += this.fData[i][j + 1] * this.fFactors[j];
+            }
+            result += Math.abs(r);
+        }
+        if (0 != result) {
+            java.util.Arrays.fill(fFactors, 1);
+            return BalanceSolver.RES_EquationCanNotBeBalanced;
+        }
+
+        return result;
     }
 
     /**
@@ -88,7 +150,7 @@ public final class BalanceSolver extends BaseObject
      * On input this is a previous permutation of the sequence. On return this is the next one.
      * On the first call to the method this array must be a sequence with ascending order.
      * On each consecutive call the method generates the next permutation in-place.
-     * @param teken
+     * @param parity
      * parity of the transpositions of the previous permutation ("parity of the permutation").
      * @return parity of the transpositions made during this permutation (-1 for odd and 1 for even).
      *
@@ -101,7 +163,7 @@ public final class BalanceSolver extends BaseObject
      * the shortest paths between nodes in a graph. Not for finding possible commutation of elements. Do I confuse
      * with that?
      */
-    private static int dijkstra(int[] permutation, int teken)
+    private static int dijkstra(int[] permutation, int parity)
     {
         /*
          * Search inversions.
@@ -123,7 +185,7 @@ public final class BalanceSolver extends BaseObject
         while (permutation[i - 1] >= permutation[j]) {
             --j;
         }
-        teken = -teken;  // zsv: I like it better
+        parity = -parity;  // zsv: I like it better
         /*
          * Move a bigger element to the left. And because initially, at the first call to `dijkstra`, the `permutation` was
          * an ordered sequence, now, after the swap, subrange [{i}, {last}) has descending order, if you look on it from
@@ -136,29 +198,30 @@ public final class BalanceSolver extends BaseObject
          */
         j = permutation.length - 1;
         while (i < j) {
-            teken = -teken;
+            parity = -parity;
             swap(permutation, i, j);
             ++i;
             --j;
         }
-        return teken;
+        return parity;
     }
 
+    // The method returns the matrix of cofactors not the inverse of `mtx`!
     private int[][] inversion(int[][] mtx, RefObject<Integer> det)
     {
-        if (this.fDimension < 1) {
+        if (mtx.length < 1) {
             throw new RuntimeException("Inversion: wrong input");
         }
 
-        int[][] invert = new int[this.fDimension + 1][this.fDimension + 1];
+        int[][] invert = new int[mtx.length][mtx.length];
 
         det.argValue = 0;
-        for (int i = 1; i <= this.fDimension; i++) {
-            for (int j = 1; j <= this.fDimension; j++) {
-                invert[i][j] = getCofactor(j, i, this.fDimension, mtx);
+        for (int i = 0; i < invert.length; i++) {
+            for (int j = 0; j < invert.length; j++) {
+                invert[i][j] = getCofactor(j, i, mtx, mtx.length);
             }
-            // Now, here, the first row in `invert` matrix is initialized (invert[1][{any}]).
-            det.argValue += mtx[i][1] * invert[1][i];
+            // Now, here, the first row in `invert` matrix is initialized (invert[0][{any}]).
+            det.argValue += mtx[i][0] * invert[0][i];
         }
 
         return invert;
@@ -166,21 +229,18 @@ public final class BalanceSolver extends BaseObject
 
     private int[] multiply(int[][] een, int[] twee)
     {
-        int[] uit = new int[this.fDimension + 1];
-
-        for (int i = 1; i <= this.fDimension; i++) {
-            uit[i] = 0;
-            for (int j = 1; j <= this.fDimension; j++) {
+        int[] uit = new int[een.length];
+        for (int i = 0; i < uit.length; i++) {
+            for (int j = 0; j < uit.length; j++) {
                 uit[i] += een[i][j] * twee[j];
             }
         }
-
         return uit;
     }
 
     private void simplify(int[] b)
     {
-        int from = 1;
+        int from = 0;
         int gcd = ExtMath.gcd(b, from);
         for (int i = from; i < b.length; i++) {
             b[i] = Math.abs(b[i] / gcd);
@@ -193,16 +253,14 @@ public final class BalanceSolver extends BaseObject
      * Row index of entry for which the method calculates cofactor.
      * @param column
      * Column index of entry for which the method calculates cofactor.
-     * @param size
      * @param mtx
-     * Source matrix for which cofactors are calculated.
-     * It's a square matrix of size (`size + 1`) x (`size + 1`) but code actually uses a submatrix
-     * formed by deleting the 1st row and 1st column (therefore the method ignores 0th row and column in this
-     * matrix).
+     * Source matrix for which cofactors are calculated. It's a square matrix of size `size` x `size`.
+     * @param size
+     * Size of `mtx`. Can be removed from the code; it can use `mtx.length` property instead.
      * @return 
      * Cofactor 'C' of the entry (`row`, `column`).
      */
-    private static int getCofactor(int row, int column, int size, int[][] mtx)
+    private static int getCofactor(int row, int column, int[][] mtx, int size)
     {
         if ((size < 1) || (size > 8)) {
             // Why such limits?
@@ -212,11 +270,11 @@ public final class BalanceSolver extends BaseObject
          // We're about to calculate determinant of the `mtx` _sub_matrix (a matrix without one row and column).
         int[] permutation = new int[size - 1];
          /*
-         * Number of all possible commutations of numbers in `rij` is factorial of `rij` length.
-         */
+          * Number of all possible commutations of numbers in `permutation` is factorial of `permutation` length.
+          */
         int numberOfPermutations = 1;
         for (int k = 0; k < permutation.length; k++) {
-            permutation[k] = k + 1;
+            permutation[k] = k;
             numberOfPermutations *= k + 1;
         }
         int minor = 0;
@@ -224,15 +282,15 @@ public final class BalanceSolver extends BaseObject
         int sgn = 1;
         for (int m = 0; m < numberOfPermutations; ++m) {
             if (0 < m) {
-                // Find a permutation; for the first iteration use `rij` as the first possible permutation.
+                // Find a permutation; for the first iteration use `permutation` as the first possible permutation.
                 sgn = dijkstra(permutation, sgn);
             }
 
             int value = sgn;
-            for (int k = 1; k <= permutation.length; k++) {
+            for (int k = 0; k < permutation.length; k++) {
                 // "delete" the `row`-th row and `column`-th column.
                 int i = (k >= row) ? k + 1 : k;
-                int j = (permutation[k - 1] >= column) ? permutation[k - 1] + 1 : permutation[k - 1];
+                int j = (permutation[k] >= column) ? permutation[k] + 1 : permutation[k];
                 value *= mtx[i][j];
             }
             minor += value;
@@ -240,117 +298,5 @@ public final class BalanceSolver extends BaseObject
         // Get cofactor of the entry in the `row`-th row and `column`-th column (it's the product of 
         // (-1)^(`row` + `column`) and `minor`).
         return 0 != ((row + column) % 2) ? -minor : minor;
-    }
-
-    public final int balanceByLeastSquares()
-    {
-        int[][] A = new int[this.fReagentsCount][this.fReagentsCount];
-        int[] b = new int[this.fReagentsCount];
-
-        for (int i = 1; i < A.length; i++) {
-            // 'Cos `A` is a square matrix I use `A.length` field for the both sizes.
-            for (int j = 1; j < A.length; j++) {
-                for (int k = 0; k < this.fElementsCount; ++k) {
-                    A[i][j] += this.fData[k][i] * this.fData[k][j];
-                    if (1 == j)
-                    {
-                        b[i] -= this.fData[k][i] * this.fData[k][this.fReagentsCount];
-                    }
-                }
-            }
-        }
-
-        /*
-         * The first column and the first row in `A` matrix and the first element in `b` vector are all zeros.
-         * Can we remove them and change sizes of the object? This requires more deeply code analysis.
-         */
-
-        // You're gonna cancel out the matrix `A` and vector `b`, aren't you?
-        int G = 0;
-        for (int i = 1; i < this.fReagentsCount; i++) {
-            int min = 0;
-            int twee = 0;
-
-            /*
-             * The following `for` loop is modified GCD algorithm for vectors. You already have the implementation
-             * of `ExtMath.gcd` method overloaded for arrays. Currently I can't use it because it calculates GCD
-             * starting from the element with '0' index. Code below starts from index '1'.
-             */
-            for (int j = 1; j < this.fReagentsCount; j++) {
-                if (0 != A[i][j]) {
-                    if (0 != twee) {
-                        // Here we have slightly modified GCD calculation that doesn't allow zeros in any arguments.
-                        // (Is it required by the algorithm? If no we can remove one of `if's` above).
-                        G = ExtMath.gcd(A[i][j], twee);
-                        if ((min == 0) || (G < min)) {
-                            min = G;
-                        }
-                    }
-                    twee = A[i][j];
-                }
-            }
-
-            if (0 != b[i]) {
-                // `twee` can be zero here and we don't check it. Therefore I believe we can allow one zero-value
-                // argument in the code above as we do here (thus removing `if (0 != twee)` statement).
-                G = ExtMath.gcd(b[i], twee);
-                if ((min == 0) || (G < min)) {
-                    min = G;
-                }
-            }
-
-            for (int j = 1; j < this.fReagentsCount; j++) {
-                A[i][j] /= min;
-            }
-            b[i] /= min;
-        }
-
-        int result = 0;
-        this.fDimension = this.fReagentsCount - 1;
-
-        RefObject<Integer> refG = new RefObject<>(G);
-        A = this.inversion(A, refG);
-        G = refG.argValue;
-
-        if (G == 0) {
-            return BalanceSolver.RES_NoUniqueSolution;
-        }
-
-        b = this.multiply(A, b);
-
-        // WOW! The following is array resizing in Java?
-        int[] bTemp = new int[this.fReagentsCount + 1];
-        System.arraycopy(b, 0, bTemp, 0, b.length);
-        b = bTemp;
-        b[b.length - 1] = G;
-
-        this.simplify(b);
-
-        // What about using of `b.clone` method?
-        // `fFactors = b.clone();`
-        this.fFactors = new int[this.fReagentsCount + 1];
-        for (int i = 1; i <= this.fReagentsCount; i++) {
-            this.fFactors[i] = b[i];
-        }
-
-        // `result` is zero here...
-        for (int i = 0; i < this.fElementsCount; i++) {
-            int r = 0;
-            for (int j = 1; j <= this.fReagentsCount; j++) {
-                r += this.fData[i][j] * this.fFactors[j];
-            }
-            result += Math.abs(r);
-        }
-        // ... you have been adding NON-NEGATIVE numbers (`result += Math.abs(r)`)...
-        // How `result` may become a negative number? Why do you check it below? Did you intent to check for 0?
-        if (0 != result) {
-            for (int i = 1; i <= this.fReagentsCount; i++) {
-                this.fFactors[i] = 1;
-            }
-            
-            return BalanceSolver.RES_EquationCanNotBeBalanced;
-        }
-
-        return result;
     }
 }
