@@ -19,7 +19,7 @@ package bslib.math;
 
 /**
  *
- * @author Serg V. Zhdanovskih
+ * @author Serg V. Zhdanovskih, Ruslan N. Garipov
  */
 public final class ExtMath
 {

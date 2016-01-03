@@ -44,10 +44,12 @@ public class Beaker extends LabDevice
     @Override
     protected void updateState(long time)
     {
+        super.updateState(time);
+        
         // every 50 milliseconds
         long dTime = time - this.fPrevTick;
         if (dTime >= 1000) {
-            this.equalizeTemperatures();
+            //this.equalizeTemperatures();
 
             this.fPrevTick = time;
         }
