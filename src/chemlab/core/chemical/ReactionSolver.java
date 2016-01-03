@@ -220,8 +220,7 @@ public class ReactionSolver extends BaseObject
                 for (int k = 0; k < subst.getElementCount(); k++) {
                     CompoundElement element = subst.getElement(k);
                     int eNum = CLData.ElementsBook.findElementNumber(element.Symbol);
-                    int m = bal.addElement(eNum);
-                    bal.setData(m, i + 1, subst.Type == SubstanceType.Product, (int) (Math.round(element.Index)));
+                    bal.setData(bal.addElement(eNum), i + 1, subst.Type == SubstanceType.Product, (int) (Math.round(element.Index)));
                 }
             }
 
@@ -236,7 +235,7 @@ public class ReactionSolver extends BaseObject
 
             for (int i = 0; i < this.fSubstances.size(); i++) {
                 Substance subst = this.getSubstance(i);
-                subst.Factor = bal.getFactor(i + 1);
+                subst.Factor = bal.getFactor(i);
             }
 
             result = true;
