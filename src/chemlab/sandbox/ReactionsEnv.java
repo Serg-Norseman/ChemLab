@@ -21,7 +21,7 @@ import bslib.common.RefObject;
 import chemlab.core.chemical.CLData;
 import chemlab.core.chemical.ChemUtils;
 import chemlab.core.chemical.Substance;
-import chemlab.refbooks.CompoundRecord;
+import chemlab.database.CompoundRecord;
 import chemlab.refbooks.RadicalRecord;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class ReactionsEnv
         this.fSubstances.add(subst);
     }
     
-    private RadicalRecord clearRadical(RadicalRecord rad)
+    /*private RadicalRecord clearRadical(RadicalRecord rad)
     {
         RefObject<String> refFormula = new RefObject<>(rad.Formula);
         ChemUtils.extractNumber(refFormula, 0);
@@ -80,11 +80,11 @@ public class ReactionsEnv
         }
         
         return true;
-    }
+    }*/
     
     public final void search()
     {
-        List<CompoundRecord> sourceCompounds = new ArrayList<>();
+        /*List<CompoundRecord> sourceCompounds = new ArrayList<>();
         List<RadicalRecord> sourceRadicals = new ArrayList<>();
         
         for (Substance subst : this.fSubstances) {
@@ -109,7 +109,7 @@ public class ReactionsEnv
                     this.fProducts.add(compRec);
                 }
             }
-        }
+        }*/
     }
     
     @Override
@@ -136,7 +136,7 @@ public class ReactionsEnv
                 res.append(" + ");
             }
             
-            res.append(subst.Formula);
+            res.append(subst.getFormula());
         }
         
         return res.toString();

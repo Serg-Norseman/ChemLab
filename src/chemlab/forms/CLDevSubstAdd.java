@@ -23,9 +23,9 @@ import chemlab.core.chemical.SubstanceState;
 import chemlab.core.controls.experiment.LabDevice;
 import chemlab.core.measure.ChemUnits;
 import chemlab.core.measure.MeasureBox;
-import chemlab.refbooks.CompoundRecord;
-import chemlab.refbooks.CompoundsBook;
-import chemlab.refbooks.PhysicalState;
+import chemlab.database.CLDB;
+import chemlab.database.CompoundRecord;
+import chemlab.database.PhysicalState;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -78,9 +78,9 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
         panCompound = new JPanel();
         
         cmbCompounds = new JComboBox();
-        CompoundsBook cmbBook = CLData.CompoundsBook;
-        for (CompoundRecord cmp : cmbBook.getList()) {
-            String name = cmp.Formula;
+        CLDB cmbBook = CLData.Database;
+        for (CompoundRecord cmp : cmbBook.getAllCompounds()) {
+            String name = cmp.getFormula();
             cmbCompounds.addItem(new ComboItem(name, cmp));
         }
         cmbCompounds.setSelectedIndex(0);
@@ -184,7 +184,7 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
         }
 
         Measure<Double, ?> amount = meaAmount.getMeasure();
-        this.fDevice.addSubstance(this.fCompound.Formula, state, amount);
+        this.fDevice.addSubstance(this.fCompound.getFormula(), state, amount);
         this.fDevice.changeContents();
 
         this.setVisible(false);
@@ -202,9 +202,9 @@ public class CLDevSubstAdd extends JDialog implements ActionListener
                 this.fCompound = (item == null) ? null : (CompoundRecord) item.Data;
 
                 cmbStates.removeAllItems();
-                for (SubstanceState state : SubstanceState.values()) {
-                    PhysicalState ps = this.fCompound.getPhysicalState(state, false);
-                    if (ps != null) {
+                for (PhysicalState ps : this.fCompound.getStates()) {
+                    SubstanceState state = ps.getState();
+                    if (state != null) {
                         cmbStates.addItem(new ComboItem(state.name(), state));
                     }
                 }

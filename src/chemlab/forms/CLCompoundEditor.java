@@ -18,14 +18,12 @@
 package chemlab.forms;
 
 import bslib.common.Logger;
-import chemlab.refbooks.CompoundRecord;
-import chemlab.refbooks.RadicalRecord;
+import chemlab.database.CompoundRecord;
 import chemlab.vtable.VirtualTable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -123,7 +121,7 @@ public class CLCompoundEditor extends JDialog implements ActionListener
     private void updateControls()
     {
         try {
-            this.tblNames.clear();
+            /*this.tblNames.clear();
             for (Map.Entry<String, String> entry : this.fCompound.Names.entrySet()) {
                 Object[] rowData = new Object[]{
                     entry.getKey(),
@@ -141,7 +139,7 @@ public class CLCompoundEditor extends JDialog implements ActionListener
                 };
                 this.tblRadicals.addRow(rowData);
             }
-            this.tblRadicals.packColumns(10);
+            this.tblRadicals.packColumns(10);*/
         } catch (Exception ex) {
             Logger.write(ex.getMessage());
         }

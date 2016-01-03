@@ -18,12 +18,19 @@
 package chemlab.database;
 
 import bslib.common.AuxUtils;
-import chemlab.refbooks.CompoundRecord;
+import chemlab.core.chemical.SubstanceState;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -51,6 +58,10 @@ public class CLDB
 
     private Connection fConnection = null;
     private Statement fStatement = null;
+
+    private ConnectionSource fSource;
+    private Dao<CompoundRecord, String> fCompoundsDao;
+    private Dao<PhysicalState, String> fPhysStatesDao;
 
     private CLDB() throws ClassNotFoundException
     {
@@ -90,7 +101,7 @@ public class CLDB
                 fStatement.executeUpdate("insert into parameters values('db:Version', '" + DB_VERSION + "')");
 
                 fStatement.executeUpdate("create table compounds (formula string primary key, mass numeric)");
-                fStatement.executeUpdate("create table compound_states (formula string primary key, state integer, color integer, gibbs_free_energy numeric, heat_formation numeric, specific_heat numeric, std_entropy numeric, density numeric)");
+                fStatement.executeUpdate("create table compound_states (id integer primary key autoincrement, formula string, state integer, color integer, gibbs_free_energy numeric, heat_formation numeric, specific_heat numeric, std_entropy numeric, density numeric)");
             } else {
                 
             }
@@ -105,6 +116,12 @@ public class CLDB
                 System.out.println("name = " + rs.getString("name"));
                 System.out.println("id = " + rs.getInt("id"));
             }*/
+            
+            this.fConnection.close();
+
+            this.fSource = new JdbcConnectionSource("jdbc:sqlite:" + dbName);
+            this.fCompoundsDao = DaoManager.createDao(this.fSource, CompoundRecord.class);
+            this.fPhysStatesDao = DaoManager.createDao(this.fSource, PhysicalState.class);
         } catch (SQLException e) {
             // if the error message is "out of memory", 
             // it probably means no database file is found
@@ -133,12 +150,85 @@ public class CLDB
         return fStatement.executeQuery(instruction);
     }
 
-    public CompoundRecord getCompound(String formula)
+
+    public List<CompoundRecord> getAllCompounds()
     {
         try {
-            CompoundRecord compRec = new CompoundRecord(formula, this);
-            return compRec;
-        } catch (SQLException e) {
+            return fCompoundsDao.queryForAll();
+        } catch (SQLException ex) {
+            // debug
+            return new ArrayList<>();
+        }
+    }
+
+    public CompoundRecord newCompound()
+    {
+        return new CompoundRecord(this.fCompoundsDao);
+    }
+
+    public CompoundRecord getCompound(String formula, boolean canCreate)
+    {
+        try {
+            CompoundRecord comp = fCompoundsDao.queryForId(formula);
+
+            if (comp == null && canCreate) {
+                comp = this.newCompound();
+                comp.setFormula(formula);
+                comp.create();
+            }
+
+            if (comp != null) {
+                comp.refresh();
+            }
+
+            return comp;
+        } catch (SQLException ex) {
+            // debug
+            return null;
+        }
+    }
+
+    public PhysicalState newPhysState()
+    {
+        return new PhysicalState(this.fPhysStatesDao);
+    }
+
+    public final PhysicalState getPhysicalState(String formula, SubstanceState state, boolean canCreate)
+    {
+        try {
+            if (state == null || state == SubstanceState.Ion) {
+                return null;
+            }
+
+            CompoundRecord comp = this.getCompound(formula, canCreate);
+            if (comp == null) {
+                return null;
+            }
+
+            PhysicalState result = null;
+
+            ForeignCollection<PhysicalState> states = comp.getStates();
+            for (PhysicalState st : states) {
+                if (st.getState() == state) {
+                    result = st;
+                    break;
+                }
+            }
+
+            if (result == null && canCreate) {
+                result = this.newPhysState();
+                result.setCompound(comp);
+                result.setState(state);
+                result.create();
+            }
+
+            if (result != null) {
+                result.refresh();
+            }
+
+            return result;
+        } catch (SQLException ex) {
+            // debug
             return null;
         }
     }

@@ -17,8 +17,8 @@
  */
 package chemlab.core.chemical;
 
-import chemlab.refbooks.CompoundRecord;
-import chemlab.refbooks.PhysicalState;
+import chemlab.database.CompoundRecord;
+import chemlab.database.PhysicalState;
 import java.awt.Color;
 
 /**
@@ -76,7 +76,7 @@ public class Substance extends CompoundSolver
     protected final CompoundRecord getRecord()
     {
         if (this.fRecord == null) {
-            this.fRecord = CLData.CompoundsBook.checkCompound(this.Formula);
+            this.fRecord = CLData.Database.getCompound(this.Formula, false);
         }
         
         return this.fRecord;
@@ -85,7 +85,7 @@ public class Substance extends CompoundSolver
     public PhysicalState getPhysicalState(SubstanceState state)
     {
         CompoundRecord record = this.getRecord();
-        return (record == null) ? null : record.getPhysicalState(state, false);
+        return (record == null) ? null : record.getPhysicalState(state);
     }
 
     /**
@@ -100,7 +100,7 @@ public class Substance extends CompoundSolver
     public final double getMolarHeatCapacity(SubstanceState state)
     {
         PhysicalState physState = this.getPhysicalState(state);
-        return (physState == null) ? Double.NaN : physState.MolarHeatCapacity;
+        return (physState == null) ? Double.NaN : physState.getMolarHeatCapacity();
     }
 
     /*public final double getDensity()
@@ -112,7 +112,7 @@ public class Substance extends CompoundSolver
     public final double getDensity(SubstanceState state)
     {
         PhysicalState physState = this.getPhysicalState(state);
-        return (physState == null) ? Double.NaN : physState.Density;
+        return (physState == null) ? Double.NaN : physState.getDensity();
     }
     
     public final Color getColor(SubstanceState state)
@@ -121,7 +121,7 @@ public class Substance extends CompoundSolver
         
         Color color;
         if (physState != null) {
-            color = physState.Color;
+            color = physState.getColor();
         } else {
             switch (state) {
                 case Solid:
@@ -160,7 +160,7 @@ public class Substance extends CompoundSolver
     public final double getHeatOfFormation(SubstanceState state)
     {
         PhysicalState physState = this.getPhysicalState(state);
-        return (physState == null) ? Double.NaN : physState.HeatFormation;
+        return (physState == null) ? Double.NaN : physState.getHeatFormation();
     }
 
     public final double getGibbsFreeEnergy()
@@ -171,7 +171,7 @@ public class Substance extends CompoundSolver
     public final double getGibbsFreeEnergy(SubstanceState state)
     {
         PhysicalState physState = this.getPhysicalState(state);
-        return (physState == null) ? Double.NaN : physState.GibbsFreeEnergy;
+        return (physState == null) ? Double.NaN : physState.getGibbsFreeEnergy();
     }
 
     public final double getStandardEntropy()
@@ -182,7 +182,7 @@ public class Substance extends CompoundSolver
     public final double getStandardEntropy(SubstanceState state)
     {
         PhysicalState physState = this.getPhysicalState(state);
-        return (physState == null) ? Double.NaN : physState.StdEntropy;
+        return (physState == null) ? Double.NaN : physState.getStdEntropy();
     }
 
     public final double SolubilityAt(double temperature)

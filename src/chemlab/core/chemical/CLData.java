@@ -17,16 +17,11 @@
  */
 package chemlab.core.chemical;
 
-import bslib.common.AuxUtils;
 import chemlab.database.CLDB;
 import chemlab.refbooks.AllotropeRecord;
-import chemlab.refbooks.CompoundRecord;
-import chemlab.refbooks.CompoundsBook;
 import chemlab.refbooks.DecayBook;
 import chemlab.refbooks.ElementsBook;
 import chemlab.refbooks.NuclidesBook;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  *
@@ -57,7 +52,6 @@ public class CLData
     public static final ElementsBook ElementsBook;
     public static final NuclidesBook NuclidesBook;
     public static final DecayBook DecayBook;
-    public static final CompoundsBook CompoundsBook;
     public static final CLDB Database = CLDB.getInstance();
 
 
@@ -93,44 +87,59 @@ public class CLData
         ElementsBook = new ElementsBook();
         NuclidesBook = new NuclidesBook();
         DecayBook = new DecayBook();
-        
-        CompoundsBook = new CompoundsBook();
-        CompoundsBook.loadXML();
     }
 
     public static void transferData()
     {
-        System.out.println("records: " + CompoundsBook.size());
-        
-        for (int i = 0; i < CompoundsBook.size(); i++) {
-            CompoundRecord oldRec = CompoundsBook.get(i);
-            
-            CompoundRecord newRec = Database.getCompound(oldRec.Formula);
-            double mMass = oldRec.getMolecularMass();
-            
-            if (mMass == 0.0) {
-                try {
-                    CompoundSolver fCompoundMaster = new CompoundSolver();
-                    fCompoundMaster.Formula = oldRec.Formula;
-                    fCompoundMaster.Charge = 0;
-                    fCompoundMaster.analyse();
-                    fCompoundMaster.loadData();
-                    fCompoundMaster.calculateMolecularMass();
-                    mMass = fCompoundMaster.getMolecularMass();
-                } catch (Exception ex) {
-                }
-            }
-            
-            newRec.setMolecularMass(mMass);
-        }
+        /*System.out.println("records: " + CompoundsBook.size());
         
         try {
-        ResultSet rs = Database.execQuery("select count(*) as cnt from compounds");
-        rs.next();
-        System.out.println("records 2: " + rs.getString("cnt"));
+            for (int i = 0; i < CompoundsBook.size(); i++) {
+                CompoundRecord oldRec = CompoundsBook.get(i);
+
+                CompoundRec newRec = Database.getCompound(oldRec.Formula, true);
+                double mMass = oldRec.getMolecularMass();
+
+                if (mMass == 0.0) {
+                    try {
+                        CompoundSolver fCompoundMaster = new CompoundSolver();
+                        fCompoundMaster.Formula = oldRec.Formula;
+                        fCompoundMaster.Charge = 0;
+                        fCompoundMaster.analyse();
+                        fCompoundMaster.loadData();
+                        fCompoundMaster.calculateMolecularMass();
+                        mMass = fCompoundMaster.getMolecularMass();
+                    } catch (Exception ex) {
+                    }
+                }
+
+                newRec.setMolecularMass(mMass);
+                newRec.update();
+                
+                for (PhysicalState oldState : oldRec.fPhysicalStates) {
+                    if (oldState == null) {
+                        continue;
+                    }
+                    
+                    PhysStateRec newPhys = Database.getPhysicalState(oldRec.Formula, oldState.State, true);
+
+                    newPhys.setDensity(oldState.Density);
+                    newPhys.setColor(oldState.Color);
+                    newPhys.setHeatFormation(oldState.HeatFormation);
+                    newPhys.setGibbsFreeEnergy(oldState.GibbsFreeEnergy);
+                    newPhys.setStdEntropy(oldState.StdEntropy);
+                    newPhys.setMolarHeatCapacity(oldState.MolarHeatCapacity);
+
+                    newPhys.update();
+                }
+            }
+
+            ResultSet rs = Database.execQuery("select count(*) as cnt from compounds");
+            rs.next();
+            System.out.println("records 2: " + rs.getString("cnt"));
         } catch (SQLException ex) {
             System.out.println("error2");
-        }
+        }*/
         
         // to future
         // CompoundRecord compRec = CLData.CompoundsBook.checkCompound(formula);

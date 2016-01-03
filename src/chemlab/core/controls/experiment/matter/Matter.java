@@ -6,8 +6,8 @@ import chemlab.core.chemical.ChemFuncs;
 import chemlab.core.chemical.Substance;
 import chemlab.core.chemical.SubstanceState;
 import chemlab.core.measure.ChemUnits;
-import chemlab.refbooks.CompoundRecord;
-import chemlab.refbooks.PhysicalState;
+import chemlab.database.CompoundRecord;
+import chemlab.database.PhysicalState;
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Volume;
@@ -130,12 +130,12 @@ public abstract class Matter extends Substance
         if (state == SubstanceState.Liquid || state == SubstanceState.Gas) {
             Measure<Double, Volume> volume = (Measure<Double, Volume>)amount;
 
-            CompoundRecord compound = CLData.CompoundsBook.checkCompound(formula);
+            CompoundRecord compound = CLData.Database.getCompound(formula, false);
             if (compound == null) return null; // TODO: exception!
-            PhysicalState physState = compound.getPhysicalState(state, false);
+            PhysicalState physState = compound.getPhysicalState(state);
             if (physState == null) return null; // TODO: exception!
 
-            Measure<Double, VolumetricDensity> density = Measure.valueOf(physState.Density, ChemConsts.STD_REF_DENSITY_UNIT); // g/cm³!
+            Measure<Double, VolumetricDensity> density = Measure.valueOf(physState.getDensity(), ChemConsts.STD_REF_DENSITY_UNIT); // g/cm³!
 
             measMass = ChemFuncs.volumeToMass(volume, density); // just in grams
         } else {

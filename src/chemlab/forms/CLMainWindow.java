@@ -21,7 +21,6 @@ import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
 import bslib.common.ImageHelper;
 import bslib.common.Logger;
-import chemlab.core.chemical.CLData;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -243,7 +242,7 @@ public final class CLMainWindow extends JFrame implements ActionListener
             @Override
             public void windowClosing(WindowEvent e)
             {
-                CLData.CompoundsBook.saveXML();
+                // dummy
             }
         });
     }

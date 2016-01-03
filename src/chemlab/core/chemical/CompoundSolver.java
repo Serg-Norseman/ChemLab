@@ -20,7 +20,7 @@ package chemlab.core.chemical;
 import bslib.common.BaseObject;
 import bslib.common.RefObject;
 import bslib.common.StringHelper;
-import chemlab.refbooks.CompoundRecord;
+import chemlab.database.CompoundRecord;
 import chemlab.refbooks.ElementRecord;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -378,7 +378,7 @@ public class CompoundSolver extends BaseObject
         
         // data
         if (!sub && this.Charge == 0) {
-            CompoundRecord compRec = CLData.CompoundsBook.checkCompound(this.Formula);
+            CompoundRecord compRec = CLData.Database.getCompound(this.Formula, true);
         }
     }
 
