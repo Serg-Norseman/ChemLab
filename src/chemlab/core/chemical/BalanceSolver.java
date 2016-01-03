@@ -35,7 +35,6 @@ public final class BalanceSolver extends BaseObject
     private final int[][] fData = new int[9][10];
     private int[] fFactors;
 
-    private int fDimension;
     private int fElementsCount;
     private int fReagentsCount;
 
@@ -48,12 +47,12 @@ public final class BalanceSolver extends BaseObject
     {
         for (int i = 0; i < this.fElementsCount; i++) {
             if (this.fData[i][0] == elementId) {
-                return i + 1;
+                return i;
             }
         }
 
         this.fData[this.fElementsCount][0] = elementId;
-        return ++this.fElementsCount;
+        return this.fElementsCount++;
     }
 
     public final int getFactor(int reagentIndex)
@@ -64,235 +63,39 @@ public final class BalanceSolver extends BaseObject
     public final void setData(int elemIndex, int reagentIndex, boolean isProduct, int value)
     {
         if (isProduct) {
-            this.fData[elemIndex - 1][reagentIndex] -= value;
+            this.fData[elemIndex][reagentIndex] -= value;
         } else {
-            this.fData[elemIndex - 1][reagentIndex] += value;
+            this.fData[elemIndex][reagentIndex] += value;
         }
-    }
-
-    private static int teken(int L)
-    {
-        return 1 - 2 * (L % 2);
-    }
-
-    /*
-     * `private static int swap(int[] permutation, int k, int m, int teken)`
-     * 'teken' ain't used in the swap operation; I believe it must be removed from the argument list. I mean 'teken' is
-     * independent of swap op itself, it is some kind of invariant from point of view of the "swap".
-     */
-    private static void swap(int[] permutation, int k, int m)
-    {
-        int tmp = permutation[m];
-        permutation[m] = permutation[k];
-        permutation[k] = tmp;
-    }
-
-    private static int dijkstra(int[] permutation, int teken)
-    {
-        /*
-         * The only place where `dijkstra` is called is `subdeterminant` method. `permutation` argument there can't
-         * be zero. Therefore I believe the following `?:` operator is unnecessary.
-         * Moreover, see the comment below...
-         */
-//        int N = (permutation != null) ? permutation.length : 0;
-        /*
-         * `N` can be zero here. If so you _can_ get an "access violation" if you would write the following code
-         * in native C++:
-         *
-         * `int i = N - 1;`  // `N` is zero!
-         * `... permutation[i - 1] ...` IT IS `... permutation[-2] ...` -- how do Java handle this?
-         *
-         * May be it would be better to check length of `permutation`? Something like `assert(1 < permutation.length);`
-         */
-//        int i = N - 1;
-        int i = permutation.length - 1;
-        while (permutation[i - 1] >= permutation[i]) {
-            i--;
-        }
-        int j = permutation.length;
-        while (permutation[j - 1] <= permutation[i - 1]) {
-            j--;
-        }
-        teken = -teken;  // zsv: I like it better
-        swap(permutation, i - 1, j - 1);
-        i++;
-        j = permutation.length;
-        if (i < j) {
-            do {
-                teken = -teken;
-                swap(permutation, i - 1, j - 1);
-                i++;
-                j--;
-            } while (i < j);
-        }
-
-        return teken;
-    }
-
-    private int[][] inversion(int[][] mtx, RefObject<Integer> det)
-    {
-        if (this.fDimension < 1) {
-            throw new RuntimeException("Inversion: wrong input");
-        }
-
-        int[][] invert = new int[this.fDimension + 1][this.fDimension + 1];
-
-        det.argValue = 0;
-        for (int i = 1; i <= this.fDimension; i++) {
-            for (int j = 1; j <= this.fDimension; j++) {
-                invert[i][j] = subdeterminant(j, i, this.fDimension, mtx);
-            }
-
-            // Now, here, the first row in `invert` matrix is initialized (invert[1][{any}]).
-            det.argValue += mtx[i][1] * invert[1][i];
-        }
-
-        return invert;
-    }
-
-    private int[] multiply(int[][] een, int[] twee)
-    {
-        int[] uit = new int[this.fDimension + 1];
-
-        for (int i = 1; i <= this.fDimension; i++) {
-            uit[i] = 0;
-            for (int j = 1; j <= this.fDimension; j++) {
-                uit[i] += een[i][j] * twee[j];
-            }
-        }
-
-        return uit;
-    }
-
-    private void simplify(int[] b)
-    {
-        /*
-         * You've inverted elements in `b` array above ^... because implementation of `ExtMath.gcd` has a bug?
-         *  `ExtMath.gcd` fails on negative integers:
-         * (a) `ExtMath.gcd(10, -4)` returns -10,
-         * (b) `ExtMath.gcd(-10, 4)` returns 4.
-         * While both calls must return 2.
-         *
-         * If we'll fix it and allow negative integers in `ExtMath.gcd`, we can improve performance
-         * in many places I believe. But it looks like this will require updating of all algorithms here.
-         * I mean, why `b` has negative integers? What it means?..
-         *
-         * Can we use `ExtMath.gcd` overloaded for arrays here?
-         */
-        int min = ExtMath.gcd(b[this.fReagentsCount], b[this.fReagentsCount - 1]);
-
-        for (int i = 1; i <= this.fReagentsCount - 2; i++) {
-            int u = ExtMath.gcd(b[this.fReagentsCount], b[i]);
-            if (u < min) {
-                min = u;
-            }
-        }
-
-        for (int i = 1; i <= this.fReagentsCount; i++) {
-            b[i] = Math.abs(b[i] / min);
-        }
-    }
-
-    private static int subdeterminant(int ii, int jj, int ndm, int[][] mtx)
-    {
-        if ((ndm < 1) || (ndm > 8)) {
-            throw new RuntimeException("subdet: input invalid");
-        }
-
-        int[] rij = new int[ndm - 1];
-        for (int k = 0; k < rij.length; k++) {
-            rij[k] = k + 1;
-        }
-
-        int det = 0;
-        int even = 1;
-
-        int num8 = ExtMath.factorial(ndm - 1);
-        for (int m = 1; m <= num8; m++) {
-            if (m > 1) {
-                even = dijkstra(rij, even);
-            }
-
-            int term = even;
-
-            for (int k = 1; k <= ndm - 1; k++) {
-                int i = k + ((k >= ii) ? 1 : 0);
-                int j = rij[k - 1] + (int) ((rij[k - 1] >= jj) ? 1 : 0);
-                term *= mtx[i][j];
-            }
-            det += term;
-        }
-
-        int result = teken(ii + jj) * det;
-
-        return result;
     }
 
     public final int balanceByLeastSquares()
     {
-        int[][] A = new int[this.fReagentsCount][this.fReagentsCount];
-        int[] b = new int[this.fReagentsCount];
+        int[][] A = new int[this.fReagentsCount - 1][this.fReagentsCount - 1];
+        int[] b = new int[A.length];
 
-        for (int i = 1; i < A.length; i++) {
+        for (int i = 0; i < A.length; i++) {
             // 'Cos `A` is a square matrix I use `A.length` field for the both sizes.
-            for (int j = 1; j < A.length; j++) {
+            for (int j = 0; j < A.length; j++) {
                 for (int k = 0; k < this.fElementsCount; ++k) {
-                    A[i][j] += this.fData[k][i] * this.fData[k][j];
-                    if (1 == j)
+                    A[i][j] += this.fData[k][i + 1] * this.fData[k][j + 1];
+                    if (0 == j)
                     {
-                        b[i] -= this.fData[k][i] * this.fData[k][this.fReagentsCount];
+                        b[i] -= this.fData[k][i + 1] * this.fData[k][this.fReagentsCount];
                     }
                 }
             }
         }
 
-        /*
-         * The first column and the first row in `A` matrix and the first element in `b` vector are all zeros.
-         * Can we remove them and change sizes of the object? This requires more deeply code analysis.
-         */
-
         // You're gonna cancel out the matrix `A` and vector `b`, aren't you?
         int G = 0;
-        for (int i = 1; i < this.fReagentsCount; i++) {
-            int min = 0;
-            int twee = 0;
-
-            /*
-             * The following `for` loop is modified GCD algorithm for vectors. You already have the implementation
-             * of `ExtMath.gcd` method overloaded for arrays. Currently I can't use it because it calculates GCD
-             * starting from the element with '0' index. Code below starts from index '1'.
-             */
-            for (int j = 1; j < this.fReagentsCount; j++) {
-                if (0 != A[i][j]) {
-                    if (0 != twee) {
-                        // Here we have slightly modified GCD calculation that doesn't allow zeros in any arguments.
-                        // (Is it required by the algorithm? If no we can remove one of `if's` above).
-                        G = ExtMath.gcd(A[i][j], twee);
-                        if ((min == 0) || (G < min)) {
-                            min = G;
-                        }
-                    }
-                    twee = A[i][j];
-                }
-            }
-
-            if (0 != b[i]) {
-                // `twee` can be zero here and we don't check it. Therefore I believe we can allow one zero-value
-                // argument in the code above as we do here (thus removing `if (0 != twee)` statement).
-                G = ExtMath.gcd(b[i], twee);
-                if ((min == 0) || (G < min)) {
-                    min = G;
-                }
-            }
-
-            for (int j = 1; j < this.fReagentsCount; j++) {
+        for (int i = 0; i < A.length; i++) {
+            int min = ExtMath.gcd(ExtMath.gcd(A[i], 0), b[i]);
+            for (int j = 0; j < A.length; j++) {
                 A[i][j] /= min;
             }
             b[i] /= min;
         }
-
-        int result = 0;
-        this.fDimension = this.fReagentsCount - 1;
 
         RefObject<Integer> refG = new RefObject<>(G);
         A = this.inversion(A, refG);
@@ -305,38 +108,195 @@ public final class BalanceSolver extends BaseObject
         b = this.multiply(A, b);
 
         // WOW! The following is array resizing in Java?
-        int[] bTemp = new int[this.fReagentsCount + 1];
+        int[] bTemp = new int[b.length + 1];
         System.arraycopy(b, 0, bTemp, 0, b.length);
         b = bTemp;
         b[b.length - 1] = G;
 
-        this.simplify(b);
+        simplify(b);
+        fFactors = b.clone();
 
-        // What about using of `b.clone` method?
-        // `fFactors = b.clone();`
-        this.fFactors = new int[this.fReagentsCount + 1];
-        for (int i = 1; i <= this.fReagentsCount; i++) {
-            this.fFactors[i] = b[i];
-        }
-
-        // `result` is zero here...
+        int result = 0;
         for (int i = 0; i < this.fElementsCount; i++) {
             int r = 0;
-            for (int j = 1; j <= this.fReagentsCount; j++) {
-                r += this.fData[i][j] * this.fFactors[j];
+            for (int j = 0; j < this.fReagentsCount; j++) {
+                r += this.fData[i][j + 1] * this.fFactors[j];
             }
             result += Math.abs(r);
         }
-        // ... you have been adding NON-NEGATIVE numbers (`result += Math.abs(r)`)...
-        // How `result` may become a negative number? Why do you check it below? Did you intent to check for 0?
         if (0 != result) {
-            for (int i = 1; i <= this.fReagentsCount; i++) {
-                this.fFactors[i] = 1;
-            }
-            
+            java.util.Arrays.fill(fFactors, 1);
             return BalanceSolver.RES_EquationCanNotBeBalanced;
         }
 
         return result;
+    }
+
+    /**
+     * `private static int swap(int[] permutation, int k, int m, int teken)`
+     * 'teken' ain't used in the swap operation; I believe it must be removed from the argument list. I mean 'teken' is
+     * independent of swap op itself, it is some kind of invariant from point of view of the "swap".
+     */
+    private static void swap(int[] permutation, int k, int m)
+    {
+        int tmp = permutation[m];
+        permutation[m] = permutation[k];
+        permutation[k] = tmp;
+    }
+
+    /**
+     * Finds a next possible permutations of the given sequence.
+     * @param permutation
+     * On input this is a previous permutation of the sequence. On return this is the next one.
+     * On the first call to the method this array must be a sequence with ascending order.
+     * On each consecutive call the method generates the next permutation in-place.
+     * @param parity
+     * parity of the transpositions of the previous permutation ("parity of the permutation").
+     * @return parity of the transpositions made during this permutation (-1 for odd and 1 for even).
+     *
+     * Remarks
+     * The method implements generation in lexicographic order (https://en.wikipedia.org/wiki/Permutation#Generation_in_lexicographic_order).
+     *
+     * The sign of a permutation σ is defined as +1 if σ is even and −1 if σ is odd.
+     *
+     * [Ruslan N. Garipov]: Why is the method called 'dijkstra'? Dijkstra's algorithm is an algorithm for finding
+     * the shortest paths between nodes in a graph. Not for finding possible commutation of elements. Do I confuse
+     * with that?
+     */
+    private static int dijkstra(int[] permutation, int parity)
+    {
+        /*
+         * Search inversions.
+         *
+         * Search for an ordered subrange, starting from the last element in the array.
+         */
+        int i = permutation.length - 1;
+        while (permutation[i - 1] >= permutation[i]) {
+            --i;
+        }
+        /*
+         * Find a replacement for the "bad" element -- one that breaks ascending order after the subrange [{i}; {last}).
+         * Here {i} is an index of array element and "ascending order" is when you read the array from right to left.
+         *
+         * Since the caller of this method limits number of such calls to `permutation.length!` (length factorial)
+         * neither `i` not `j` may be negative number after subtractions made by `--` op.
+         */
+        int j = permutation.length - 1;
+        while (permutation[i - 1] >= permutation[j]) {
+            --j;
+        }
+        parity = -parity;  // zsv: I like it better
+        /*
+         * Move a bigger element to the left. And because initially, at the first call to `dijkstra`, the `permutation` was
+         * an ordered sequence, now, after the swap, subrange [{i}, {last}) has descending order, if you look on it from
+         * left to right (it also was such before the swap, but now the difference between each pair of neighbouring
+         * elements is always one).
+         */
+        swap(permutation, i - 1, j);
+        /*
+         * Reverse elements order in the [{i}, {last}) range.
+         */
+        j = permutation.length - 1;
+        while (i < j) {
+            parity = -parity;
+            swap(permutation, i, j);
+            ++i;
+            --j;
+        }
+        return parity;
+    }
+
+    // The method returns the matrix of cofactors not the inverse of `mtx`!
+    private int[][] inversion(int[][] mtx, RefObject<Integer> det)
+    {
+        if (mtx.length < 1) {
+            throw new RuntimeException("Inversion: wrong input");
+        }
+
+        int[][] invert = new int[mtx.length][mtx.length];
+
+        det.argValue = 0;
+        for (int i = 0; i < invert.length; i++) {
+            for (int j = 0; j < invert.length; j++) {
+                invert[i][j] = getCofactor(j, i, mtx, mtx.length);
+            }
+            // Now, here, the first row in `invert` matrix is initialized (invert[0][{any}]).
+            det.argValue += mtx[i][0] * invert[0][i];
+        }
+
+        return invert;
+    }
+
+    private int[] multiply(int[][] een, int[] twee)
+    {
+        int[] uit = new int[een.length];
+        for (int i = 0; i < uit.length; i++) {
+            for (int j = 0; j < uit.length; j++) {
+                uit[i] += een[i][j] * twee[j];
+            }
+        }
+        return uit;
+    }
+
+    private void simplify(int[] b)
+    {
+        int from = 0;
+        int gcd = ExtMath.gcd(b, from);
+        for (int i = from; i < b.length; i++) {
+            b[i] = Math.abs(b[i] / gcd);
+        }
+    }
+
+    /**
+     * Finds matrix cofactor of the specified entry.
+     * @param row
+     * Row index of entry for which the method calculates cofactor.
+     * @param column
+     * Column index of entry for which the method calculates cofactor.
+     * @param mtx
+     * Source matrix for which cofactors are calculated. It's a square matrix of size `size` x `size`.
+     * @param size
+     * Size of `mtx`. Can be removed from the code; it can use `mtx.length` property instead.
+     * @return 
+     * Cofactor 'C' of the entry (`row`, `column`).
+     */
+    private static int getCofactor(int row, int column, int[][] mtx, int size)
+    {
+        if ((size < 1) || (size > 8)) {
+            // Why such limits?
+            throw new RuntimeException("subdet: input invalid");
+        }
+
+         // We're about to calculate determinant of the `mtx` _sub_matrix (a matrix without one row and column).
+        int[] permutation = new int[size - 1];
+         /*
+          * Number of all possible commutations of numbers in `permutation` is factorial of `permutation` length.
+          */
+        int numberOfPermutations = 1;
+        for (int k = 0; k < permutation.length; k++) {
+            permutation[k] = k;
+            numberOfPermutations *= k + 1;
+        }
+        int minor = 0;
+        // The identity permutation is an even permutation (its signature is +1).
+        int sgn = 1;
+        for (int m = 0; m < numberOfPermutations; ++m) {
+            if (0 < m) {
+                // Find a permutation; for the first iteration use `permutation` as the first possible permutation.
+                sgn = dijkstra(permutation, sgn);
+            }
+
+            int value = sgn;
+            for (int k = 0; k < permutation.length; k++) {
+                // "delete" the `row`-th row and `column`-th column.
+                int i = (k >= row) ? k + 1 : k;
+                int j = (permutation[k] >= column) ? permutation[k] + 1 : permutation[k];
+                value *= mtx[i][j];
+            }
+            minor += value;
+        }
+        // Get cofactor of the entry in the `row`-th row and `column`-th column (it's the product of 
+        // (-1)^(`row` + `column`) and `minor`).
+        return 0 != ((row + column) % 2) ? -minor : minor;
     }
 }

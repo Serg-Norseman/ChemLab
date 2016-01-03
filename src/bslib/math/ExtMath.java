@@ -48,17 +48,22 @@ public final class ExtMath
     }
 
     /**
-     * Calculate the Greatest Common Divisor of numbers array.
-     * @param ia
-     * @return 
+     * Finds the greatest common divisor (GCD) of integers in the specified part of an array.
+     * @param numbers
+     * Source array of integers.
+     * @param first
+     * Index of the first element in 'numbers' where the method begins calculation of the GCD.
+     * The method calculates the GCD till the last element in the 'numbers'.
+     * @return
+     * The greatest common divisor of integers through the range [first, {last}] in the 'numbers'.
      */
-    public static int gcd(int[] ia)
+    public static int gcd(int[] numbers, int first)
     {
-        int res = ia[0];
-        for (int i = 1; i < ia.length; i++) {
-            res = ExtMath.gcd(res, ia[i]);
+        int result = numbers[first];
+        for (int i = first + 1; i < numbers.length; i++) {
+            result = ExtMath.gcd(result, numbers[i]);
         }
-        return res;
+        return result;
     }
 
     /**
