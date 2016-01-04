@@ -18,8 +18,10 @@
 package chemlab.forms;
 
 import bslib.common.Logger;
+import chemlab.database.CompoundName;
 import chemlab.database.CompoundRecord;
 import chemlab.vtable.VirtualTable;
+import com.j256.ormlite.dao.ForeignCollection;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -121,17 +123,18 @@ public class CLCompoundEditor extends JDialog implements ActionListener
     private void updateControls()
     {
         try {
-            /*this.tblNames.clear();
-            for (Map.Entry<String, String> entry : this.fCompound.Names.entrySet()) {
+            this.tblNames.clear();
+            ForeignCollection<CompoundName> states = this.fCompound.getNames();
+            for (CompoundName name : states) {
                 Object[] rowData = new Object[]{
-                    entry.getKey(),
-                    entry.getValue()
+                    name.getLang(),
+                    name.getName()
                 };
                 this.tblNames.addRow(rowData);
             }
             this.tblNames.packColumns(10);
 
-            this.tblRadicals.clear();
+            /*this.tblRadicals.clear();
             for (RadicalRecord rad : this.fCompound.Radicals) {
                 Object[] rowData = new Object[]{
                     rad.Formula,

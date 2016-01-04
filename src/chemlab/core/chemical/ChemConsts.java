@@ -32,13 +32,14 @@ public class ChemConsts
     public static final Unit<Mass> STD_MASS_UNIT = ChemUnits.GRAM;
     public static final Unit<VolumetricDensity> STD_REF_DENSITY_UNIT = ChemUnits.G_CM3; // for PhysicalState.Density
 
-    public static final double AVOGADRO = 6.0221413 * Math.pow(10, 23);
-    public static final double GAS_CONST_R = 8.3144621; // gas constant
-    public static final double BOLTZMAN_CONSTANT = GAS_CONST_R / AVOGADRO;
-    public static final double T0 = 298.15; // +25 °С (298,15 К)
+    public static final double AVOGADRO = 6.022140857 * Math.pow(10, 23); // units per mol
+    public static final double GAS_CONST_R = 8.3144598; // gas constant, J / (mol * K)
+    public static final double BOLTZMAN_CONSTANT = GAS_CONST_R / AVOGADRO; // J * K^-1
 
-    public static final double ATMOSPHERIC_PRESSURE = 100_000; // Pa
-    public static final double ROOM_TEMP = 273.15; // K, 0 °С
+    public static final double STD_ATMOSPHERIC_PRESSURE = 100_000; // Pa
+    public static final double STD_TEMP = 273.15; // K, 0 °С
+    public static final double ROOM_TEMP = 298.15; // K, +25 °С
+    public static final double T0 = ROOM_TEMP;
 
     // others
     public static final double GRAVITATIONAL_ACCELERATION = 9.8;

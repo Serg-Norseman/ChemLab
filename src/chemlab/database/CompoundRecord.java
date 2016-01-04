@@ -42,6 +42,9 @@ public final class CompoundRecord extends BaseDaoEnabled<CompoundRecord, String>
     @ForeignCollectionField
     private ForeignCollection<PhysicalState> fPhysicalStates;
 
+    @ForeignCollectionField
+    private ForeignCollection<CompoundName> fCompoundNames;
+
     //public final HashMap<String, String> Names;
     public CompoundRecord()
     {
@@ -82,6 +85,16 @@ public final class CompoundRecord extends BaseDaoEnabled<CompoundRecord, String>
     public void setStates(ForeignCollection<PhysicalState> states)
     {
         this.fPhysicalStates = states;
+    }
+
+    public ForeignCollection<CompoundName> getNames()
+    {
+        return this.fCompoundNames;
+    }
+
+    public void setNames(ForeignCollection<CompoundName> names)
+    {
+        this.fCompoundNames = names;
     }
 
     public final PhysicalState getPhysicalState(SubstanceState state)

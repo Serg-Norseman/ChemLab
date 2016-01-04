@@ -340,7 +340,7 @@ public class LabDevice extends BaseObject
             if (subst.getState() == SubstanceState.Liquid) {
                 Liquid liquid = (Liquid)subst;
 
-                if (liquid.getTemperature() >= Liquid.getBoilingTemperature(ChemConsts.ATMOSPHERIC_PRESSURE)) {
+                if (liquid.getTemperature() >= Liquid.getBoilingTemperature(ChemConsts.STD_ATMOSPHERIC_PRESSURE)) {
                     result = true;
                     break;
                 }
@@ -804,7 +804,7 @@ public class LabDevice extends BaseObject
         if (this.isContainer()) {
             for (Matter matter : this.fSubstances) {
                 if (matter instanceof Liquid) {
-                    Steam steam = ((Liquid) matter).addEnergy(energy, ChemConsts.ATMOSPHERIC_PRESSURE);
+                    Steam steam = ((Liquid) matter).addEnergy(energy, ChemConsts.STD_ATMOSPHERIC_PRESSURE);
 
                     if (this.isClosedSystem()) {
                         this.addMatter(steam, false);

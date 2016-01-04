@@ -17,6 +17,7 @@
  */
 package chemlab.core.controls.experiment;
 
+import chemlab.core.chemical.ChemConsts;
 import java.io.Serializable;
 
 /**
@@ -33,6 +34,8 @@ public abstract class Environment implements Serializable
     public Environment()
     {
         this.fParams = new ExperimentParams();
+        this.fPressure = ChemConsts.STD_ATMOSPHERIC_PRESSURE;
+        this.fTemperature = ChemConsts.ROOM_TEMP;
     }
 
     public Environment(double pressure, double temperature)

@@ -24,8 +24,8 @@ public final class Liquid extends Matter
     // approximate function
     public static double getBoilingTemperature(double pressure)
     {
-        double atmospheres = pressure / ChemConsts.ATMOSPHERIC_PRESSURE;
-        if (pressure < ChemConsts.ATMOSPHERIC_PRESSURE) {
+        double atmospheres = pressure / ChemConsts.STD_ATMOSPHERIC_PRESSURE;
+        if (pressure < ChemConsts.STD_ATMOSPHERIC_PRESSURE) {
             return Liquid.NORMAL_BOILING_POINT + 20 * Math.log(atmospheres);
         } else {
             return Liquid.NORMAL_BOILING_POINT + 100 * Math.log10(atmospheres);
@@ -37,9 +37,9 @@ public final class Liquid extends Matter
     public static double getBoilingPressure(double temperature)
     {
         if (temperature < Liquid.NORMAL_BOILING_POINT) {
-            return ChemConsts.ATMOSPHERIC_PRESSURE * Math.exp((temperature - Liquid.NORMAL_BOILING_POINT) / 20);
+            return ChemConsts.STD_ATMOSPHERIC_PRESSURE * Math.exp((temperature - Liquid.NORMAL_BOILING_POINT) / 20);
         } else {
-            return ChemConsts.ATMOSPHERIC_PRESSURE * Math.pow(10, (temperature - Liquid.NORMAL_BOILING_POINT) / 100);
+            return ChemConsts.STD_ATMOSPHERIC_PRESSURE * Math.pow(10, (temperature - Liquid.NORMAL_BOILING_POINT) / 100);
         }
     }
 

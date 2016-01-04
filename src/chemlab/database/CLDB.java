@@ -18,6 +18,7 @@
 package chemlab.database;
 
 import bslib.common.AuxUtils;
+import bslib.common.Logger;
 import chemlab.core.chemical.SubstanceState;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -39,7 +40,7 @@ import java.util.List;
  */
 public class CLDB
 {
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     
     private static CLDB fInstance;
 
@@ -62,6 +63,7 @@ public class CLDB
     private ConnectionSource fSource;
     private Dao<CompoundRecord, String> fCompoundsDao;
     private Dao<PhysicalState, String> fPhysStatesDao;
+    private Dao<CompoundName, String> fCompoundNamesDao;
 
     private CLDB() throws ClassNotFoundException
     {
@@ -95,7 +97,7 @@ public class CLDB
             } catch (SQLException ex) {
                 dbIsNew = true;
             }
-            
+
             if (dbIsNew) {
                 fStatement.executeUpdate("create table parameters (name string primary key, value string)");
                 fStatement.executeUpdate("insert into parameters values('db:Version', '" + DB_VERSION + "')");
@@ -103,25 +105,21 @@ public class CLDB
                 fStatement.executeUpdate("create table compounds (formula string primary key, mass numeric)");
                 fStatement.executeUpdate("create table compound_states (id integer primary key autoincrement, formula string, state integer, color integer, gibbs_free_energy numeric, heat_formation numeric, specific_heat numeric, std_entropy numeric, density numeric)");
             } else {
-                
+                if (dbVer < DB_VERSION) {
+                    if (DB_VERSION == 2) {
+                        fStatement.executeUpdate("create table if not exists compound_names (id integer primary key autoincrement, formula string, name string, lang string)");
+                    }
+
+                    fStatement.executeUpdate("update parameters set value = '" + DB_VERSION + "' where name = 'db:Version'");
+                }
             }
-            
-            //statement.executeUpdate("drop table if exists person");
-            //statement.executeUpdate("create table person (id integer, name string)");
-            //statement.executeUpdate("insert into person values(1, 'leo')");
-            //statement.executeUpdate("insert into person values(2, 'yui')");
-            /*ResultSet rs = statement.executeQuery("select * from person");
-            while (rs.next()) {
-                // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("id = " + rs.getInt("id"));
-            }*/
-            
+
             this.fConnection.close();
 
             this.fSource = new JdbcConnectionSource("jdbc:sqlite:" + dbName);
             this.fCompoundsDao = DaoManager.createDao(this.fSource, CompoundRecord.class);
             this.fPhysStatesDao = DaoManager.createDao(this.fSource, PhysicalState.class);
+            this.fCompoundNamesDao = DaoManager.createDao(this.fSource, CompoundName.class);
         } catch (SQLException e) {
             // if the error message is "out of memory", 
             // it probably means no database file is found
@@ -156,7 +154,7 @@ public class CLDB
         try {
             return fCompoundsDao.queryForAll();
         } catch (SQLException ex) {
-            // debug
+            Logger.write("CLDB.getAllCompounds(): " + ex.getMessage());
             return new ArrayList<>();
         }
     }
@@ -183,9 +181,14 @@ public class CLDB
 
             return comp;
         } catch (SQLException ex) {
-            // debug
+            Logger.write("CLDB.getCompound(): " + ex.getMessage());
             return null;
         }
+    }
+
+    public CompoundName newCompoundName()
+    {
+        return new CompoundName(this.fCompoundNamesDao);
     }
 
     public PhysicalState newPhysState()
@@ -228,7 +231,7 @@ public class CLDB
 
             return result;
         } catch (SQLException ex) {
-            // debug
+            Logger.write("CLDB.getPhysicalState(): " + ex.getMessage());
             return null;
         }
     }
