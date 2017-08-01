@@ -19,10 +19,10 @@ package chemlab.forms;
 
 import bslib.common.AuxUtils;
 import bslib.common.FramesHelper;
-import bslib.common.ImageHelper;
 import bslib.common.Logger;
 import chemlab.core.chemical.AtomSolver;
 import chemlab.core.chemical.CLData;
+import chemlab.core.CLUtils;
 import chemlab.core.chemical.CrystalKind;
 import chemlab.core.chemical.DegreeId;
 import chemlab.core.chemical.DegreeSet;
@@ -746,28 +746,28 @@ public final class CLElementsBook extends JFrame implements ActionListener
         this.tbFirst.setText("Первый");
         this.tbFirst.addActionListener(this);
         this.tbFirst.setActionCommand("btn_First");
-        this.tbFirst.setIcon(ImageHelper.loadIcon("ui/first.png", transColor));
+        this.tbFirst.setIcon(CLUtils.loadIcon("ui/first.png", transColor));
 
         this.tbPrior.setText("Предыдущий");
         this.tbPrior.addActionListener(this);
         this.tbPrior.setActionCommand("btn_Prior");
-        this.tbPrior.setIcon(ImageHelper.loadIcon("ui/prior.png", transColor));
+        this.tbPrior.setIcon(CLUtils.loadIcon("ui/prior.png", transColor));
 
         this.tbNext.setText("Следующий");
         this.tbNext.addActionListener(this);
         this.tbNext.setActionCommand("btn_Next");
-        this.tbNext.setIcon(ImageHelper.loadIcon("ui/next.png", transColor));
+        this.tbNext.setIcon(CLUtils.loadIcon("ui/next.png", transColor));
 
         this.tbLast.setText("Последний");
         this.tbLast.addActionListener(this);
         this.tbLast.setActionCommand("btn_Last");
-        this.tbLast.setIcon(ImageHelper.loadIcon("ui/last.png", transColor));
+        this.tbLast.setIcon(CLUtils.loadIcon("ui/last.png", transColor));
 
         this.tbDecayView.setText("Диаграмма распада");
         this.tbDecayView.addActionListener(this);
         this.tbDecayView.setActionCommand("btn_DecayView");
         this.tbDecayView.setToolTipText("Диаграмма радиоактивного распада");
-        this.tbDecayView.setIcon(ImageHelper.loadIcon("ui/decay.png"));
+        this.tbDecayView.setIcon(CLUtils.loadIcon("ui/decay.png"));
 
         this.PageControl.setLocation(0, 0);
         this.PageControl.setSize(765, 450);

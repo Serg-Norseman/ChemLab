@@ -17,7 +17,7 @@
  */
 package chemlab.core.controls.experiment.misc;
 
-import bslib.common.ImageHelper;
+import chemlab.core.CLUtils;
 import chemlab.core.controls.experiment.DeviceId;
 import chemlab.core.controls.experiment.DeviceType;
 import chemlab.core.controls.experiment.LabDevice;
@@ -67,7 +67,7 @@ public final class DevicesList extends JPanel
         for (DeviceId dev : DeviceId.values()) {
             String tempVar = dev.toString();
             String id = "icon" + tempVar.substring(0, 0) + tempVar.substring(0 + 3);
-            ImageIcon bmp = ImageHelper.loadIcon("devices/" + id + ".bmp");
+            ImageIcon bmp = CLUtils.loadIcon("devices/" + id + ".bmp");
 
             String devName = dev.Name;
             if (dev.Type == DeviceType.Container && dev.RealVolume > 0) {

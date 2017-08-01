@@ -19,9 +19,9 @@ package chemlab.core.controls.decay;
 
 import bslib.common.AuxUtils;
 import bslib.common.Bitmap;
-import bslib.common.ImageHelper;
-import chemlab.core.chemical.DecayMode;
 import chemlab.core.chemical.CLData;
+import chemlab.core.CLUtils;
+import chemlab.core.chemical.DecayMode;
 import chemlab.forms.CommonUtils;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -123,7 +123,7 @@ public final class DecayShape extends JComponent
         }
 
         String lpBitmapName = resName.toLowerCase() + ".bmp";
-        this.fImage = ImageHelper.loadBitmap(lpBitmapName, true);
+        this.fImage = CLUtils.loadBitmap(lpBitmapName, true);
     }
 
     @Override

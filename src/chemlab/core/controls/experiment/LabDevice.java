@@ -20,9 +20,9 @@ package chemlab.core.controls.experiment;
 import bslib.common.BaseObject;
 import bslib.common.Bitmap;
 import bslib.common.ColorUtil;
-import bslib.common.ImageHelper;
 import bslib.common.Rect;
 import bslib.math.DoubleHelper;
+import chemlab.core.CLUtils;
 import chemlab.core.chemical.ChemConsts;
 import chemlab.core.chemical.ReactionSolver;
 import chemlab.core.chemical.Substance;
@@ -216,12 +216,12 @@ public class LabDevice extends BaseObject
 
     private static Bitmap loadImage(String resName, boolean transparent)
     {
-        return ImageHelper.loadBitmap("devices/" + resName + ".bmp", transparent);
+        return CLUtils.loadBitmap("devices/" + resName + ".bmp", transparent);
     }
 
     private static Bitmap loadImage(String resName, Color transparentColor)
     {
-        return ImageHelper.loadBitmap("devices/" + resName + ".bmp", transparentColor);
+        return CLUtils.loadBitmap("devices/" + resName + ".bmp", transparentColor);
     }
     
     public final boolean isContainer()

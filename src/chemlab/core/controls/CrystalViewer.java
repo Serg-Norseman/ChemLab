@@ -18,7 +18,7 @@
 package chemlab.core.controls;
 
 import bslib.common.Bitmap;
-import bslib.common.ImageHelper;
+import chemlab.core.CLUtils;
 import chemlab.core.chemical.CrystalKind;
 import java.awt.Graphics;
 import javax.swing.BorderFactory;
@@ -45,7 +45,7 @@ public final class CrystalViewer extends JPanel
 
         for (CrystalKind i : CrystalKind.values()) {
             String name = "cs_" + i.toString() + ".bmp";
-            Bitmap bmp = (Bitmap)ImageHelper.loadBitmap(name.toLowerCase(), true);
+            Bitmap bmp = (Bitmap)CLUtils.loadBitmap(name.toLowerCase(), true);
             this.fImages[i.getValue()] = bmp;
         }
     }
